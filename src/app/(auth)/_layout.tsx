@@ -12,7 +12,7 @@ export default function OnboardingLayout() {
 
 	const BasicHeader = () => {
 		return (
-			<View h={top + HEADER_HEIGHT} pt={top} bg="$background" px="$md">
+			<View h={top + HEADER_HEIGHT} pt={top} bg="transparent" px="$md">
 				<Pressable onPress={() => router.back()}>
 					<Icon.ChevronLeft size="$xl" c="$primary" />
 				</Pressable>

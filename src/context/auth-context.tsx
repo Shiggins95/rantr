@@ -13,7 +13,6 @@ import { useRouter } from 'expo-router';
 import { handleHttpGet } from '@/src/api/http';
 import { setStorageItem, StorageKey } from '@/src/utils/storage';
 import { useToastController } from '@tamagui/toast';
-// import { UserGetDto } from 'trustifi-client';
 
 type AuthContextType = {
 	signOut: () => void;
@@ -21,6 +20,8 @@ type AuthContextType = {
 	isLoading: boolean;
 	user?: any;
 	setUser: Dispatch<SetStateAction<any | undefined>>;
+	guestMode: boolean;
+	setGuestMode: Dispatch<SetStateAction<boolean>>;
 };
 
 export const AuthContext = createContext<AuthContextType>({
@@ -29,6 +30,8 @@ export const AuthContext = createContext<AuthContextType>({
 	isLoading: false,
 	user: undefined,
 	setUser: () => null,
+	guestMode: false,
+	setGuestMode: () => null,
 });
 
 type SessionResponse = {
@@ -55,9 +58,9 @@ export function AuthProvider({ children }: PropsWithChildren) {
 	const [isLoading, setLoading] = useState(true);
 	const [session, setSession] = useState<Session | null>(null);
 	const [user, setUser] = useState<any>();
+	const [guestMode, setGuestMode] = useState(false);
 	const router = useRouter();
 	const toast = useToastController();
-	console.log('session', session?.access_token);
 
 	const handleCompleteLogin = async (session: Session) => {
 		try {
@@ -142,6 +145,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
 				isLoading,
 				user,
 				setUser,
+				guestMode,
+				setGuestMode
 			}}
 		>
 			{children}

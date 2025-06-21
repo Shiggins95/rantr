@@ -5,9 +5,8 @@ import { Button } from '@ui/button';
 import { Page } from '@/src/components/page';
 import { useRouter } from 'expo-router';
 import InputField from '@ui/input-field';
-import { LogoSvg } from '@/src/components/svg/logo';
 import { Headline, HeadlineType } from '@ui/healine';
-import TrustiFiHeading from '@/src/components/trustifi-heading';
+import RantrHeading from '@/src/components/rantr-heading';
 import { Body, BodyType } from '@ui/body';
 import { ToastViewport, useToastController } from '@tamagui/toast';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -64,14 +63,11 @@ export default function SignIn() {
 				<View f={1} px="$md">
 					<FormProvider {...formMethods}>
 						<View f={1}>
-							<View gap="$sm" mb="$lg" alignItems="center">
-								<LogoSvg width={50} height={50} />
-							</View>
 							<Text>
 								<Headline variant={HeadlineType.h2} my="$md">
 									Sign in to{' '}
 								</Headline>
-								<TrustiFiHeading
+								<RantrHeading
 									type="headline"
 									variant={HeadlineType.h2}
 									thinVariant={HeadlineType.h2Thin}

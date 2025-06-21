@@ -7,9 +7,9 @@ type LocalProps =
 	| { type: 'headline'; variant: HeadlineType; thinVariant: HeadlineType }
 	| { type: 'body'; variant: BodyType; thinVariant: BodyType };
 
-type TrustiFiHeadingProps = TextProps & LocalProps;
+type RantrHeadingProps = TextProps & LocalProps;
 
-const TrustiFiHeading: FC<TrustiFiHeadingProps> = ({
+const RantrHeading: FC<RantrHeadingProps> = ({
 	type,
 	variant,
 	thinVariant,
@@ -18,10 +18,7 @@ const TrustiFiHeading: FC<TrustiFiHeadingProps> = ({
 		return (
 			<Text>
 				<Headline variant={variant} c="$primary">
-					Trusti
-				</Headline>
-				<Headline variant={thinVariant} c="$secondary">
-					Fi
+					RantR
 				</Headline>
 			</Text>
 		);
@@ -39,4 +36,4 @@ const TrustiFiHeading: FC<TrustiFiHeadingProps> = ({
 	);
 };
 
-export default TrustiFiHeading;
+export default RantrHeading;

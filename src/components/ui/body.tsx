@@ -18,7 +18,7 @@ export enum BodyType {
 
 export const Body = styled(Text, {
 	c: '$text',
-	fontSize: '$5',
+	fontSize: '$6',
 	variants: {
 		variant: {
 			[BodyType.normal]: {
@@ -43,29 +43,29 @@ export const Body = styled(Text, {
 				fontStyle: 'italic',
 			},
 			[BodyType.small]: {
-				fontSize: '$3',
+				fontSize: '$5',
 				fontWeight: '400',
 			},
 			[BodyType.smallBold]: {
-				fontSize: '$3',
+				fontSize: '$5',
 				fontWeight: '600',
 			},
 			[BodyType.smallExtraBold]: {
-				fontSize: '$3',
+				fontSize: '$5',
 				fontWeight: '700',
 			},
 			[BodyType.smallItalic]: {
-				fontSize: '$3',
+				fontSize: '$5',
 				fontWeight: '400',
 				fontStyle: 'italic',
 			},
 			[BodyType.smallBoldItalic]: {
-				fontSize: '$3',
+				fontSize: '$5',
 				fontWeight: '600',
 				fontStyle: 'italic',
 			},
 			[BodyType.smallExtraBoldItalic]: {
-				fontSize: '$3',
+				fontSize: '$5',
 				fontWeight: '700',
 				fontStyle: 'italic',
 			},

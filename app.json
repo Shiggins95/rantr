@@ -1,23 +1,27 @@
 {
   "expo": {
-    "name": "TrustiFi",
-    "slug": "trustifi",
+    "name": "RantR",
+    "slug": "rantr",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "debtworth",
+    "icon": "./assets/images/icon-light.png",
+    "scheme": "rantr",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.stephen.trustify"
+      "bundleIdentifier": "com.stephen.rantr",
+      "icon": {
+        "dark": "./assets/images/icon-dark.png",
+        "light": "./assets/images/icon-light.png"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.stephenzoplo.debtworth",
+      "package": "com.stephenzoplo.rantr",
       "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
@@ -30,10 +34,15 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/icon-light.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#EEEEEE",
+          "dark": {
+            "image": "./assets/images/icon-dark.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#3C3C3C"
+          }
         }
       ],
       [

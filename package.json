@@ -1,5 +1,5 @@
 {
-  "name": "trustifi",
+  "name": "rantr",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
@@ -10,13 +10,10 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "lint": "expo lint",
-    "client": "npx tsx ./generate-swagger.ts && openapi-generator-cli generate -g typescript-axios --skip-validate-spec --additional-properties=npmName=trustifi-client,withInterfaces=true,legacyDiscriminatorBehavior=false,snapshot=true -i ./openapi.json  -o ./client/lib && yarn workspace trustifi-client build",
-    "client:dev": "NODE_ENV=development && yarn client",
-    "client:prod": "NODE_ENV=production && yarn client"
+    "migration:new": "npx supabase migration new",
+    "migrate:local": "npx supabase db push --local",
+    "migrate:prod": "npx supabase db push"
   },
-  "workspaces": [
-    "client"
-  ],
   "jest": {
     "preset": "jest-expo"
   },
@@ -27,11 +24,11 @@
     "@react-navigation/native": "^7.0.14",
     "@rneui/themed": "^4.0.0-rc.8",
     "@supabase/supabase-js": "^2.49.4",
-    "@tamagui/babel-plugin": "1.126.1",
-    "@tamagui/config": "1.126.1",
-    "@tamagui/lucide-icons": "1.126.1",
-    "@tamagui/metro-plugin": "1.126.1",
-    "@tamagui/toast": "1.126.1",
+    "@tamagui/babel-plugin": "1.127.2",
+    "@tamagui/config": "1.127.2",
+    "@tamagui/lucide-icons": "1.127.2",
+    "@tamagui/metro-plugin": "1.127.2",
+    "@tamagui/toast": "1.127.2",
     "axios": "^1.9.0",
     "base64-arraybuffer": "^1.0.2",
     "burnt": "^0.13.0",
@@ -66,8 +63,7 @@
     "react-native-web": "~0.19.13",
     "react-native-webview": "13.12.5",
     "react-query": "^3.39.3",
-    "tamagui": "1.126.1",
-    "trustifi-client": "workspace:^"
+    "tamagui": "1.127.2"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -100,5 +96,5 @@
     "trailingComma": "all"
   },
   "private": true,
-  "packageManager": "yarn@3.6.4"
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }

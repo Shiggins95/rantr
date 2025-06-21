@@ -1,12 +1,11 @@
 import { Page } from '@/src/components/page';
 import { Headline, HeadlineType } from '@ui/healine';
 import { Card, XStack, YStack } from 'tamagui';
-import TrustiFiHeading from '@/src/components/trustifi-heading';
+import RantrHeading from '@/src/components/rantr-heading';
 import { Body, BodyType } from '@ui/body';
 import { Pressable } from 'react-native';
 import { useState } from 'react';
 import { Button } from '@ui/button';
-import { useUpdateUserMutation } from '@/src/api/hooks/use-update-user-mutation';
 // import { UserGetDto, UserPostPutDtoJoinReasonEnum } from 'trustifi-client';
 import { useAuthContext } from '@/src/context/auth-context';
 import { useRouter } from 'expo-router';
@@ -30,8 +29,6 @@ export default function JoinReason() {
 			type: 'error',
 		});
 	};
-
-	const { mutate } = useUpdateUserMutation(onSuccessfulUpdate, onErrorUpdate);
 
 	const handleSubmit = async () => {
 		// let joinReason: UserPostPutDtoJoinReasonEnum | undefined;
@@ -59,7 +56,7 @@ export default function JoinReason() {
 				<YStack gap="$md" f={1}>
 					<Headline variant={HeadlineType.h2} textAlign="center">
 						What brings you to{' '}
-						<TrustiFiHeading
+						<RantrHeading
 							type="headline"
 							variant={HeadlineType.h2}
 							thinVariant={HeadlineType.h2Thin}
@@ -84,7 +81,7 @@ export default function JoinReason() {
 									</Body>
 									<Body variant={BodyType.small} numberOfLines={3}>
 										Choose this if you're seeking assistance from the{' '}
-										<TrustiFiHeading
+										<RantrHeading
 											type="body"
 											variant={BodyType.smallBold}
 											thinVariant={BodyType.smallBold}
@@ -113,7 +110,7 @@ export default function JoinReason() {
 									</Body>
 									<Body variant={BodyType.small} numberOfLines={3}>
 										Choose this if you're seeking to help the{' '}
-										<TrustiFiHeading
+										<RantrHeading
 											type="body"
 											variant={BodyType.smallBold}
 											thinVariant={BodyType.smallBold}
@@ -141,7 +138,7 @@ export default function JoinReason() {
 									<Body variant={BodyType.small} numberOfLines={3}>
 										Choose this if you're both willing to help and ask for help
 										from the{' '}
-										<TrustiFiHeading
+										<RantrHeading
 											type="body"
 											variant={BodyType.smallBold}
 											thinVariant={BodyType.smallBold}

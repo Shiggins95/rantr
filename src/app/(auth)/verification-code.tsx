@@ -7,8 +7,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { Text, View } from 'tamagui';
 import { Button } from '@ui/button';
 import { Body, BodyType } from '@ui/body';
-import { LogoSvg } from '@/src/components/svg/logo';
-import TrustiFiHeading from '@/src/components/trustifi-heading';
+import RantrHeading from '@/src/components/rantr-heading';
 import { Pressable } from 'react-native';
 import { useToastController } from '@tamagui/toast';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -80,14 +79,11 @@ const VerificationCode: FC = () => {
 				<View f={1} px="$md">
 					<FormProvider {...formMethods}>
 						<View f={1}>
-							<View gap="$sm" mb="$lg" alignItems="center">
-								<LogoSvg width={50} height={50} />
-							</View>
 							<Text>
 								<Headline variant={HeadlineType.h2} my="$md">
 									Verify your{' '}
 								</Headline>
-								<TrustiFiHeading
+								<RantrHeading
 									type="headline"
 									variant={HeadlineType.h2}
 									thinVariant={HeadlineType.h2Thin}

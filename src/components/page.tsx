@@ -1,8 +1,11 @@
 import {
+	Dimensions,
+	ImageBackground,
 	Keyboard,
 	Platform,
 	StyleSheet,
 	TouchableWithoutFeedback,
+	useColorScheme,
 	ViewProps,
 } from 'react-native';
 import { FC, useMemo } from 'react';
@@ -27,8 +30,14 @@ export const Page: FC<PageProps> = ({
 	withNavigationHeader,
 }) => {
 	const { top, bottom } = useSafeAreaInsets();
-
+	const theme = useColorScheme();
 	const styles = useStyles();
+
+	const bgImage = useMemo(() => {
+		return theme === 'light'
+			? require('@/assets/images/bg-light.png')
+			: require('@/assets/images/bg-dark.png');
+	}, [theme]);
 
 	const containerStyles = useMemo(() => {
 		const stylesArr = [_style, styles.container];
@@ -81,14 +90,19 @@ export const Page: FC<PageProps> = ({
 			style={styles.container}
 			accessible={false}
 		>
-			<View bg="$background" style={containerStyles}>
-				{children}
-			</View>
+			<>
+				<ImageBackground style={styles.imageBg} source={bgImage}/>
+				{/*<Image style={styles.imageBg} source={bgImage}/>*/}
+				<View style={containerStyles}>
+					{children}
+				</View>
+			</>
 		</TouchableWithoutFeedback>
 	);
 };
 
 const useStyles = () => {
+	const {width, height} = Dimensions.get('window')
 	return StyleSheet.create({
 		container: {
 			flex: 1,
@@ -98,5 +112,14 @@ const useStyles = () => {
 			right: 0,
 			bottom: 0,
 		},
+		imageBg: {
+			position: 'absolute',
+			top: 0,
+			left: 0,
+			minHeight: height,
+			minWidth: width,
+			resizeMode: 'cover',
+			opacity: 0.5,
+		}
 	});
 };
