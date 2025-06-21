@@ -1,0 +1,372 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/pledge/{pledgeId}": {
+      "get": {
+        "operationId": "apiGetPledgeById",
+        "parameters": [
+          {
+            "name": "pledgeId",
+            "required": true,
+            "in": "path",
+            "description": "Pledge ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PledgeGetDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "access-token": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Pledge"
+        ]
+      }
+    },
+    "/pledge": {
+      "get": {
+        "operationId": "apiGetPledgeById",
+        "parameters": [
+          {
+            "name": "pledgeId",
+            "required": true,
+            "in": "path",
+            "description": "Pledge ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PledgeGetDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "access-token": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Pledge"
+        ]
+      }
+    },
+    "/docs/openapi.json": {
+      "get": {
+        "operationId": "DocsController_getOpenApi",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Docs"
+        ]
+      }
+    },
+    "/user/{userId}": {
+      "get": {
+        "operationId": "apiGetUserById",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "description": "User ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserGetDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "access-token": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/user": {
+      "put": {
+        "operationId": "apiUpdateUserById",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserPostPutDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserGetDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "access-token": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/auth/completeSignIn": {
+      "get": {
+        "operationId": "apiCompleteSignIn",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserGetDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "access-token": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "auth"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "My API",
+    "description": "API documentation for TrustiFi",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "access-token": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http",
+        "name": "Authorization",
+        "in": "header"
+      }
+    },
+    "schemas": {
+      "UserGetDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "6b129c71-cc4b-4a7c-8429-27a86f452a23"
+          },
+          "username": {
+            "type": "string",
+            "example": "stephen123",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "example": "Stephen"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Higgins"
+          },
+          "email": {
+            "type": "string",
+            "example": "stephen@example.com"
+          },
+          "trustScore": {
+            "type": "number",
+            "example": 4.8
+          },
+          "fullName": {
+            "type": "string",
+            "example": "Stephen Higgins"
+          },
+          "status": {
+            "type": "string",
+            "example": "COMPLETE"
+          },
+          "joinReason": {
+            "type": "string",
+            "example": "GIVE_HELP"
+          }
+        },
+        "required": [
+          "id",
+          "username",
+          "firstName",
+          "lastName",
+          "email",
+          "trustScore",
+          "fullName",
+          "status",
+          "joinReason"
+        ]
+      },
+      "PledgeGetDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "6b129c71-cc4b-4a7c-8429-27a86f452a23"
+          },
+          "requester": {
+            "$ref": "#/components/schemas/UserGetDto"
+          },
+          "description": {
+            "type": "string",
+            "example": "Pledge for a new car"
+          },
+          "amount": {
+            "type": "number",
+            "example": 10000
+          },
+          "preferredPaybackDate": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2025-01-01"
+          },
+          "paymentMethod": {
+            "type": "string",
+            "example": "PAYPAL"
+          },
+          "pledgedBy": {
+            "$ref": "#/components/schemas/UserGetDto"
+          },
+          "status": {
+            "type": "string",
+            "example": "OPEN"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2025-01-01"
+          },
+          "completedAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2025-01-01"
+          }
+        },
+        "required": [
+          "id",
+          "requester",
+          "description",
+          "amount",
+          "preferredPaybackDate",
+          "paymentMethod",
+          "pledgedBy",
+          "status",
+          "createdAt",
+          "completedAt"
+        ]
+      },
+      "UserPostPutDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Username of the user"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "First name of the user"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Last name of the user"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address of the user"
+          },
+          "profilePhoto": {
+            "type": "string",
+            "description": "User profile photo URL or storage path",
+            "example": "12345/12345.jpg"
+          },
+          "status": {
+            "type": "string",
+            "description": "User status",
+            "enum": [
+              "SETUP_REQUIRED",
+              "PERSONAL_DETAILS_COMPLETE",
+              "COMPLETE",
+              "DELETED"
+            ],
+            "default": "SETUP_REQUIRED"
+          },
+          "joinReason": {
+            "type": "string",
+            "description": "Joined Reason",
+            "enum": [
+              "GIVE_HELP",
+              "GET_HELP",
+              "BOTH"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
