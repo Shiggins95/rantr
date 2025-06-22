@@ -16,6 +16,10 @@ import * as FileSystem from 'expo-file-system';
 // import { UserGetDto } from 'trustifi-client';
 import { useRouter } from 'expo-router';
 import { useToastController } from '@tamagui/toast';
+import { UserDto, UserStatus } from '@/src/types/user.types';
+import { useSupabaseMutation } from '@/src/api/hooks/use-supabase-mutation';
+import { updateUser } from '@/src/api/methods/user/update-user';
+import { agreeToTerms } from '@/src/api/methods/user/agree-to-terms';
 
 type PersonalDetailsForm = {
 	profilePhotoUrl?: string;
@@ -30,7 +34,6 @@ export default function PersonalDetails() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [isImageCompressing, setIsImageCompressing] = useState(false);
 	const { user, setUser } = useAuthContext();
-	console.log('userrr', user);
 	const toast = useToastController();
 
 	const formMethods = useForm<PersonalDetailsForm>({
@@ -43,9 +46,9 @@ export default function PersonalDetails() {
 		},
 	});
 
-	const onSuccessfulUpdate = (data: any) => {
+	const onSuccessfulUpdate = (data: UserDto) => {
 		setUser(data);
-		router.navigate('/join-reason');
+		router.navigate('/(app)/(tabs)/(home)');
 	};
 
 	const onErrorUpdate = () => {
@@ -56,7 +59,9 @@ export default function PersonalDetails() {
 		});
 	};
 
-	// const putUserInfo = useUpdateUserMutation(onSuccessfulUpdate, onErrorUpdate);
+	const { mutateAsync: updateUserMutation } = useSupabaseMutation(updateUser);
+	const { mutateAsync: agreeToTermsMutation } =
+		useSupabaseMutation(agreeToTerms);
 
 	const uploadToSupabase = async (uri: string, userId: string) => {
 		const base64 = await FileSystem.readAsStringAsync(uri, {
@@ -74,7 +79,6 @@ export default function PersonalDetails() {
 			});
 
 		if (error) {
-			console.log('error', error);
 			return '';
 		}
 
@@ -92,23 +96,30 @@ export default function PersonalDetails() {
 				);
 			}
 
-			// putUserInfo.mutate({
-			// 	...formMethods.getValues(),
-			// 	profilePhoto: profilePhotoUrl,
-			// 	status: 'PERSONAL_DETAILS_COMPLETE',
-			// });
-		} catch (error) {
-			console.log('error', error);
+			const { username, firstName, lastName } = data;
+
+			console.log('updating user');
+
+			const termsId = await agreeToTermsMutation(user!.id);
+
+			const userDto = await updateUserMutation({
+				id: user!.id,
+				data: {
+					username,
+					first_name: firstName,
+					last_name: lastName,
+					profile_photo: profilePhotoUrl,
+					status: UserStatus.COMPLETE,
+					terms_id: termsId,
+				},
+			});
+			onSuccessfulUpdate(userDto);
+		} catch {
+			onErrorUpdate();
 		} finally {
 			setIsLoading(false);
 		}
 	};
-
-	console.log({
-		valid: formMethods.formState.isValid,
-		isLoading,
-		isImageCompressing,
-	});
 
 	return (
 		<Page isSafeArea>

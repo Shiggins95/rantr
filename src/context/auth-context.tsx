@@ -7,19 +7,22 @@ import {
 	useEffect,
 	useState,
 } from 'react';
-import { supabase } from '@/src/utils/supabase';
+import { getSupabaseAuthenticatedClient, supabase } from '@/src/utils/supabase';
 import { AuthChangeEvent, Session } from '@supabase/supabase-js';
 import { useRouter } from 'expo-router';
-import { handleHttpGet } from '@/src/api/http';
 import { setStorageItem, StorageKey } from '@/src/utils/storage';
 import { useToastController } from '@tamagui/toast';
+import { updateUser } from '@/src/api/methods/user/update-user';
+import { UserDto, UserStatus } from '@/src/types/user.types';
+import { getUser } from '@/src/api/methods/user/get-user';
+import { createUser } from '@/src/api/methods/user/create-user';
 
 type AuthContextType = {
 	signOut: () => void;
 	session: Session | null;
 	isLoading: boolean;
-	user?: any;
-	setUser: Dispatch<SetStateAction<any | undefined>>;
+	user?: UserDto;
+	setUser: Dispatch<SetStateAction<UserDto | undefined>>;
 	guestMode: boolean;
 	setGuestMode: Dispatch<SetStateAction<boolean>>;
 };
@@ -57,30 +60,60 @@ export function useCurrentUser() {
 export function AuthProvider({ children }: PropsWithChildren) {
 	const [isLoading, setLoading] = useState(true);
 	const [session, setSession] = useState<Session | null>(null);
-	const [user, setUser] = useState<any>();
+	const [user, setUser] = useState<UserDto>();
 	const [guestMode, setGuestMode] = useState(false);
 	const router = useRouter();
 	const toast = useToastController();
 
-	const handleCompleteLogin = async (session: Session) => {
+	const handleUserRetrieved = (user: UserDto, _session: Session) => {
+		setUser(user);
+		setSession(_session);
+		setLoading(false);
+		switch (user.status) {
+			case UserStatus.COMPLETE:
+				router.navigate('/(app)/(tabs)/(home)');
+				return true;
+			case UserStatus.SETUP_REQUIRED:
+				router.navigate('/(onboarding)');
+				return true;
+		}
+	};
+
+	const handleCompleteLogin = async (_session: Session) => {
 		try {
-			const data = await handleHttpGet('/auth/completeSignIn');
-			if (data) {
-				setUser(data);
-				setSession(session);
-				setLoading(false);
-				switch (data.status) {
-					case 'COMPLETE':
-						router.navigate('/(app)/(tabs)/(home)');
-						return true;
-					case 'PERSONAL_DETAILS_COMPLETE':
-						router.navigate('/(onboarding)/join-reason');
-						return true;
-					case 'SETUP_REQUIRED':
-						router.navigate('/(onboarding)');
-						return true;
-				}
+			const userId = _session.user.id;
+			const supabase = getSupabaseAuthenticatedClient();
+			const user = await getUser(userId, supabase);
+
+			if (!user) {
+				const data = await createUser(
+					{
+						data: {
+							id: userId,
+							email: _session.user.email,
+							created_at: new Date(),
+							last_sign_in: new Date(),
+							status: UserStatus.SETUP_REQUIRED,
+						},
+					},
+					supabase,
+				);
+
+				handleUserRetrieved(data, _session);
+				return;
 			}
+
+			const data = await updateUser(
+				{
+					id: userId,
+					data: { last_sign_in: new Date() },
+				},
+				supabase,
+			);
+
+			console.log('data', data);
+			handleUserRetrieved(data, _session);
+			return;
 		} catch (e) {
 			console.log('error', e);
 		}
@@ -124,7 +157,6 @@ export function AuthProvider({ children }: PropsWithChildren) {
 					handleGotSession(session);
 					return;
 				}
-
 				setSession(session);
 			},
 		);
@@ -146,7 +178,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 				user,
 				setUser,
 				guestMode,
-				setGuestMode
+				setGuestMode,
 			}}
 		>
 			{children}

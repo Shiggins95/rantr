@@ -41,7 +41,7 @@ const InputField: FC<InputFieldProps> = ({
 
 	// region hooks
 	const { rules, defaultValue, name } = rest;
-	const { field, fieldState } = useController({
+	const { field } = useController({
 		name,
 		rules,
 		defaultValue: defaultValue || '',
@@ -62,8 +62,6 @@ const InputField: FC<InputFieldProps> = ({
 
 	// region useEffects
 	// endregion
-
-	console.log(name, defaultValue);
 
 	return (
 		<YStack
