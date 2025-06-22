@@ -10,8 +10,6 @@ export const agreeToTerms = async (
 		.eq('user_id', userId)
 		.maybeSingle();
 
-	console.log('existingResponse', existingAgreement);
-
 	if (existingAgreement) {
 		const { data, error } = await supabase
 			.from('terms')

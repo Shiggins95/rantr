@@ -13,7 +13,7 @@ import { useRouter } from 'expo-router';
 import { setStorageItem, StorageKey } from '@/src/utils/storage';
 import { useToastController } from '@tamagui/toast';
 import { updateUser } from '@/src/api/methods/user/update-user';
-import { UserDto, UserStatus } from '@/src/types/user.types';
+import { UserDto } from '@/src/types/user.types';
 import { getUser } from '@/src/api/methods/user/get-user';
 import { createUser } from '@/src/api/methods/user/create-user';
 
@@ -70,10 +70,10 @@ export function AuthProvider({ children }: PropsWithChildren) {
 		setSession(_session);
 		setLoading(false);
 		switch (user.status) {
-			case UserStatus.COMPLETE:
+			case 'COMPLETE':
 				router.navigate('/(app)/(tabs)/(home)');
 				return true;
-			case UserStatus.SETUP_REQUIRED:
+			case 'SETUP_REQUIRED':
 				router.navigate('/(onboarding)');
 				return true;
 		}
@@ -91,9 +91,9 @@ export function AuthProvider({ children }: PropsWithChildren) {
 						data: {
 							id: userId,
 							email: _session.user.email,
-							created_at: new Date(),
-							last_sign_in: new Date(),
-							status: UserStatus.SETUP_REQUIRED,
+							created_at: new Date().toISOString(),
+							last_sign_in: new Date().toISOString(),
+							status: 'SETUP_REQUIRED',
 						},
 					},
 					supabase,
@@ -106,12 +106,11 @@ export function AuthProvider({ children }: PropsWithChildren) {
 			const data = await updateUser(
 				{
 					id: userId,
-					data: { last_sign_in: new Date() },
+					data: { last_sign_in: new Date().toISOString() },
 				},
 				supabase,
 			);
 
-			console.log('data', data);
 			handleUserRetrieved(data, _session);
 			return;
 		} catch (e) {

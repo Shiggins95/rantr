@@ -46,8 +46,7 @@ export const ProfilePhotoPicker: FC<ProfilePhotoPickerProps> = ({
 					compress: 0.5,
 				});
 				onChange(result.uri);
-			} catch (err) {
-				console.log('error', err);
+			} catch {
 				Alert.alert('Error', 'Failed to process image.');
 			} finally {
 				setIsImageCompressing(false);

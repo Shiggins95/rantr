@@ -12,11 +12,9 @@ import { useState } from 'react';
 import { useAuthContext } from '@/src/context/auth-context';
 import { decode } from 'base64-arraybuffer';
 import * as FileSystem from 'expo-file-system';
-// import { useUpdateUserMutation } from '@/src/api/hooks/use-update-user-mutation';
-// import { UserGetDto } from 'trustifi-client';
 import { useRouter } from 'expo-router';
 import { useToastController } from '@tamagui/toast';
-import { UserDto, UserStatus } from '@/src/types/user.types';
+import { UserDto } from '@/src/types/user.types';
 import { useSupabaseMutation } from '@/src/api/hooks/use-supabase-mutation';
 import { updateUser } from '@/src/api/methods/user/update-user';
 import { agreeToTerms } from '@/src/api/methods/user/agree-to-terms';
@@ -98,8 +96,6 @@ export default function PersonalDetails() {
 
 			const { username, firstName, lastName } = data;
 
-			console.log('updating user');
-
 			const termsId = await agreeToTermsMutation(user!.id);
 
 			const userDto = await updateUserMutation({
@@ -109,7 +105,7 @@ export default function PersonalDetails() {
 					first_name: firstName,
 					last_name: lastName,
 					profile_photo: profilePhotoUrl,
-					status: UserStatus.COMPLETE,
+					status: 'COMPLETE',
 					terms_id: termsId,
 				},
 			});

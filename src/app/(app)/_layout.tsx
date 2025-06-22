@@ -9,8 +9,6 @@ export default function AppLayout() {
 	useAndroidStatusBar();
 
 	if (!guestMode) {
-		console.log('session', session);
-		console.log('user', user);
 		if (session && user?.status === 'SETUP_REQUIRED') {
 			return <Redirect href="/(onboarding)" />;
 		}
