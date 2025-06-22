@@ -3,12 +3,12 @@ create type user_status as enum ('SETUP_REQUIRED', 'COMPLETE', 'DELETED');
 
 -- Create users table
 create table public.rantr_users (
-                              id uuid primary key not null,
-                              email text not null unique,
-                              first_name text,
-                              last_name text,
-                              created_at timestamptz not null default now(),
-                              status user_status not null default 'SETUP_REQUIRED'
+    id uuid primary key not null,
+    email text not null unique,
+    first_name text,
+    last_name text,
+    created_at timestamptz not null default now(),
+    status user_status not null default 'SETUP_REQUIRED'
 );
 
 alter table public.rantr_users enable row level security;
