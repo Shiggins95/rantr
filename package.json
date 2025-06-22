@@ -12,7 +12,9 @@
     "lint": "expo lint",
     "migration:new": "npx supabase migration new",
     "migrate:local": "npx supabase db push --local",
-    "migrate:prod": "npx supabase db push"
+    "migrate:prod": "npx supabase db push",
+    "supabase:gen:local": "supabase gen types typescript --local --schema public > src/types/supabase.ts",
+    "supabase:gen:prod": "supabase gen types typescript --project-id vddvrnlygmzvtbffogwu --schema public > src/types/supabase.ts"
   },
   "jest": {
     "preset": "jest-expo"
