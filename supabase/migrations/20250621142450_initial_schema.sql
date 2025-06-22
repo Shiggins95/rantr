@@ -3,15 +3,15 @@ create type user_status as enum ('SETUP_REQUIRED', 'COMPLETE', 'DELETED');
 
 -- Create users table (without terms_id to avoid circular reference)
 create table public.rantr_users (
-                                    id uuid primary key not null,
-                                    email text not null unique,
-                                    first_name text,
-                                    last_name text,
-                                    created_at timestamptz not null default now(),
-                                    status user_status not null default 'SETUP_REQUIRED',
-                                    last_sign_in timestamptz default now(),
-                                    username text unique,
-                                    profile_photo text
+    id uuid primary key not null,
+    email text not null unique,
+    first_name text,
+    last_name text,
+    created_at timestamptz not null default now(),
+    status user_status not null default 'SETUP_REQUIRED',
+    last_sign_in timestamptz default now(),
+    username text unique,
+    profile_photo text
 );
 
 -- Enable row level security for users
@@ -40,9 +40,9 @@ create policy "Users can update their own row"
 
 -- Create terms table (can reference rantr_users safely)
 create table public.terms (
-                              id uuid primary key default gen_random_uuid(),
-                              user_id uuid not null references public.rantr_users(id) on delete cascade,
-                              timestamp timestamptz not null default now()
+    id uuid primary key default gen_random_uuid(),
+    user_id uuid not null references public.rantr_users(id) on delete cascade,
+    timestamp timestamptz not null default now()
 );
 
 -- Enable row level security for terms
