@@ -9,8 +9,7 @@ import { POSTS_PER_PAGE } from '@/src/constants/query';
 
 export default function HomeScreen() {
 	const router = useRouter();
-	const { signOut, guestMode } = useAuthContext();
-	console.log('guestMode', guestMode);
+	const { signOut } = useAuthContext();
 
 	const { data, fetchNextPage, hasNextPage } = useSupabaseInfiniteQuery(
 		['posts'],
@@ -29,8 +28,6 @@ export default function HomeScreen() {
 		if (!hasNextPage) return;
 		await fetchNextPage();
 	};
-
-	console.log('data', data);
 
 	const triggerGetUserById = async () => {
 		router.navigate('/test');
