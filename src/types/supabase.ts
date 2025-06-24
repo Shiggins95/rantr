@@ -9,6 +9,189 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      comment_interactions: {
+        Row: {
+          comment_id: string
+          created_at: string
+          direction: Database["public"]["Enums"]["interaction_type_enum"]
+          user_id: string
+        }
+        Insert: {
+          comment_id: string
+          created_at?: string
+          direction: Database["public"]["Enums"]["interaction_type_enum"]
+          user_id: string
+        }
+        Update: {
+          comment_id?: string
+          created_at?: string
+          direction?: Database["public"]["Enums"]["interaction_type_enum"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comment_interactions_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "comments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comment_interactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "rantr_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      comments: {
+        Row: {
+          comment: string
+          created_at: string
+          deleted: boolean | null
+          down_votes: number | null
+          edited: boolean | null
+          id: string
+          original_comment: string | null
+          up_votes: number | null
+          user_id: string
+        }
+        Insert: {
+          comment: string
+          created_at?: string
+          deleted?: boolean | null
+          down_votes?: number | null
+          edited?: boolean | null
+          id?: string
+          original_comment?: string | null
+          up_votes?: number | null
+          user_id: string
+        }
+        Update: {
+          comment?: string
+          created_at?: string
+          deleted?: boolean | null
+          down_votes?: number | null
+          edited?: boolean | null
+          id?: string
+          original_comment?: string | null
+          up_votes?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "rantr_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      post_images: {
+        Row: {
+          id: string
+          image_url: string
+          post_id: string
+        }
+        Insert: {
+          id?: string
+          image_url: string
+          post_id: string
+        }
+        Update: {
+          id?: string
+          image_url?: string
+          post_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_images_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      post_interactions: {
+        Row: {
+          created_at: string
+          direction: Database["public"]["Enums"]["interaction_type_enum"]
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          direction: Database["public"]["Enums"]["interaction_type_enum"]
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          direction?: Database["public"]["Enums"]["interaction_type_enum"]
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_interactions_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "post_interactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "rantr_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      posts: {
+        Row: {
+          content: string
+          created_at: string
+          deleted: boolean | null
+          down_votes: number | null
+          id: string
+          title: string
+          up_votes: number | null
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          deleted?: boolean | null
+          down_votes?: number | null
+          id?: string
+          title: string
+          up_votes?: number | null
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          deleted?: boolean | null
+          down_votes?: number | null
+          id?: string
+          title?: string
+          up_votes?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "rantr_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       rantr_users: {
         Row: {
           created_at: string
@@ -90,6 +273,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      interaction_type_enum: "up" | "down"
       user_status: "SETUP_REQUIRED" | "COMPLETE" | "DELETED"
     }
     CompositeTypes: {
@@ -206,7 +390,9 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      interaction_type_enum: ["up", "down"],
       user_status: ["SETUP_REQUIRED", "COMPLETE", "DELETED"],
     },
   },
 } as const
+

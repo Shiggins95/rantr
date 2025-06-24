@@ -1,6 +1,10 @@
 import { useQuery, UseQueryOptions, QueryKey } from 'react-query';
 import { SupabaseClient } from '@supabase/supabase-js';
-import { getSupabaseAuthenticatedClient } from '@/src/utils/supabase';
+import {
+	getSupabaseAnonymousClient,
+	getSupabaseAuthenticatedClient,
+} from '@/src/utils/supabase';
+import { useAuthContext } from '@/src/context/auth-context';
 
 type QueryFn<TArgs, TResult> = (
 	args: TArgs,
@@ -13,7 +17,13 @@ export function useSupabaseQuery<TArgs, TResult>(
 	args: TArgs,
 	options?: UseQueryOptions<TResult, Error>,
 ) {
-	const supabase = getSupabaseAuthenticatedClient();
+	const { guestMode } = useAuthContext();
+	let supabase: SupabaseClient;
+	if (guestMode) {
+		supabase = getSupabaseAnonymousClient();
+	} else {
+		supabase = getSupabaseAuthenticatedClient();
+	}
 
 	return useQuery<TResult, Error>({
 		queryKey: key,

@@ -1,8 +1,8 @@
-import { UserDb, UserDto } from '@/src/types/user.types';
+import { UserDbBase, UserDto } from '@/src/types/user.types';
 import { SupabaseClient } from '@supabase/supabase-js';
 
 type CreateUserArgs = {
-	data: Partial<UserDb>;
+	data: Partial<UserDbBase>;
 };
 
 export const createUser = async (

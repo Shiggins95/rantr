@@ -24,6 +24,10 @@ export const supabase = createClient(
 	},
 );
 
+export const getSupabaseAnonymousClient = () => {
+	return supabase;
+};
+
 export const getSupabaseAuthenticatedClient = () => {
 	return createClient(
 		getConfigValue('supabaseUrl')!,

@@ -3,10 +3,34 @@ import ParallaxScrollView from '@/src/components/ParallaxScrollView';
 import { Button } from '@ui/button';
 import { useRouter } from 'expo-router';
 import { useAuthContext } from '@/src/context/auth-context';
+import { getPosts } from '@/src/api/methods/posts/get-posts';
+import { useSupabaseInfiniteQuery } from '@/src/api/hooks/use-supabase-infinite-query';
+import { POSTS_PER_PAGE } from '@/src/constants/query';
 
 export default function HomeScreen() {
 	const router = useRouter();
-	const { signOut } = useAuthContext();
+	const { signOut, guestMode } = useAuthContext();
+	console.log('guestMode', guestMode);
+
+	const { data, fetchNextPage, hasNextPage } = useSupabaseInfiniteQuery(
+		['posts'],
+		getPosts,
+		undefined,
+		{
+			getNextPageParam: (lastPage, allPages) => {
+				return lastPage?.length === POSTS_PER_PAGE
+					? allPages.length * POSTS_PER_PAGE
+					: undefined;
+			},
+		},
+	);
+
+	const handleFetchNextPage = async () => {
+		if (!hasNextPage) return;
+		await fetchNextPage();
+	};
+
+	console.log('data', data);
 
 	const triggerGetUserById = async () => {
 		router.navigate('/test');
@@ -28,7 +52,9 @@ export default function HomeScreen() {
 			<Button variant="secondary" onPress={signOut}>
 				Secondary
 			</Button>
-			<Button variant="danger">Danger</Button>
+			<Button variant="danger" onPress={handleFetchNextPage}>
+				Danger
+			</Button>
 		</ParallaxScrollView>
 	);
 }

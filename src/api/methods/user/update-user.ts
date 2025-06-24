@@ -1,9 +1,9 @@
-import { UserDb, UserDto } from '@/src/types/user.types';
+import { UserDbBase, UserDto } from '@/src/types/user.types';
 import { SupabaseClient } from '@supabase/supabase-js';
 
 type UpdateUserArgs = {
 	id: string;
-	data: Partial<UserDb>;
+	data: Partial<UserDbBase>;
 };
 
 export const updateUser = async (

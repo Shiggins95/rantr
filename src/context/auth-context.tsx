@@ -164,6 +164,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 	}, []);
 
 	const signOut = async () => {
+		setGuestMode(false);
 		await supabase.auth.signOut();
 		router.navigate('/(auth)');
 	};

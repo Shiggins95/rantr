@@ -7,6 +7,9 @@ export const Button = styled(BaseButton, {
 	disabledStyle: {
 		opacity: 0.5,
 	},
+	textProps: {
+		flexShrink: 0,
+	},
 	variants: {
 		variant: {
 			danger: {
@@ -46,15 +49,15 @@ export const Button = styled(BaseButton, {
 				},
 			},
 			ghost: {
-				bg: "transparent",
-				color: "$text",
+				bg: 'transparent',
+				color: '$text',
 				borderWidth: 0,
 				pressStyle: {
-					bg: "transparent",
+					bg: 'transparent',
 					opacity: 0.6,
 					borderWidth: 0,
-				}
-			}
+				},
+			},
 		},
 	} as const,
 });
