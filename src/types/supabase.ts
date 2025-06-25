@@ -43,6 +43,20 @@ export type Database = {
             referencedRelation: "rantr_users"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "fk_comment_interactions_comment"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "comments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_comment_interactions_user"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "rantr_users"
+            referencedColumns: ["id"]
+          },
         ]
       }
       comments: {
@@ -54,6 +68,7 @@ export type Database = {
           edited: boolean | null
           id: string
           original_comment: string | null
+          post_id: string
           up_votes: number | null
           user_id: string
         }
@@ -65,6 +80,7 @@ export type Database = {
           edited?: boolean | null
           id?: string
           original_comment?: string | null
+          post_id: string
           up_votes?: number | null
           user_id: string
         }
@@ -76,12 +92,34 @@ export type Database = {
           edited?: boolean | null
           id?: string
           original_comment?: string | null
+          post_id?: string
           up_votes?: number | null
           user_id?: string
         }
         Relationships: [
           {
+            foreignKeyName: "comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "comments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "rantr_users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_comments_post"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_comments_user"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "rantr_users"
@@ -106,6 +144,13 @@ export type Database = {
           post_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "fk_post_images_post"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "post_images_post_id_fkey"
             columns: ["post_id"]
@@ -159,6 +204,7 @@ export type Database = {
           down_votes: number | null
           id: string
           title: string
+          type: Database["public"]["Enums"]["post_type_enum"]
           up_votes: number | null
           user_id: string
         }
@@ -169,6 +215,7 @@ export type Database = {
           down_votes?: number | null
           id?: string
           title: string
+          type?: Database["public"]["Enums"]["post_type_enum"]
           up_votes?: number | null
           user_id: string
         }
@@ -179,10 +226,18 @@ export type Database = {
           down_votes?: number | null
           id?: string
           title?: string
+          type?: Database["public"]["Enums"]["post_type_enum"]
           up_votes?: number | null
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "fk_posts_user"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "rantr_users"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "posts_user_id_fkey"
             columns: ["user_id"]
@@ -274,6 +329,7 @@ export type Database = {
     }
     Enums: {
       interaction_type_enum: "up" | "down"
+      post_type_enum: "RANT" | "ADVICE" | "OTHER"
       user_status: "SETUP_REQUIRED" | "COMPLETE" | "DELETED"
     }
     CompositeTypes: {
@@ -391,6 +447,7 @@ export const Constants = {
   public: {
     Enums: {
       interaction_type_enum: ["up", "down"],
+      post_type_enum: ["RANT", "ADVICE", "OTHER"],
       user_status: ["SETUP_REQUIRED", "COMPLETE", "DELETED"],
     },
   },

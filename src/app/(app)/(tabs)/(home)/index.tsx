@@ -1,76 +1,79 @@
-import { Image, StyleSheet } from 'react-native';
-import ParallaxScrollView from '@/src/components/ParallaxScrollView';
-import { Button } from '@ui/button';
-import { useRouter } from 'expo-router';
-import { useAuthContext } from '@/src/context/auth-context';
+import { FlatList, StyleSheet } from 'react-native';
 import { getPosts } from '@/src/api/methods/posts/get-posts';
 import { useSupabaseInfiniteQuery } from '@/src/api/hooks/use-supabase-infinite-query';
 import { POSTS_PER_PAGE } from '@/src/constants/query';
+import { HomeHeader } from '@/src/components/pages/tabs/home/header';
+import { PostDto } from '@/src/types/posts.types';
+import { View } from 'tamagui';
+import { Page } from '@/src/components/page';
+import { spacing } from '@/src/constants/spacing';
+import { useCallback, useMemo, useState } from 'react';
+import { Post } from '@/src/components/pages/tabs/home/feed/post';
 
 export default function HomeScreen() {
-	const router = useRouter();
-	const { signOut } = useAuthContext();
+	const [currentTag, setCurrentTag] = useState('');
 
-	const { data, fetchNextPage, hasNextPage } = useSupabaseInfiniteQuery(
-		['posts'],
-		getPosts,
-		undefined,
-		{
+	const { data, fetchNextPage, hasNextPage, isFetching, resetAndRefetch } =
+		useSupabaseInfiniteQuery(['posts'], getPosts, undefined, {
 			getNextPageParam: (lastPage, allPages) => {
 				return lastPage?.length === POSTS_PER_PAGE
 					? allPages.length * POSTS_PER_PAGE
 					: undefined;
 			},
-		},
-	);
+		});
 
 	const handleFetchNextPage = async () => {
 		if (!hasNextPage) return;
 		await fetchNextPage();
 	};
 
-	const triggerGetUserById = async () => {
-		router.navigate('/test');
+	const handleRefresh = async () => {
+		void resetAndRefetch();
 	};
 
+	const renderItem = useCallback(({ item }: { item: PostDto }) => {
+		return <Post post={item} />;
+	}, []);
+
+	const filteredData = useMemo(() => {
+		if (!currentTag || !data) return data || [];
+		return data.filter((p) => p.type === currentTag);
+	}, [currentTag, data]);
+
+	const flatList = useMemo(() => {
+		return (
+			<FlatList<PostDto>
+				data={filteredData}
+				keyExtractor={(i) => i.id}
+				renderItem={renderItem}
+				style={styles.contentContainer}
+				contentContainerStyle={styles.sectionListContent}
+				onEndReached={handleFetchNextPage}
+				onEndReachedThreshold={0.2}
+				initialNumToRender={5}
+				refreshing={isFetching}
+				onRefresh={handleRefresh}
+				maxToRenderPerBatch={POSTS_PER_PAGE}
+				windowSize={5}
+			/>
+		);
+	}, [filteredData]);
+
 	return (
-		<ParallaxScrollView
-			headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-			headerImage={
-				<Image
-					source={require('@assets/images/partial-react-logo.png')}
-					style={styles.reactLogo}
-				/>
-			}
-		>
-			<Button variant="primary" onPress={triggerGetUserById}>
-				Primary
-			</Button>
-			<Button variant="secondary" onPress={signOut}>
-				Secondary
-			</Button>
-			<Button variant="danger" onPress={handleFetchNextPage}>
-				Danger
-			</Button>
-		</ParallaxScrollView>
+		<Page>
+			<HomeHeader currentTag={currentTag} setCurrentTag={setCurrentTag} />
+			<View f={1}>{flatList}</View>
+		</Page>
 	);
 }
 
 const styles = StyleSheet.create({
-	titleContainer: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		gap: 8,
+	contentContainer: {
+		flex: 1,
+		// paddingTop: 100,
 	},
-	stepContainer: {
-		gap: 8,
-		marginBottom: 8,
-	},
-	reactLogo: {
-		height: 178,
-		width: 290,
-		bottom: 0,
-		left: 0,
-		position: 'absolute',
+	sectionListContent: {
+		paddingBottom: 100,
+		gap: spacing.md,
 	},
 });

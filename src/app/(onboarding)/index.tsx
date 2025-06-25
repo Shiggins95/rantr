@@ -5,7 +5,7 @@ import { ProfilePhotoPicker } from '@ui/profile-photo-picker';
 import { Body, BodyType } from '@ui/body';
 import InputField from '@ui/input-field';
 import { Button } from '@ui/button';
-import { TermsCheckbox } from '@/src/components/onboarding/terms-checkbox';
+import { TermsCheckbox } from '@/src/components/pages/onboarding/terms-checkbox';
 import { FormProvider, useForm } from 'react-hook-form';
 import { supabase } from '@/src/utils/supabase';
 import { useState } from 'react';

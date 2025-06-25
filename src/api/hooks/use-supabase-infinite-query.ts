@@ -36,9 +36,15 @@ export function useSupabaseInfiniteQuery<TArgs, TResult>(
 		...options,
 	});
 
+	const resetAndRefetch = async () => {
+		query.remove();
+		await query.refetch();
+	};
+
 	const flatData = query.data?.pages.flat();
 	return {
 		...query,
+		resetAndRefetch,
 		data: flatData,
 	};
 }

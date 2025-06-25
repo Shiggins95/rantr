@@ -7,7 +7,7 @@ import {
 	DefaultTheme,
 	ThemeProvider,
 } from '@react-navigation/native';
-import { TamaguiProvider } from 'tamagui';
+import { TamaguiProvider, PortalProvider } from 'tamagui';
 import { useColorScheme } from '@hooks/useColorScheme';
 import { AuthProvider } from '@/src/context/auth-context';
 import { useFonts } from 'expo-font';
@@ -17,6 +17,7 @@ import { ToastProvider, ToastViewport } from '@tamagui/toast';
 import { QueryClientProvider } from 'react-query';
 import { CurrentToast } from '@ui/toast';
 import { queryClient } from '@/src/utils/query-client';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 if (__DEV__) {
 	require('../reactotron.config');
@@ -67,23 +68,27 @@ export default function RootLayout() {
 	}, [loaded, isLoading]);
 
 	return (
-		<QueryClientProvider client={queryClient}>
-			<ToastProvider>
-				<AuthProvider>
-					<TamaguiProvider
-						config={tamaguiConfig}
-						defaultTheme={colorScheme || 'light'}
-					>
-						<ThemeProvider
-							value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-						>
-							<Slot />
-							<ToastViewport multipleToasts bottom={0} left={0} right={0} />
-							<CurrentToast />
-						</ThemeProvider>
-					</TamaguiProvider>
-				</AuthProvider>
-			</ToastProvider>
-		</QueryClientProvider>
+		<GestureHandlerRootView>
+			<QueryClientProvider client={queryClient}>
+				<PortalProvider>
+					<ToastProvider>
+						<AuthProvider>
+							<TamaguiProvider
+								config={tamaguiConfig}
+								defaultTheme={colorScheme || 'light'}
+							>
+								<ThemeProvider
+									value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+								>
+									<Slot />
+									<ToastViewport multipleToasts bottom={0} left={0} right={0} />
+									<CurrentToast />
+								</ThemeProvider>
+							</TamaguiProvider>
+						</AuthProvider>
+					</ToastProvider>
+				</PortalProvider>
+			</QueryClientProvider>
+		</GestureHandlerRootView>
 	);
 }
