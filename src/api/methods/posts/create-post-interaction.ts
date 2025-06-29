@@ -17,5 +17,5 @@ export const createPostInteraction = async (
 	});
 
 	if (error) throw error;
-	return true;
+	return { type: 'create' as 'create', postId, direction };
 };

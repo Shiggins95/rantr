@@ -1,0 +1,159 @@
+import { Button } from '@ui/button';
+import { ChevronDown, ChevronUp, MessageSquare } from '@tamagui/lucide-icons';
+import { Body, BodyType } from '@ui/body';
+import { formatVoteCount } from '@/src/utils/numbers';
+import { View } from 'tamagui';
+import { useEffect, useMemo, useState } from 'react';
+import { useToastController } from '@tamagui/toast';
+import { useAuthContext } from '@/src/context/auth-context';
+import { useSupabaseMutation } from '@/src/api/hooks/use-supabase-mutation';
+import { createPostInteraction } from '@/src/api/methods/posts/create-post-interaction';
+import { editPostInteraction } from '@/src/api/methods/posts/edit-post-interaction';
+import { deletePostInteraction } from '@/src/api/methods/posts/delete-post-interaction';
+import { PostDto } from '@/src/types/posts.types';
+import { onSuccess } from '@/src/api/invalidations/post-interaction-mutation';
+
+type PostInteractionsProps = {
+	post: PostDto;
+};
+
+export const PostInteractions = ({ post }: PostInteractionsProps) => {
+	// region state variables
+	const upVotes = Math.abs(post.upVotes);
+	const downVotes = Math.abs(post.downVotes);
+	const myInteractionDirection = post.myInteraction?.direction;
+	const [totalVotes, setTotalVotes] = useState(upVotes - downVotes);
+	const [commentCount, setCommentCount] = useState(post.commentCount);
+	const [myInteraction, setMyInteraction] = useState(myInteractionDirection);
+
+	const { guestMode, user: currentUser } = useAuthContext();
+	const toast = useToastController();
+	// endregion
+
+	const { mutateAsync: createInteraction } = useSupabaseMutation(
+		createPostInteraction,
+		{ onSuccess },
+	);
+	const { mutateAsync: editInteraction } = useSupabaseMutation(
+		editPostInteraction,
+		{ onSuccess },
+	);
+	const { mutateAsync: deleteInteraction } = useSupabaseMutation(
+		deletePostInteraction,
+		{ onSuccess },
+	);
+	// endregion
+
+	// region methods
+	const handleDeleteInteraction = async (direction: 'up' | 'down') => {
+		await deleteInteraction({
+			userId: currentUser?.id || '',
+			postId: post.id,
+			direction,
+		});
+
+		const multiplier = myInteraction === 'up' ? -1 : 1;
+		setTotalVotes((prev) => prev + multiplier);
+		setMyInteraction(undefined);
+	};
+
+	const handleEditInteraction = async (direction: 'up' | 'down') => {
+		await editInteraction({
+			direction,
+			userId: currentUser?.id || '',
+			postId: post.id,
+		});
+
+		const multiplier = direction === 'up' ? 2 : -2;
+		setTotalVotes((prev) => prev + multiplier);
+
+		setMyInteraction(direction);
+	};
+	const handleCreateInteraction = async (direction: 'up' | 'down') => {
+		await createInteraction({
+			direction,
+			userId: currentUser?.id || '',
+			postId: post.id,
+		});
+		const multiplier = direction === 'up' ? 1 : -1;
+		setTotalVotes((prev) => prev + multiplier);
+		setMyInteraction(direction);
+	};
+
+	const handleInteraction = async (direction: 'up' | 'down') => {
+		if (guestMode) {
+			toast.show('Please sign in to interact with posts', {
+				message: 'You must be signed in to interact with posts',
+				duration: 1500,
+				type: 'warning',
+				viewportName: 'top-toast',
+			});
+			return;
+		}
+		try {
+			if (!myInteraction) {
+				await handleCreateInteraction(direction);
+				return;
+			}
+
+			if (direction === myInteraction) {
+				await handleDeleteInteraction(direction);
+				return;
+			}
+
+			await handleEditInteraction(direction);
+		} catch (e) {
+			console.log('error', e);
+		}
+	};
+	// endregion
+
+	// region memos
+	const voteCountColour = useMemo(() => {
+		if (myInteraction) {
+			return myInteraction === 'up' ? '$primary' : '$accent';
+		}
+
+		return '$textMuted';
+	}, [totalVotes, myInteraction]);
+	// endregion
+
+	// endregion useEffects
+	useEffect(() => {
+		// this feels super fucking dirty, but it's the best way to handle it when the post changes e.g. if the queries are invalidated
+		setMyInteraction(myInteractionDirection);
+		setTotalVotes(upVotes - downVotes);
+		setCommentCount(post.commentCount);
+	}, [post]);
+	// endregion
+
+	return (
+		<View fd="row" alignItems="center" pt="$sm">
+			<Button
+				variant="ghost"
+				onPress={() => handleInteraction('up')}
+				paddingLeft={0}
+			>
+				<ChevronUp
+					size="$md"
+					c={myInteraction === 'up' ? '$primary' : '$color.textMuted'}
+				/>
+			</Button>
+			<Body variant={BodyType.smallMonospace} c={voteCountColour}>
+				{formatVoteCount(totalVotes)}
+			</Body>
+			<Button variant="ghost" onPress={() => handleInteraction('down')}>
+				<ChevronDown
+					size="$md"
+					c={myInteraction === 'down' ? '$accent' : '$color.textMuted'}
+				/>
+			</Button>
+			<Button variant="ghost" fd="row" p="$sm">
+				<MessageSquare size="$md" c="$color.textMuted" />
+				<Body c="$textMuted" variant={BodyType.smallMonospace}>
+					{commentCount}
+				</Body>
+			</Button>
+		</View>
+	);
+};

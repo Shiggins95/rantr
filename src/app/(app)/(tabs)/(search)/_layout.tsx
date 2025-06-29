@@ -16,7 +16,7 @@ export default function SearchStack() {
 				}}
 			/>
 			<Stack.Screen
-				name="test"
+				name="post-full/[id]"
 				options={{
 					title: 'Test',
 					gestureEnabled: true,

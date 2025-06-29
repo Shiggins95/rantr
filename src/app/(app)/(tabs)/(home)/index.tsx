@@ -8,7 +8,7 @@ import { View } from 'tamagui';
 import { Page } from '@/src/components/page';
 import { spacing } from '@/src/constants/spacing';
 import { useCallback, useMemo, useState } from 'react';
-import { Post } from '@/src/components/pages/tabs/home/feed/post';
+import { Post } from '@/src/components/pages/tabs/home/feed/posts/post';
 import { useCurrentUser } from '@/src/context/auth-context';
 
 export default function HomeScreen() {
@@ -21,6 +21,8 @@ export default function HomeScreen() {
 			currentUser ? getPosts : getAnonPosts,
 			{ userId: currentUser?.id },
 			{
+				refetchOnWindowFocus: true,
+				refetchOnMount: true,
 				getNextPageParam: (lastPage, allPages) => {
 					return lastPage?.length === POSTS_PER_PAGE
 						? allPages.length * POSTS_PER_PAGE
@@ -28,6 +30,8 @@ export default function HomeScreen() {
 				},
 			},
 		);
+
+	console.log('post data', data);
 
 	const handleFetchNextPage = async () => {
 		if (!hasNextPage) return;
@@ -64,7 +68,7 @@ export default function HomeScreen() {
 				windowSize={10}
 			/>
 		);
-	}, [filteredData]);
+	}, [filteredData, data]);
 
 	return (
 		<Page>

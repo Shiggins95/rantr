@@ -3,10 +3,11 @@ import { SupabaseClient } from '@supabase/supabase-js';
 type PostInteractParams = {
 	userId: string;
 	postId: string;
+	direction: 'up' | 'down';
 };
 
 export const deletePostInteraction = async (
-	{ userId, postId }: PostInteractParams,
+	{ userId, postId, direction }: PostInteractParams,
 	supabase: SupabaseClient,
 ) => {
 	const { error } = await supabase
@@ -16,5 +17,5 @@ export const deletePostInteraction = async (
 		.eq('post_id', postId);
 
 	if (error) throw error;
-	return true;
+	return { postId, type: 'delete' as 'delete', direction: direction };
 };

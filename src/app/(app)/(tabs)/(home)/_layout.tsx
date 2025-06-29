@@ -16,9 +16,9 @@ export default function HomeStack() {
 				}}
 			/>
 			<Stack.Screen
-				name="test"
+				name="post-full/[id]"
 				options={{
-					title: 'Test',
+					title: 'Post',
 					gestureEnabled: true,
 				}}
 			/>

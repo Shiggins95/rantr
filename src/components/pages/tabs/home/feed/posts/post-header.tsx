@@ -4,7 +4,7 @@ import { Body, BodyType } from '@ui/body';
 import { UserAvatar } from '@ui/user-avatar';
 import { PostDto } from '@/src/types/posts.types';
 import { getTimestamp } from '@/src/utils/date';
-import Popover from '@/src/components/ui/popover';
+import Popover from '@ui/popover';
 import { useState } from 'react';
 import { MoreVertical } from '@tamagui/lucide-icons';
 import { Button } from '@ui/button';

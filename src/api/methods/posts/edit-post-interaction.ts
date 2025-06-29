@@ -19,5 +19,5 @@ export const editPostInteraction = async (
 		.eq('post_id', postId);
 
 	if (error) throw error;
-	return true;
+	return { postId, direction, type: 'edit' as 'edit' };
 };
