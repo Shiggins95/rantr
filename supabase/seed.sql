@@ -67,48 +67,48 @@ UPDATE rantr_users SET terms_id = '7053e691-feef-4206-8780-94db90b2d8f7' WHERE i
 UPDATE rantr_users SET terms_id = 'ead3aa1a-b4fb-40ab-94a3-285314a38ee7' WHERE id = 'c88109f3-8960-4616-a434-05ff0b11d877';
 UPDATE rantr_users SET terms_id = '0a9ba726-137c-472b-aa3a-fcbff5cf0787' WHERE id = '3be98edc-ae6c-4dda-b9fb-ac26ebaf9321';
 
-INSERT INTO posts (id, title, content, user_id, up_votes, down_votes, deleted, created_at, type) VALUES
-    ('aa65a554-08bc-4306-bb90-fda79c1feffe', 'Foot pull financial could.', 'However career against close. Class wall recent behind system join. Daughter able clear understand.', 'daf5c3ef-f11f-4da7-8586-cc181cd8ccdf', DEFAULT, DEFAULT, DEFAULT, now(), 'RANT'),
-    ('4708e2ab-341e-4e51-bd67-d9dae8542576', 'Event mean full rule.', 'Clear admit page two matter recent bank. Piece campaign everyone believe likely measure. Strategy seek physical production step. Campaign station nor clear.', 'c3310d9b-6f55-4e9b-8781-8c2f2fccd898', DEFAULT, DEFAULT, DEFAULT, now(), 'RANT'),
-    ('d5a372bc-ac7f-4dee-9698-eef36f0f8f3a', 'Rest environmental must report.', 'Film forget figure song my since local. In style teacher identify data. Sense tax plan far.', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', DEFAULT, DEFAULT, DEFAULT, now(), 'RANT'),
-    ('20891bb8-8a14-41cd-9ed1-6e12d04c7de0', 'Policy stock sport rock.', 'Hope business item tonight offer successful. Land rather concern throughout serious.', '6b871c47-df2d-4bcc-b702-966bf0d158d8', DEFAULT, DEFAULT, DEFAULT, now(), 'RANT'),
-    ('5c76ee61-e06d-41bf-9b4b-e16c42b771e5', 'Civil phone too.', 'Physical few four might. Final work huge poor right city Mr.', '5160ef05-0ea8-4fb0-b8d7-6c582e9a857a', DEFAULT, DEFAULT, DEFAULT, now(), 'RANT'),
-    ('4f04db41-9307-4e34-b8ef-83c4899c2f4d', 'Gun someone wish yet.', 'Message clear leg. Check politics require parent political.', '60f95e26-64b8-4dde-98dc-083d5936e78c', DEFAULT, DEFAULT, DEFAULT, now(), 'RANT'),
-    ('ab627d3a-daf5-44c6-9374-818c740c6a95', 'Property card dog tree.', 'Impact best gas front environmental state. Green parent meet scene. Money later treat condition.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', DEFAULT, DEFAULT, DEFAULT, now(), 'RANT'),
-    ('cbf54d95-d999-443e-946a-5d6c5ae1c019', 'Sign generation nearly direction.', 'Surface make student fund. Treat pretty north building everything.', '01138b38-a7eb-493b-be18-00bfad6164b1', DEFAULT, DEFAULT, DEFAULT, now(), 'RANT'),
-    ('113df994-07c5-4329-8235-e93b582e9902', 'East Democrat camera occur.', 'Indeed form real. Purpose sing radio line determine. Serve executive you.', 'fabf2432-5b0c-4e3a-a1bc-fd1b18373823', DEFAULT, DEFAULT, DEFAULT, now(), 'RANT'),
-    ('5ab103eb-2ef6-4c26-8586-f234d0b36efb', 'Operation nature inside.', 'Style girl company. Meeting dog generation else performance. Organization require yet vote detail. Skin option near plant range.', '24cbd4c4-92c4-4b72-a036-d6ed31fe5c0b', DEFAULT, DEFAULT, DEFAULT, now(), 'ADVICE'),
+INSERT INTO posts (id, title, content, user_id, deleted, created_at, type) VALUES
+    ('aa65a554-08bc-4306-bb90-fda79c1feffe', 'Foot pull financial could.', 'However career against close. Class wall recent behind system join. Daughter able clear understand.', 'daf5c3ef-f11f-4da7-8586-cc181cd8ccdf', DEFAULT, now(), 'RANT'),
+    ('4708e2ab-341e-4e51-bd67-d9dae8542576', 'Event mean full rule.', 'Clear admit page two matter recent bank. Piece campaign everyone believe likely measure. Strategy seek physical production step. Campaign station nor clear.', 'c3310d9b-6f55-4e9b-8781-8c2f2fccd898', DEFAULT, now(), 'RANT'),
+    ('d5a372bc-ac7f-4dee-9698-eef36f0f8f3a', 'Rest environmental must report.', 'Film forget figure song my since local. In style teacher identify data. Sense tax plan far.', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', DEFAULT, now(), 'RANT'),
+    ('20891bb8-8a14-41cd-9ed1-6e12d04c7de0', 'Policy stock sport rock.', 'Hope business item tonight offer successful. Land rather concern throughout serious.', '6b871c47-df2d-4bcc-b702-966bf0d158d8', DEFAULT, now(), 'RANT'),
+    ('5c76ee61-e06d-41bf-9b4b-e16c42b771e5', 'Civil phone too.', 'Physical few four might. Final work huge poor right city Mr.', '5160ef05-0ea8-4fb0-b8d7-6c582e9a857a', DEFAULT, now(), 'RANT'),
+    ('4f04db41-9307-4e34-b8ef-83c4899c2f4d', 'Gun someone wish yet.', 'Message clear leg. Check politics require parent political.', '60f95e26-64b8-4dde-98dc-083d5936e78c', DEFAULT, now(), 'RANT'),
+    ('ab627d3a-daf5-44c6-9374-818c740c6a95', 'Property card dog tree.', 'Impact best gas front environmental state. Green parent meet scene. Money later treat condition.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', DEFAULT, now(), 'RANT'),
+    ('cbf54d95-d999-443e-946a-5d6c5ae1c019', 'Sign generation nearly direction.', 'Surface make student fund. Treat pretty north building everything.', '01138b38-a7eb-493b-be18-00bfad6164b1', DEFAULT, now(), 'RANT'),
+    ('113df994-07c5-4329-8235-e93b582e9902', 'East Democrat camera occur.', 'Indeed form real. Purpose sing radio line determine. Serve executive you.', 'fabf2432-5b0c-4e3a-a1bc-fd1b18373823', DEFAULT, now(), 'RANT'),
+    ('5ab103eb-2ef6-4c26-8586-f234d0b36efb', 'Operation nature inside.', 'Style girl company. Meeting dog generation else performance. Organization require yet vote detail. Skin option near plant range.', '24cbd4c4-92c4-4b72-a036-d6ed31fe5c0b', DEFAULT, now(), 'ADVICE'),
 
-    ('e3b0284c-3554-4a67-9580-43624a2db27c', 'Shoutout to the crossing guard', 'Every single morning the same story. Can we get reliable public transport?', '01138b38-a7eb-493b-be18-00bfad6164b1', DEFAULT, DEFAULT, FALSE, '2025-06-17T02:46:43.189843', 'ADVICE'),
-    ('58f9942b-955c-4033-aa42-c71f5e40d546', 'Love this weather lately', 'Every single morning the same story. Can we get reliable public transport?', 'c3310d9b-6f55-4e9b-8781-8c2f2fccd898', DEFAULT, DEFAULT, FALSE, '2025-06-09T01:46:43.190044', 'ADVICE'),
-    ('3e9f0775-56b1-4475-a61a-6d732c31ed0e', 'Fix the streetlights please', 'Every single morning the same story. Can we get reliable public transport?', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', DEFAULT, DEFAULT, FALSE, '2025-05-31T12:46:43.190104', 'ADVICE'),
-    ('16628681-20bc-4587-bbdb-448c55610afd', 'Noisy neighbors again', 'Half the block is pitch black at night. Dangerous and unacceptable.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', DEFAULT, DEFAULT, FALSE, '2025-06-10T19:46:43.190477', 'ADVICE'),
-    ('2d15ef87-e24d-4430-ac9f-3bdc218663b5', 'Coffee prices are absurd', 'Fresh bread, fair prices, and super friendly staff.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', DEFAULT, DEFAULT, FALSE, '2025-05-27T07:46:43.191083', 'ADVICE'),
-    ('9138df1e-d92e-4e37-ba80-6eeac5d9e39a', 'Potholes on 3rd street', 'Parallel parking should be an Olympic sport.', '01138b38-a7eb-493b-be18-00bfad6164b1', DEFAULT, DEFAULT, FALSE, '2025-06-16T10:46:43.191119', 'OTHER'),
-    ('433d4c3b-8661-46e7-a774-c570ef67f218', 'Shoutout to the crossing guard', 'Rain or shine, they''re always smiling. Respect.', 'daf5c3ef-f11f-4da7-8586-cc181cd8ccdf', DEFAULT, DEFAULT, FALSE, '2025-06-18T09:46:43.191136', 'OTHER'),
-    ('8fe9dffe-ac9a-48c9-ab5d-278ff1680b6a', 'Potholes on 3rd street', 'Five dollars for drip coffee? Are we serious?', '01138b38-a7eb-493b-be18-00bfad6164b1', DEFAULT, DEFAULT, FALSE, '2025-05-25T21:46:43.191157', 'OTHER'),
-    ('b0834c79-fd94-4154-8371-199c31a3451a', 'Noisy neighbors again', 'Rain or shine, they''re always smiling. Respect.', '01138b38-a7eb-493b-be18-00bfad6164b1', DEFAULT, DEFAULT, FALSE, '2025-05-30T17:46:43.191210', 'OTHER'),
-    ('955b362b-4654-44ed-a698-fe8b7349e18d', 'Fix the streetlights please', 'My car hit one. Sent the bill to the city. Still no response.', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', DEFAULT, DEFAULT, FALSE, '2025-06-08T18:46:43.191328', 'OTHER'),
-    ('a49d1bfc-e493-4146-a54b-b294ade64737', 'Can''t deal with city parking', 'Finally found a place to vent. Thank you!', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', DEFAULT, DEFAULT, FALSE, '2025-06-11T07:46:43.191377', 'OTHER'),
-    ('1d6a19b4-7852-48ba-a6cd-aef215afdb22', 'Love this weather lately', 'Finally found a place to vent. Thank you!', 'c3310d9b-6f55-4e9b-8781-8c2f2fccd898', DEFAULT, DEFAULT, FALSE, '2025-05-25T09:46:43.191414', 'OTHER'),
-    ('cc1ccd14-899a-4464-a587-1a69219e9616', 'Noisy neighbors again', 'Five dollars for drip coffee? Are we serious?', '01138b38-a7eb-493b-be18-00bfad6164b1', DEFAULT, DEFAULT, FALSE, '2025-06-15T23:46:43.191450', 'OTHER'),
-    ('835236a3-7979-4f28-a71a-c684c1367f19', 'This app saved my life', 'Five dollars for drip coffee? Are we serious?', '01138b38-a7eb-493b-be18-00bfad6164b1', DEFAULT, DEFAULT, FALSE, '2025-06-01T15:46:43.191483', 'OTHER'),
-    ('6abf1e3f-4f62-4e5d-9999-7e7b08c677c5', 'Love this weather lately', 'Fresh bread, fair prices, and super friendly staff.', 'daf5c3ef-f11f-4da7-8586-cc181cd8ccdf', DEFAULT, DEFAULT, FALSE, '2025-05-30T08:46:43.191518', 'OTHER'),
-    ('07d92032-d5e5-4cff-8ebf-75e3fb6cf694', 'Coffee prices are absurd', 'Finally found a place to vent. Thank you!', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', DEFAULT, DEFAULT, FALSE, '2025-06-11T00:46:43.191553', 'OTHER'),
-    ('53ff7ac6-b4f3-45a6-a3f6-a8a6d3e18f83', 'Noisy neighbors again', 'Seriously, sunshine three days in a row? I''m impressed.', '01138b38-a7eb-493b-be18-00bfad6164b1', DEFAULT, DEFAULT, FALSE, '2025-05-25T15:46:43.191589', 'OTHER'),
-    ('4445c4fd-e878-410e-9e40-4c39aee17b45', 'Can''t deal with city parking', 'Rain or shine, they''re always smiling. Respect.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', DEFAULT, DEFAULT, FALSE, '2025-06-18T16:46:43.191627', 'RANT'),
-    ('0280e58c-be30-4143-887f-b32365b224da', 'Fix the streetlights please', 'Seriously, sunshine three days in a row? I''m impressed.', 'ee70ffed-2079-4763-a3d9-b370853a8f01', DEFAULT, DEFAULT, FALSE, '2025-05-28T05:46:43.191678', 'RANT'),
-    ('51e6aef0-ea4d-425c-9bd4-85d74ad9fc39', 'Why is the bus always late?', 'My car hit one. Sent the bill to the city. Still no response.', 'fabf2432-5b0c-4e3a-a1bc-fd1b18373823', DEFAULT, DEFAULT, FALSE, '2025-06-09T08:46:43.191714', 'RANT'),
-    ('f0320206-fe7e-4cff-bfea-8d2acf606a16', 'Local bakery is underrated', 'Parallel parking should be an Olympic sport.', 'f2150dc7-36d4-41fb-a59c-cf47b81f6e43', DEFAULT, DEFAULT, FALSE, '2025-06-04T19:46:43.191748', 'RANT'),
-    ('dad2f6e5-234e-41f8-8598-4e1a1e5c7b17', 'Why is the bus always late?', 'Fresh bread, fair prices, and super friendly staff.', 'c3310d9b-6f55-4e9b-8781-8c2f2fccd898', DEFAULT, DEFAULT, FALSE, '2025-06-16T22:46:43.191783', 'RANT'),
-    ('3cdc0aa9-63ea-4fa7-9c65-6cd1cbe86e4d', 'Love this weather lately', 'Finally found a place to vent. Thank you!', 'ee70ffed-2079-4763-a3d9-b370853a8f01', DEFAULT, DEFAULT, FALSE, '2025-06-04T01:46:43.191818', 'ADVICE'),
-    ('44cd8060-4c5a-471b-b70d-08c84415f358', 'Fix the streetlights please', 'Fresh bread, fair prices, and super friendly staff.', 'c3310d9b-6f55-4e9b-8781-8c2f2fccd898', DEFAULT, DEFAULT, FALSE, '2025-06-01T02:46:43.191854', 'ADVICE'),
-    ('70605668-df14-4dc5-bb81-5fa0685aa76b', 'Potholes on 3rd street', 'My car hit one. Sent the bill to the city. Still no response.', '6b871c47-df2d-4bcc-b702-966bf0d158d8', DEFAULT, DEFAULT, FALSE, '2025-06-21T03:46:43.191891', 'ADVICE'),
-    ('08e71783-00a6-4df9-aaa4-d119663b1bee', 'Coffee prices are absurd', 'Five dollars for drip coffee? Are we serious?', 'f2150dc7-36d4-41fb-a59c-cf47b81f6e43', DEFAULT, DEFAULT, FALSE, '2025-05-25T16:46:43.191927', 'ADVICE'),
-    ('dafdec9f-4ca3-458f-a24a-8dc51bcf0dbb', 'Fix the streetlights please', 'Finally found a place to vent. Thank you!', 'c3310d9b-6f55-4e9b-8781-8c2f2fccd898', DEFAULT, DEFAULT, FALSE, '2025-06-05T21:46:43.191961', 'ADVICE'),
-    ('b1afe33b-d4aa-48f3-8b37-4d81e96080f1', 'Can''t deal with city parking', 'Finally found a place to vent. Thank you!', 'fabf2432-5b0c-4e3a-a1bc-fd1b18373823', DEFAULT, DEFAULT, FALSE, '2025-06-23T18:46:43.191995', 'ADVICE'),
-    ('ab2f7edc-4aa0-4880-8e7a-74ee2cb521a0', 'Shoutout to the crossing guard', 'My car hit one. Sent the bill to the city. Still no response.', 'fabf2432-5b0c-4e3a-a1bc-fd1b18373823', DEFAULT, DEFAULT, FALSE, '2025-05-26T00:46:43.192029', 'RANT'),
-    ('f3019ac6-3b56-45d9-9e1a-fe77489ba941', 'Coffee prices are absurd', 'Honestly, it''s getting out of hand. Every weekend without fail.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', DEFAULT, DEFAULT, FALSE, '2025-06-07T13:46:43.192064', 'RANT');
+    ('e3b0284c-3554-4a67-9580-43624a2db27c', 'Shoutout to the crossing guard', 'Every single morning the same story. Can we get reliable public transport?', '01138b38-a7eb-493b-be18-00bfad6164b1', FALSE, '2025-06-17T02:46:43.189843', 'ADVICE'),
+    ('58f9942b-955c-4033-aa42-c71f5e40d546', 'Love this weather lately', 'Every single morning the same story. Can we get reliable public transport?', 'c3310d9b-6f55-4e9b-8781-8c2f2fccd898', FALSE, '2025-06-09T01:46:43.190044', 'ADVICE'),
+    ('3e9f0775-56b1-4475-a61a-6d732c31ed0e', 'Fix the streetlights please', 'Every single morning the same story. Can we get reliable public transport?', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', FALSE, '2025-05-31T12:46:43.190104', 'ADVICE'),
+    ('16628681-20bc-4587-bbdb-448c55610afd', 'Noisy neighbors again', 'Half the block is pitch black at night. Dangerous and unacceptable.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', FALSE, '2025-06-10T19:46:43.190477', 'ADVICE'),
+    ('2d15ef87-e24d-4430-ac9f-3bdc218663b5', 'Coffee prices are absurd', 'Fresh bread, fair prices, and super friendly staff.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', FALSE, '2025-05-27T07:46:43.191083', 'ADVICE'),
+    ('9138df1e-d92e-4e37-ba80-6eeac5d9e39a', 'Potholes on 3rd street', 'Parallel parking should be an Olympic sport.', '01138b38-a7eb-493b-be18-00bfad6164b1', FALSE, '2025-06-16T10:46:43.191119', 'OTHER'),
+    ('433d4c3b-8661-46e7-a774-c570ef67f218', 'Shoutout to the crossing guard', 'Rain or shine, they''re always smiling. Respect.', 'daf5c3ef-f11f-4da7-8586-cc181cd8ccdf', FALSE, '2025-06-18T09:46:43.191136', 'OTHER'),
+    ('8fe9dffe-ac9a-48c9-ab5d-278ff1680b6a', 'Potholes on 3rd street', 'Five dollars for drip coffee? Are we serious?', '01138b38-a7eb-493b-be18-00bfad6164b1', FALSE, '2025-05-25T21:46:43.191157', 'OTHER'),
+    ('b0834c79-fd94-4154-8371-199c31a3451a', 'Noisy neighbors again', 'Rain or shine, they''re always smiling. Respect.', '01138b38-a7eb-493b-be18-00bfad6164b1', FALSE, '2025-05-30T17:46:43.191210', 'OTHER'),
+    ('955b362b-4654-44ed-a698-fe8b7349e18d', 'Fix the streetlights please', 'My car hit one. Sent the bill to the city. Still no response.', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', FALSE, '2025-06-08T18:46:43.191328', 'OTHER'),
+    ('a49d1bfc-e493-4146-a54b-b294ade64737', 'Can''t deal with city parking', 'Finally found a place to vent. Thank you!', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', FALSE, '2025-06-11T07:46:43.191377', 'OTHER'),
+    ('1d6a19b4-7852-48ba-a6cd-aef215afdb22', 'Love this weather lately', 'Finally found a place to vent. Thank you!', 'c3310d9b-6f55-4e9b-8781-8c2f2fccd898', FALSE, '2025-05-25T09:46:43.191414', 'OTHER'),
+    ('cc1ccd14-899a-4464-a587-1a69219e9616', 'Noisy neighbors again', 'Five dollars for drip coffee? Are we serious?', '01138b38-a7eb-493b-be18-00bfad6164b1', FALSE, '2025-06-15T23:46:43.191450', 'OTHER'),
+    ('835236a3-7979-4f28-a71a-c684c1367f19', 'This app saved my life', 'Five dollars for drip coffee? Are we serious?', '01138b38-a7eb-493b-be18-00bfad6164b1', FALSE, '2025-06-01T15:46:43.191483', 'OTHER'),
+    ('6abf1e3f-4f62-4e5d-9999-7e7b08c677c5', 'Love this weather lately', 'Fresh bread, fair prices, and super friendly staff.', 'daf5c3ef-f11f-4da7-8586-cc181cd8ccdf', FALSE, '2025-05-30T08:46:43.191518', 'OTHER'),
+    ('07d92032-d5e5-4cff-8ebf-75e3fb6cf694', 'Coffee prices are absurd', 'Finally found a place to vent. Thank you!', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', FALSE, '2025-06-11T00:46:43.191553', 'OTHER'),
+    ('53ff7ac6-b4f3-45a6-a3f6-a8a6d3e18f83', 'Noisy neighbors again', 'Seriously, sunshine three days in a row? I''m impressed.', '01138b38-a7eb-493b-be18-00bfad6164b1', FALSE, '2025-05-25T15:46:43.191589', 'OTHER'),
+    ('4445c4fd-e878-410e-9e40-4c39aee17b45', 'Can''t deal with city parking', 'Rain or shine, they''re always smiling. Respect.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', FALSE, '2025-06-18T16:46:43.191627', 'RANT'),
+    ('0280e58c-be30-4143-887f-b32365b224da', 'Fix the streetlights please', 'Seriously, sunshine three days in a row? I''m impressed.', 'ee70ffed-2079-4763-a3d9-b370853a8f01', FALSE, '2025-05-28T05:46:43.191678', 'RANT'),
+    ('51e6aef0-ea4d-425c-9bd4-85d74ad9fc39', 'Why is the bus always late?', 'My car hit one. Sent the bill to the city. Still no response.', 'fabf2432-5b0c-4e3a-a1bc-fd1b18373823', FALSE, '2025-06-09T08:46:43.191714', 'RANT'),
+    ('f0320206-fe7e-4cff-bfea-8d2acf606a16', 'Local bakery is underrated', 'Parallel parking should be an Olympic sport.', 'f2150dc7-36d4-41fb-a59c-cf47b81f6e43', FALSE, '2025-06-04T19:46:43.191748', 'RANT'),
+    ('dad2f6e5-234e-41f8-8598-4e1a1e5c7b17', 'Why is the bus always late?', 'Fresh bread, fair prices, and super friendly staff.', 'c3310d9b-6f55-4e9b-8781-8c2f2fccd898', FALSE, '2025-06-16T22:46:43.191783', 'RANT'),
+    ('3cdc0aa9-63ea-4fa7-9c65-6cd1cbe86e4d', 'Love this weather lately', 'Finally found a place to vent. Thank you!', 'ee70ffed-2079-4763-a3d9-b370853a8f01', FALSE, '2025-06-04T01:46:43.191818', 'ADVICE'),
+    ('44cd8060-4c5a-471b-b70d-08c84415f358', 'Fix the streetlights please', 'Fresh bread, fair prices, and super friendly staff.', 'c3310d9b-6f55-4e9b-8781-8c2f2fccd898', FALSE, '2025-06-01T02:46:43.191854', 'ADVICE'),
+    ('70605668-df14-4dc5-bb81-5fa0685aa76b', 'Potholes on 3rd street', 'My car hit one. Sent the bill to the city. Still no response.', '6b871c47-df2d-4bcc-b702-966bf0d158d8', FALSE, '2025-06-21T03:46:43.191891', 'ADVICE'),
+    ('08e71783-00a6-4df9-aaa4-d119663b1bee', 'Coffee prices are absurd', 'Five dollars for drip coffee? Are we serious?', 'f2150dc7-36d4-41fb-a59c-cf47b81f6e43', FALSE, '2025-05-25T16:46:43.191927', 'ADVICE'),
+    ('dafdec9f-4ca3-458f-a24a-8dc51bcf0dbb', 'Fix the streetlights please', 'Finally found a place to vent. Thank you!', 'c3310d9b-6f55-4e9b-8781-8c2f2fccd898', FALSE, '2025-06-05T21:46:43.191961', 'ADVICE'),
+    ('b1afe33b-d4aa-48f3-8b37-4d81e96080f1', 'Can''t deal with city parking', 'Finally found a place to vent. Thank you!', 'fabf2432-5b0c-4e3a-a1bc-fd1b18373823', FALSE, '2025-06-23T18:46:43.191995', 'ADVICE'),
+    ('ab2f7edc-4aa0-4880-8e7a-74ee2cb521a0', 'Shoutout to the crossing guard', 'My car hit one. Sent the bill to the city. Still no response.', 'fabf2432-5b0c-4e3a-a1bc-fd1b18373823', FALSE, '2025-05-26T00:46:43.192029', 'RANT'),
+    ('f3019ac6-3b56-45d9-9e1a-fe77489ba941', 'Coffee prices are absurd', 'Honestly, it''s getting out of hand. Every weekend without fail.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', FALSE, '2025-06-07T13:46:43.192064', 'RANT');
 
 INSERT INTO post_images (id, post_id, image_url) VALUES
     ('f3646a0e-24b9-470f-84df-2e032dcf4714', 'aa65a554-08bc-4306-bb90-fda79c1feffe', 'https://source.unsplash.com/random/800x600?sig=0'),
@@ -183,78 +183,78 @@ INSERT INTO post_images (id, post_id, image_url) VALUES
     ('5d0959bf-8a86-4da8-a047-3edfc8d20ea3', 'f3019ac6-3b56-45d9-9e1a-fe77489ba941', 'https://picsum.photos/seed/5e70bfba156a49159a5dabddaf3a686b/800/600'),
     ('fba2305c-92a3-4e4f-966a-204dd51ad700', 'f3019ac6-3b56-45d9-9e1a-fe77489ba941', 'https://picsum.photos/seed/a914dbfeaabb490b983132eb76132d2c/800/600');
 
-INSERT INTO comments (id, comment, user_id, up_votes, down_votes, original_comment, deleted, edited, created_at, post_id) VALUES
-    ('46115742-8f80-45f3-a656-0b6b3e274b38', 'Move each left establish.', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', DEFAULT, DEFAULT, NULL, DEFAULT, DEFAULT, now(), 'aa65a554-08bc-4306-bb90-fda79c1feffe'),
-    ('018591a6-3cae-4271-9f13-e694b7020466', 'Detail food shoulder argue start source husband.', 'c451aaf0-3253-4c33-9919-753e907eb284', DEFAULT, DEFAULT, NULL, DEFAULT, DEFAULT, now(), '4708e2ab-341e-4e51-bd67-d9dae8542576'),
-    ('675fb8f9-e8bc-477e-9a87-ae6f9eeef2ac', 'Civil quite others his other life edge network.', '60f95e26-64b8-4dde-98dc-083d5936e78c', DEFAULT, DEFAULT, NULL, DEFAULT, DEFAULT, now(), 'd5a372bc-ac7f-4dee-9698-eef36f0f8f3a'),
-    ('c34bc35f-087b-4ab0-90b8-3a3d1848301b', 'Quite boy those.', 'ee70ffed-2079-4763-a3d9-b370853a8f01', DEFAULT, DEFAULT, NULL, DEFAULT, DEFAULT, now(), '20891bb8-8a14-41cd-9ed1-6e12d04c7de0'),
-    ('0c392b48-f021-4396-a3e1-3145971b54ed', 'Out major born.', 'f2150dc7-36d4-41fb-a59c-cf47b81f6e43', DEFAULT, DEFAULT, NULL, DEFAULT, DEFAULT, now(), '5c76ee61-e06d-41bf-9b4b-e16c42b771e5'),
-    ('001f109d-f886-408a-b2ed-0346ccd80210', 'These story film around there water.', 'c88109f3-8960-4616-a434-05ff0b11d877', DEFAULT, DEFAULT, NULL, DEFAULT, DEFAULT, now(), '4f04db41-9307-4e34-b8ef-83c4899c2f4d'),
-    ('c4c85277-ff6c-4efa-8e41-cfd5ff49d359', 'Detail audience piece director town teacher audience draw.', '2cec7157-3aef-4660-8c64-c59e7387995d', DEFAULT, DEFAULT, NULL, DEFAULT, DEFAULT, now(), 'ab627d3a-daf5-44c6-9374-818c740c6a95'),
-    ('01da9802-22b6-4f0c-b92d-4d403fd1ee0a', 'Democrat car very number line six space.', 'daf5c3ef-f11f-4da7-8586-cc181cd8ccdf', DEFAULT, DEFAULT, NULL, DEFAULT, DEFAULT, now(), 'cbf54d95-d999-443e-946a-5d6c5ae1c019'),
-    ('8bcdd8ed-1a45-431d-8155-08b8c4e40f39', 'Anything yourself structure why.', 'a2fdfda1-847d-4e50-b3e3-9226dd559e1e', DEFAULT, DEFAULT, NULL, DEFAULT, DEFAULT, now(), '113df994-07c5-4329-8235-e93b582e9902'),
-    ('5a72029c-e166-4f59-b830-c7ebc309734b', 'Coach magazine degree husband around.', '3be98edc-ae6c-4dda-b9fb-ac26ebaf9321', DEFAULT, DEFAULT, NULL, DEFAULT, DEFAULT, now(), '5ab103eb-2ef6-4c26-8586-f234d0b36efb'),
+INSERT INTO comments (id, comment, user_id, original_comment, deleted, edited, created_at, post_id) VALUES
+    ('46115742-8f80-45f3-a656-0b6b3e274b38', 'Move each left establish.', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', NULL, DEFAULT, DEFAULT, now(), 'aa65a554-08bc-4306-bb90-fda79c1feffe'),
+    ('018591a6-3cae-4271-9f13-e694b7020466', 'Detail food shoulder argue start source husband.', 'c451aaf0-3253-4c33-9919-753e907eb284', NULL, DEFAULT, DEFAULT, now(), '4708e2ab-341e-4e51-bd67-d9dae8542576'),
+    ('675fb8f9-e8bc-477e-9a87-ae6f9eeef2ac', 'Civil quite others his other life edge network.', '60f95e26-64b8-4dde-98dc-083d5936e78c', NULL, DEFAULT, DEFAULT, now(), 'd5a372bc-ac7f-4dee-9698-eef36f0f8f3a'),
+    ('c34bc35f-087b-4ab0-90b8-3a3d1848301b', 'Quite boy those.', 'ee70ffed-2079-4763-a3d9-b370853a8f01', NULL, DEFAULT, DEFAULT, now(), '20891bb8-8a14-41cd-9ed1-6e12d04c7de0'),
+    ('0c392b48-f021-4396-a3e1-3145971b54ed', 'Out major born.', 'f2150dc7-36d4-41fb-a59c-cf47b81f6e43', NULL, DEFAULT, DEFAULT, now(), '5c76ee61-e06d-41bf-9b4b-e16c42b771e5'),
+    ('001f109d-f886-408a-b2ed-0346ccd80210', 'These story film around there water.', 'c88109f3-8960-4616-a434-05ff0b11d877', NULL, DEFAULT, DEFAULT, now(), '4f04db41-9307-4e34-b8ef-83c4899c2f4d'),
+    ('c4c85277-ff6c-4efa-8e41-cfd5ff49d359', 'Detail audience piece director town teacher audience draw.', '2cec7157-3aef-4660-8c64-c59e7387995d', NULL, DEFAULT, DEFAULT, now(), 'ab627d3a-daf5-44c6-9374-818c740c6a95'),
+    ('01da9802-22b6-4f0c-b92d-4d403fd1ee0a', 'Democrat car very number line six space.', 'daf5c3ef-f11f-4da7-8586-cc181cd8ccdf', NULL, DEFAULT, DEFAULT, now(), 'cbf54d95-d999-443e-946a-5d6c5ae1c019'),
+    ('8bcdd8ed-1a45-431d-8155-08b8c4e40f39', 'Anything yourself structure why.', 'a2fdfda1-847d-4e50-b3e3-9226dd559e1e', NULL, DEFAULT, DEFAULT, now(), '113df994-07c5-4329-8235-e93b582e9902'),
+    ('5a72029c-e166-4f59-b830-c7ebc309734b', 'Coach magazine degree husband around.', '3be98edc-ae6c-4dda-b9fb-ac26ebaf9321', NULL, DEFAULT, DEFAULT, now(), '5ab103eb-2ef6-4c26-8586-f234d0b36efb'),
 
-    ('b1c6c206-d1eb-4627-813f-585c80433a5c', 'This is wild.', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-05-27T10:49:34.243471', 'e3b0284c-3554-4a67-9580-43624a2db27c'),
-    ('8a444c16-3f1d-4013-b11f-c66697e9c0a3', 'Really makes you think.', '01138b38-a7eb-493b-be18-00bfad6164b1', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-14T04:49:34.243471', 'e3b0284c-3554-4a67-9580-43624a2db27c'),
-    ('8c34b3ef-643a-42d1-b858-e51ad37863d4', 'Same thing happened to me.', '01138b38-a7eb-493b-be18-00bfad6164b1', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-05-29T01:49:34.243471', '58f9942b-955c-4033-aa42-c71f5e40d546'),
-    ('03d7829a-a248-4a5f-afb2-b2c04ca12dd2', 'Totally agree with this.', '6b871c47-df2d-4bcc-b702-966bf0d158d8', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-17T07:49:34.243471', '58f9942b-955c-4033-aa42-c71f5e40d546'),
-    ('ee46f7b5-b655-4a28-b836-7edbe744d549', 'Couldn''t have said it better.', '6b871c47-df2d-4bcc-b702-966bf0d158d8', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-06T14:49:34.243471', '3e9f0775-56b1-4475-a61a-6d732c31ed0e'),
-    ('726afc20-dc70-4360-8039-c449bd82becd', 'Really makes you think.', 'ee70ffed-2079-4763-a3d9-b370853a8f01', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-11T09:49:34.243471', '3e9f0775-56b1-4475-a61a-6d732c31ed0e'),
-    ('a8f66fdc-f02d-4046-b268-fd6414c50271', 'Couldn''t have said it better.', 'daf5c3ef-f11f-4da7-8586-cc181cd8ccdf', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-19T21:49:34.243471', '16628681-20bc-4587-bbdb-448c55610afd'),
-    ('7b57cef0-806d-418e-80ec-bc5ca4104297', 'Yep, happens all the time.', 'ee70ffed-2079-4763-a3d9-b370853a8f01', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-05T17:49:34.243471', '16628681-20bc-4587-bbdb-448c55610afd'),
-    ('9d7c66ac-1a96-4b12-a099-864d128b02b4', 'What a take!', 'fabf2432-5b0c-4e3a-a1bc-fd1b18373823', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-23T15:49:34.243471', '2d15ef87-e24d-4430-ac9f-3bdc218663b5'),
-    ('6f6ec661-1eb2-489f-9daa-0a427ab242ac', 'Same thing happened to me.', 'ee70ffed-2079-4763-a3d9-b370853a8f01', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-20T12:49:34.243471', '2d15ef87-e24d-4430-ac9f-3bdc218663b5'),
-    ('4317d787-bca0-4c3d-8241-163f9ee605bf', 'More people need to see this.', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-20T08:49:34.243471', '9138df1e-d92e-4e37-ba80-6eeac5d9e39a'),
-    ('c73acbc6-64fd-4fec-9e62-93a7ce3fdf92', 'Yep, happens all the time.', 'c3310d9b-6f55-4e9b-8781-8c2f2fccd898', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-04T02:49:34.243471', '9138df1e-d92e-4e37-ba80-6eeac5d9e39a'),
-    ('5dc7b806-e157-422b-82ce-760b486eaf2d', 'Classic example of this issue.', '01138b38-a7eb-493b-be18-00bfad6164b1', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-23T23:49:34.243471', '433d4c3b-8661-46e7-a774-c570ef67f218'),
-    ('9fcd6c37-71a3-41ef-a08f-777ed9ab9b6a', 'Totally agree with this.', 'c3310d9b-6f55-4e9b-8781-8c2f2fccd898', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-05T17:49:34.243471', '433d4c3b-8661-46e7-a774-c570ef67f218'),
-    ('faead33a-5e61-4481-a29e-870260a75521', 'This is wild.', '01138b38-a7eb-493b-be18-00bfad6164b1', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-08T00:49:34.243471', '8fe9dffe-ac9a-48c9-ab5d-278ff1680b6a'),
-    ('3fe1045e-2c0b-499b-9de0-161320490e62', 'Couldn''t have said it better.', '6b871c47-df2d-4bcc-b702-966bf0d158d8', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-13T08:49:34.243471', '8fe9dffe-ac9a-48c9-ab5d-278ff1680b6a'),
-    ('46a38e50-70a1-4f1a-a139-93dc9abd1591', 'More people need to see this.', '6b871c47-df2d-4bcc-b702-966bf0d158d8', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-05-25T21:49:34.243471', 'b0834c79-fd94-4154-8371-199c31a3451a'),
-    ('52cd735b-6fb9-4179-ad70-54e01f103456', 'More people need to see this.', 'f2150dc7-36d4-41fb-a59c-cf47b81f6e43', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-07T16:49:34.243471', 'b0834c79-fd94-4154-8371-199c31a3451a'),
-    ('ad473418-f551-4146-96c6-559e43f52030', 'You''re spot on.', '6b871c47-df2d-4bcc-b702-966bf0d158d8', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-05-25T06:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d'),
-    ('aed70542-06b1-43ca-bdd2-0edaaf2cd70d', 'Totally agree with this.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-05-24T23:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d'),
-    ('1c8ee943-3159-4e9b-b0b5-8aa1d71d03e9', 'What a take!', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-07T07:49:34.243471', 'a49d1bfc-e493-4146-a54b-b294ade64737'),
-    ('f50d86f4-9e06-4c78-9a2f-4aa7b2647dd6', 'Couldn''t have said it better.', 'ee70ffed-2079-4763-a3d9-b370853a8f01', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-13T22:49:34.243471', 'a49d1bfc-e493-4146-a54b-b294ade64737'),
-    ('d92fdf34-30e7-475d-b88a-10b7f25e70cf', 'This is wild.', 'ee70ffed-2079-4763-a3d9-b370853a8f01', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-24T01:49:34.243471', '1d6a19b4-7852-48ba-a6cd-aef215afdb22'),
-    ('4131e819-9c10-461d-82ec-b09ef55114ec', 'Yep, happens all the time.', 'fabf2432-5b0c-4e3a-a1bc-fd1b18373823', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-21T16:49:34.243471', '1d6a19b4-7852-48ba-a6cd-aef215afdb22'),
-    ('f9e312e4-52ff-4a9e-9658-6ed6800c222c', 'Really makes you think.', '01138b38-a7eb-493b-be18-00bfad6164b1', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-05-26T03:49:34.243471', 'cc1ccd14-899a-4464-a587-1a69219e9616'),
-    ('224ff14c-5acb-4b43-a0fe-14a508d9e147', 'This is wild.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-19T22:49:34.243471', 'cc1ccd14-899a-4464-a587-1a69219e9616'),
-    ('48ecc281-4c2d-4ed1-a02b-c6fd92abb7bf', 'Really makes you think.', '01138b38-a7eb-493b-be18-00bfad6164b1', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-16T07:49:34.243471', '835236a3-7979-4f28-a71a-c684c1367f19'),
-    ('9653a0c8-2252-4bd5-9573-083d6358865e', 'More people need to see this.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-05-26T08:49:34.243471', '835236a3-7979-4f28-a71a-c684c1367f19'),
-    ('556abdcf-e1b1-46a9-88f5-95db6e5176f9', 'Classic example of this issue.', '01138b38-a7eb-493b-be18-00bfad6164b1', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-01T23:49:34.243471', '6abf1e3f-4f62-4e5d-9999-7e7b08c677c5'),
-    ('0c628618-ad4b-4ad6-a128-d3cf9232f6c5', 'Classic example of this issue.', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-23T14:49:34.243471', '6abf1e3f-4f62-4e5d-9999-7e7b08c677c5'),
-    ('f54c538e-7241-4525-89c0-03c33dc1b443', 'Really makes you think.', 'ee70ffed-2079-4763-a3d9-b370853a8f01', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-23T06:49:34.243471', '07d92032-d5e5-4cff-8ebf-75e3fb6cf694'),
-    ('7031a47f-f8dc-4918-a633-51b2f4694fa7', 'This is wild.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-05-31T05:49:34.243471', '07d92032-d5e5-4cff-8ebf-75e3fb6cf694'),
-    ('92c3aa22-836b-4e39-96c9-d1be4fd711ed', 'What a take!', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-10T16:49:34.243471', '53ff7ac6-b4f3-45a6-a3f6-a8a6d3e18f83'),
-    ('3da9cc74-a795-4886-a8c5-870f39f45bee', 'Classic example of this issue.', 'fabf2432-5b0c-4e3a-a1bc-fd1b18373823', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-13T12:49:34.243471', '53ff7ac6-b4f3-45a6-a3f6-a8a6d3e18f83'),
-    ('56c7db4f-63f7-4ba1-815d-7f472123bbcc', 'Really makes you think.', 'f2150dc7-36d4-41fb-a59c-cf47b81f6e43', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-06T05:49:34.243471', '4445c4fd-e878-410e-9e40-4c39aee17b45'),
-    ('b7c73e84-39d2-4cb7-846f-04b92b97e22a', 'What a take!', 'fabf2432-5b0c-4e3a-a1bc-fd1b18373823', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-07T17:49:34.243471', '4445c4fd-e878-410e-9e40-4c39aee17b45'),
-    ('950ce27c-a67b-44e6-bfef-693c9a127a0f', 'More people need to see this.', 'ee70ffed-2079-4763-a3d9-b370853a8f01', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-09T05:49:34.243471', '0280e58c-be30-4143-887f-b32365b224da'),
-    ('86307610-f411-469d-ba3c-6d701e540929', 'Couldn''t have said it better.', '01138b38-a7eb-493b-be18-00bfad6164b1', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-09T12:49:34.243471', '0280e58c-be30-4143-887f-b32365b224da'),
-    ('eed0b3a5-118b-4539-b960-79e3eb2a0c36', 'You''re spot on.', 'c3310d9b-6f55-4e9b-8781-8c2f2fccd898', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-06T18:49:34.243471', '51e6aef0-ea4d-425c-9bd4-85d74ad9fc39'),
-    ('adb1fb8a-4631-4503-8371-8f3af121b7bf', 'This is wild.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-12T05:49:34.243471', '51e6aef0-ea4d-425c-9bd4-85d74ad9fc39'),
-    ('f79ffb59-fccb-478c-800d-602b165a4af1', 'Same thing happened to me.', 'daf5c3ef-f11f-4da7-8586-cc181cd8ccdf', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-10T00:49:34.243471', 'f0320206-fe7e-4cff-bfea-8d2acf606a16'),
-    ('4629286e-f9fc-4f0a-afd7-8fc65efe0795', 'More people need to see this.', 'f2150dc7-36d4-41fb-a59c-cf47b81f6e43', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-13T16:49:34.243471', 'f0320206-fe7e-4cff-bfea-8d2acf606a16'),
-    ('5cbe56c1-2558-489c-9f30-2a3709942df5', 'Classic example of this issue.', 'fabf2432-5b0c-4e3a-a1bc-fd1b18373823', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-23T20:49:34.243471', 'dad2f6e5-234e-41f8-8598-4e1a1e5c7b17'),
-    ('e2f7a7ca-249d-4c39-86f5-041f260bcc43', 'You''re spot on.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-05T21:49:34.243471', 'dad2f6e5-234e-41f8-8598-4e1a1e5c7b17'),
-    ('6caefbe5-1b38-4741-9d41-1a3db6a60b46', 'More people need to see this.', 'c3310d9b-6f55-4e9b-8781-8c2f2fccd898', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-19T11:49:34.243471', '3cdc0aa9-63ea-4fa7-9c65-6cd1cbe86e4d'),
-    ('1ebaed02-7a70-415e-816a-77579ef4ba40', 'You''re spot on.', 'ee70ffed-2079-4763-a3d9-b370853a8f01', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-18T05:49:34.243471', '3cdc0aa9-63ea-4fa7-9c65-6cd1cbe86e4d'),
-    ('3261d1ca-6a22-44e8-9385-c5d8bf30c7f1', 'Yep, happens all the time.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-13T04:49:34.243471', '44cd8060-4c5a-471b-b70d-08c84415f358'),
-    ('2388e490-9687-4328-9472-8b2ddfe5def5', 'Really makes you think.', '01138b38-a7eb-493b-be18-00bfad6164b1', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-10T01:49:34.243471', '44cd8060-4c5a-471b-b70d-08c84415f358'),
-    ('8d32d094-194e-43f7-97d9-1cb5dd91e87d', 'More people need to see this.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-09T17:49:34.243471', '70605668-df14-4dc5-bb81-5fa0685aa76b'),
-    ('1bf2cfde-136e-48ea-b330-6f01028a1382', 'Really makes you think.', '6b871c47-df2d-4bcc-b702-966bf0d158d8', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-10T06:49:34.243471', '70605668-df14-4dc5-bb81-5fa0685aa76b'),
-    ('cee960cb-9556-4b73-a204-493fcd38a244', 'Really makes you think.', 'f2150dc7-36d4-41fb-a59c-cf47b81f6e43', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-12T13:49:34.243471', '08e71783-00a6-4df9-aaa4-d119663b1bee'),
-    ('07a0ad56-aa12-466b-b2b3-6b38ca51a1a9', 'You''re spot on.', 'f2150dc7-36d4-41fb-a59c-cf47b81f6e43', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-21T03:49:34.243471', '08e71783-00a6-4df9-aaa4-d119663b1bee'),
-    ('87ce6777-dc0c-4977-8141-bfc530a19128', 'This is wild.', 'ee70ffed-2079-4763-a3d9-b370853a8f01', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-06T18:49:34.243471', 'dafdec9f-4ca3-458f-a24a-8dc51bcf0dbb'),
-    ('917ba5c5-269e-4df3-9a5f-911766a97bd7', 'Yep, happens all the time.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-03T17:49:34.243471', 'dafdec9f-4ca3-458f-a24a-8dc51bcf0dbb'),
-    ('897fc293-5af1-4774-9468-d05de08ceb07', 'This is wild.', 'daf5c3ef-f11f-4da7-8586-cc181cd8ccdf', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-09T16:49:34.243471', 'b1afe33b-d4aa-48f3-8b37-4d81e96080f1'),
-    ('67defc8e-1af8-40ac-9727-859e90fa2316', 'Totally agree with this.', 'f2150dc7-36d4-41fb-a59c-cf47b81f6e43', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-06T20:49:34.243471', 'b1afe33b-d4aa-48f3-8b37-4d81e96080f1'),
-    ('d5fcfd19-e4cf-4bd0-8e3e-2383745762dd', 'Really makes you think.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-18T22:49:34.243471', 'ab2f7edc-4aa0-4880-8e7a-74ee2cb521a0'),
-    ('558cb4c6-268a-4207-9101-6ea29f6623c9', 'Classic example of this issue.', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-05-25T17:49:34.243471', 'ab2f7edc-4aa0-4880-8e7a-74ee2cb521a0'),
-    ('2ca85f1d-6b6e-477d-8275-803bb31ee94f', 'Couldn''t have said it better.', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-05-29T13:49:34.243471', 'f3019ac6-3b56-45d9-9e1a-fe77489ba941'),
-    ('5989a235-6bb2-43d7-af2d-cabf441c233f', 'This is wild.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', DEFAULT, DEFAULT, NULL, FALSE, FALSE, '2025-06-06T09:49:34.243471', 'f3019ac6-3b56-45d9-9e1a-fe77489ba941');
+    ('b1c6c206-d1eb-4627-813f-585c80433a5c', 'This is wild.', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', NULL, FALSE, FALSE, '2025-05-27T10:49:34.243471', 'e3b0284c-3554-4a67-9580-43624a2db27c'),
+    ('8a444c16-3f1d-4013-b11f-c66697e9c0a3', 'Really makes you think.', '01138b38-a7eb-493b-be18-00bfad6164b1', NULL, FALSE, FALSE, '2025-06-14T04:49:34.243471', 'e3b0284c-3554-4a67-9580-43624a2db27c'),
+    ('8c34b3ef-643a-42d1-b858-e51ad37863d4', 'Same thing happened to me.', '01138b38-a7eb-493b-be18-00bfad6164b1', NULL, FALSE, FALSE, '2025-05-29T01:49:34.243471', '58f9942b-955c-4033-aa42-c71f5e40d546'),
+    ('03d7829a-a248-4a5f-afb2-b2c04ca12dd2', 'Totally agree with this.', '6b871c47-df2d-4bcc-b702-966bf0d158d8', NULL, FALSE, FALSE, '2025-06-17T07:49:34.243471', '58f9942b-955c-4033-aa42-c71f5e40d546'),
+    ('ee46f7b5-b655-4a28-b836-7edbe744d549', 'Couldn''t have said it better.', '6b871c47-df2d-4bcc-b702-966bf0d158d8', NULL, FALSE, FALSE, '2025-06-06T14:49:34.243471', '3e9f0775-56b1-4475-a61a-6d732c31ed0e'),
+    ('726afc20-dc70-4360-8039-c449bd82becd', 'Really makes you think.', 'ee70ffed-2079-4763-a3d9-b370853a8f01', NULL, FALSE, FALSE, '2025-06-11T09:49:34.243471', '3e9f0775-56b1-4475-a61a-6d732c31ed0e'),
+    ('a8f66fdc-f02d-4046-b268-fd6414c50271', 'Couldn''t have said it better.', 'daf5c3ef-f11f-4da7-8586-cc181cd8ccdf', NULL, FALSE, FALSE, '2025-06-19T21:49:34.243471', '16628681-20bc-4587-bbdb-448c55610afd'),
+    ('7b57cef0-806d-418e-80ec-bc5ca4104297', 'Yep, happens all the time.', 'ee70ffed-2079-4763-a3d9-b370853a8f01', NULL, FALSE, FALSE, '2025-06-05T17:49:34.243471', '16628681-20bc-4587-bbdb-448c55610afd'),
+    ('9d7c66ac-1a96-4b12-a099-864d128b02b4', 'What a take!', 'fabf2432-5b0c-4e3a-a1bc-fd1b18373823', NULL, FALSE, FALSE, '2025-06-23T15:49:34.243471', '2d15ef87-e24d-4430-ac9f-3bdc218663b5'),
+    ('6f6ec661-1eb2-489f-9daa-0a427ab242ac', 'Same thing happened to me.', 'ee70ffed-2079-4763-a3d9-b370853a8f01', NULL, FALSE, FALSE, '2025-06-20T12:49:34.243471', '2d15ef87-e24d-4430-ac9f-3bdc218663b5'),
+    ('4317d787-bca0-4c3d-8241-163f9ee605bf', 'More people need to see this.', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', NULL, FALSE, FALSE, '2025-06-20T08:49:34.243471', '9138df1e-d92e-4e37-ba80-6eeac5d9e39a'),
+    ('c73acbc6-64fd-4fec-9e62-93a7ce3fdf92', 'Yep, happens all the time.', 'c3310d9b-6f55-4e9b-8781-8c2f2fccd898', NULL, FALSE, FALSE, '2025-06-04T02:49:34.243471', '9138df1e-d92e-4e37-ba80-6eeac5d9e39a'),
+    ('5dc7b806-e157-422b-82ce-760b486eaf2d', 'Classic example of this issue.', '01138b38-a7eb-493b-be18-00bfad6164b1', NULL, FALSE, FALSE, '2025-06-23T23:49:34.243471', '433d4c3b-8661-46e7-a774-c570ef67f218'),
+    ('9fcd6c37-71a3-41ef-a08f-777ed9ab9b6a', 'Totally agree with this.', 'c3310d9b-6f55-4e9b-8781-8c2f2fccd898', NULL, FALSE, FALSE, '2025-06-05T17:49:34.243471', '433d4c3b-8661-46e7-a774-c570ef67f218'),
+    ('faead33a-5e61-4481-a29e-870260a75521', 'This is wild.', '01138b38-a7eb-493b-be18-00bfad6164b1', NULL, FALSE, FALSE, '2025-06-08T00:49:34.243471', '8fe9dffe-ac9a-48c9-ab5d-278ff1680b6a'),
+    ('3fe1045e-2c0b-499b-9de0-161320490e62', 'Couldn''t have said it better.', '6b871c47-df2d-4bcc-b702-966bf0d158d8', NULL, FALSE, FALSE, '2025-06-13T08:49:34.243471', '8fe9dffe-ac9a-48c9-ab5d-278ff1680b6a'),
+    ('46a38e50-70a1-4f1a-a139-93dc9abd1591', 'More people need to see this.', '6b871c47-df2d-4bcc-b702-966bf0d158d8', NULL, FALSE, FALSE, '2025-05-25T21:49:34.243471', 'b0834c79-fd94-4154-8371-199c31a3451a'),
+    ('52cd735b-6fb9-4179-ad70-54e01f103456', 'More people need to see this.', 'f2150dc7-36d4-41fb-a59c-cf47b81f6e43', NULL, FALSE, FALSE, '2025-06-07T16:49:34.243471', 'b0834c79-fd94-4154-8371-199c31a3451a'),
+    ('ad473418-f551-4146-96c6-559e43f52030', 'You''re spot on.', '6b871c47-df2d-4bcc-b702-966bf0d158d8', NULL, FALSE, FALSE, '2025-05-25T06:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d'),
+    ('aed70542-06b1-43ca-bdd2-0edaaf2cd70d', 'Totally agree with this.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', NULL, FALSE, FALSE, '2025-05-24T23:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d'),
+    ('1c8ee943-3159-4e9b-b0b5-8aa1d71d03e9', 'What a take!', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', NULL, FALSE, FALSE, '2025-06-07T07:49:34.243471', 'a49d1bfc-e493-4146-a54b-b294ade64737'),
+    ('f50d86f4-9e06-4c78-9a2f-4aa7b2647dd6', 'Couldn''t have said it better.', 'ee70ffed-2079-4763-a3d9-b370853a8f01', NULL, FALSE, FALSE, '2025-06-13T22:49:34.243471', 'a49d1bfc-e493-4146-a54b-b294ade64737'),
+    ('d92fdf34-30e7-475d-b88a-10b7f25e70cf', 'This is wild.', 'ee70ffed-2079-4763-a3d9-b370853a8f01', NULL, FALSE, FALSE, '2025-06-24T01:49:34.243471', '1d6a19b4-7852-48ba-a6cd-aef215afdb22'),
+    ('4131e819-9c10-461d-82ec-b09ef55114ec', 'Yep, happens all the time.', 'fabf2432-5b0c-4e3a-a1bc-fd1b18373823', NULL, FALSE, FALSE, '2025-06-21T16:49:34.243471', '1d6a19b4-7852-48ba-a6cd-aef215afdb22'),
+    ('f9e312e4-52ff-4a9e-9658-6ed6800c222c', 'Really makes you think.', '01138b38-a7eb-493b-be18-00bfad6164b1', NULL, FALSE, FALSE, '2025-05-26T03:49:34.243471', 'cc1ccd14-899a-4464-a587-1a69219e9616'),
+    ('224ff14c-5acb-4b43-a0fe-14a508d9e147', 'This is wild.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', NULL, FALSE, FALSE, '2025-06-19T22:49:34.243471', 'cc1ccd14-899a-4464-a587-1a69219e9616'),
+    ('48ecc281-4c2d-4ed1-a02b-c6fd92abb7bf', 'Really makes you think.', '01138b38-a7eb-493b-be18-00bfad6164b1', NULL, FALSE, FALSE, '2025-06-16T07:49:34.243471', '835236a3-7979-4f28-a71a-c684c1367f19'),
+    ('9653a0c8-2252-4bd5-9573-083d6358865e', 'More people need to see this.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', NULL, FALSE, FALSE, '2025-05-26T08:49:34.243471', '835236a3-7979-4f28-a71a-c684c1367f19'),
+    ('556abdcf-e1b1-46a9-88f5-95db6e5176f9', 'Classic example of this issue.', '01138b38-a7eb-493b-be18-00bfad6164b1', NULL, FALSE, FALSE, '2025-06-01T23:49:34.243471', '6abf1e3f-4f62-4e5d-9999-7e7b08c677c5'),
+    ('0c628618-ad4b-4ad6-a128-d3cf9232f6c5', 'Classic example of this issue.', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', NULL, FALSE, FALSE, '2025-06-23T14:49:34.243471', '6abf1e3f-4f62-4e5d-9999-7e7b08c677c5'),
+    ('f54c538e-7241-4525-89c0-03c33dc1b443', 'Really makes you think.', 'ee70ffed-2079-4763-a3d9-b370853a8f01', NULL, FALSE, FALSE, '2025-06-23T06:49:34.243471', '07d92032-d5e5-4cff-8ebf-75e3fb6cf694'),
+    ('7031a47f-f8dc-4918-a633-51b2f4694fa7', 'This is wild.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', NULL, FALSE, FALSE, '2025-05-31T05:49:34.243471', '07d92032-d5e5-4cff-8ebf-75e3fb6cf694'),
+    ('92c3aa22-836b-4e39-96c9-d1be4fd711ed', 'What a take!', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', NULL, FALSE, FALSE, '2025-06-10T16:49:34.243471', '53ff7ac6-b4f3-45a6-a3f6-a8a6d3e18f83'),
+    ('3da9cc74-a795-4886-a8c5-870f39f45bee', 'Classic example of this issue.', 'fabf2432-5b0c-4e3a-a1bc-fd1b18373823', NULL, FALSE, FALSE, '2025-06-13T12:49:34.243471', '53ff7ac6-b4f3-45a6-a3f6-a8a6d3e18f83'),
+    ('56c7db4f-63f7-4ba1-815d-7f472123bbcc', 'Really makes you think.', 'f2150dc7-36d4-41fb-a59c-cf47b81f6e43', NULL, FALSE, FALSE, '2025-06-06T05:49:34.243471', '4445c4fd-e878-410e-9e40-4c39aee17b45'),
+    ('b7c73e84-39d2-4cb7-846f-04b92b97e22a', 'What a take!', 'fabf2432-5b0c-4e3a-a1bc-fd1b18373823', NULL, FALSE, FALSE, '2025-06-07T17:49:34.243471', '4445c4fd-e878-410e-9e40-4c39aee17b45'),
+    ('950ce27c-a67b-44e6-bfef-693c9a127a0f', 'More people need to see this.', 'ee70ffed-2079-4763-a3d9-b370853a8f01', NULL, FALSE, FALSE, '2025-06-09T05:49:34.243471', '0280e58c-be30-4143-887f-b32365b224da'),
+    ('86307610-f411-469d-ba3c-6d701e540929', 'Couldn''t have said it better.', '01138b38-a7eb-493b-be18-00bfad6164b1', NULL, FALSE, FALSE, '2025-06-09T12:49:34.243471', '0280e58c-be30-4143-887f-b32365b224da'),
+    ('eed0b3a5-118b-4539-b960-79e3eb2a0c36', 'You''re spot on.', 'c3310d9b-6f55-4e9b-8781-8c2f2fccd898', NULL, FALSE, FALSE, '2025-06-06T18:49:34.243471', '51e6aef0-ea4d-425c-9bd4-85d74ad9fc39'),
+    ('adb1fb8a-4631-4503-8371-8f3af121b7bf', 'This is wild.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', NULL, FALSE, FALSE, '2025-06-12T05:49:34.243471', '51e6aef0-ea4d-425c-9bd4-85d74ad9fc39'),
+    ('f79ffb59-fccb-478c-800d-602b165a4af1', 'Same thing happened to me.', 'daf5c3ef-f11f-4da7-8586-cc181cd8ccdf', NULL, FALSE, FALSE, '2025-06-10T00:49:34.243471', 'f0320206-fe7e-4cff-bfea-8d2acf606a16'),
+    ('4629286e-f9fc-4f0a-afd7-8fc65efe0795', 'More people need to see this.', 'f2150dc7-36d4-41fb-a59c-cf47b81f6e43', NULL, FALSE, FALSE, '2025-06-13T16:49:34.243471', 'f0320206-fe7e-4cff-bfea-8d2acf606a16'),
+    ('5cbe56c1-2558-489c-9f30-2a3709942df5', 'Classic example of this issue.', 'fabf2432-5b0c-4e3a-a1bc-fd1b18373823', NULL, FALSE, FALSE, '2025-06-23T20:49:34.243471', 'dad2f6e5-234e-41f8-8598-4e1a1e5c7b17'),
+    ('e2f7a7ca-249d-4c39-86f5-041f260bcc43', 'You''re spot on.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', NULL, FALSE, FALSE, '2025-06-05T21:49:34.243471', 'dad2f6e5-234e-41f8-8598-4e1a1e5c7b17'),
+    ('6caefbe5-1b38-4741-9d41-1a3db6a60b46', 'More people need to see this.', 'c3310d9b-6f55-4e9b-8781-8c2f2fccd898', NULL, FALSE, FALSE, '2025-06-19T11:49:34.243471', '3cdc0aa9-63ea-4fa7-9c65-6cd1cbe86e4d'),
+    ('1ebaed02-7a70-415e-816a-77579ef4ba40', 'You''re spot on.', 'ee70ffed-2079-4763-a3d9-b370853a8f01', NULL, FALSE, FALSE, '2025-06-18T05:49:34.243471', '3cdc0aa9-63ea-4fa7-9c65-6cd1cbe86e4d'),
+    ('3261d1ca-6a22-44e8-9385-c5d8bf30c7f1', 'Yep, happens all the time.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', NULL, FALSE, FALSE, '2025-06-13T04:49:34.243471', '44cd8060-4c5a-471b-b70d-08c84415f358'),
+    ('2388e490-9687-4328-9472-8b2ddfe5def5', 'Really makes you think.', '01138b38-a7eb-493b-be18-00bfad6164b1', NULL, FALSE, FALSE, '2025-06-10T01:49:34.243471', '44cd8060-4c5a-471b-b70d-08c84415f358'),
+    ('8d32d094-194e-43f7-97d9-1cb5dd91e87d', 'More people need to see this.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', NULL, FALSE, FALSE, '2025-06-09T17:49:34.243471', '70605668-df14-4dc5-bb81-5fa0685aa76b'),
+    ('1bf2cfde-136e-48ea-b330-6f01028a1382', 'Really makes you think.', '6b871c47-df2d-4bcc-b702-966bf0d158d8', NULL, FALSE, FALSE, '2025-06-10T06:49:34.243471', '70605668-df14-4dc5-bb81-5fa0685aa76b'),
+    ('cee960cb-9556-4b73-a204-493fcd38a244', 'Really makes you think.', 'f2150dc7-36d4-41fb-a59c-cf47b81f6e43', NULL, FALSE, FALSE, '2025-06-12T13:49:34.243471', '08e71783-00a6-4df9-aaa4-d119663b1bee'),
+    ('07a0ad56-aa12-466b-b2b3-6b38ca51a1a9', 'You''re spot on.', 'f2150dc7-36d4-41fb-a59c-cf47b81f6e43', NULL, FALSE, FALSE, '2025-06-21T03:49:34.243471', '08e71783-00a6-4df9-aaa4-d119663b1bee'),
+    ('87ce6777-dc0c-4977-8141-bfc530a19128', 'This is wild.', 'ee70ffed-2079-4763-a3d9-b370853a8f01', NULL, FALSE, FALSE, '2025-06-06T18:49:34.243471', 'dafdec9f-4ca3-458f-a24a-8dc51bcf0dbb'),
+    ('917ba5c5-269e-4df3-9a5f-911766a97bd7', 'Yep, happens all the time.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', NULL, FALSE, FALSE, '2025-06-03T17:49:34.243471', 'dafdec9f-4ca3-458f-a24a-8dc51bcf0dbb'),
+    ('897fc293-5af1-4774-9468-d05de08ceb07', 'This is wild.', 'daf5c3ef-f11f-4da7-8586-cc181cd8ccdf', NULL, FALSE, FALSE, '2025-06-09T16:49:34.243471', 'b1afe33b-d4aa-48f3-8b37-4d81e96080f1'),
+    ('67defc8e-1af8-40ac-9727-859e90fa2316', 'Totally agree with this.', 'f2150dc7-36d4-41fb-a59c-cf47b81f6e43', NULL, FALSE, FALSE, '2025-06-06T20:49:34.243471', 'b1afe33b-d4aa-48f3-8b37-4d81e96080f1'),
+    ('d5fcfd19-e4cf-4bd0-8e3e-2383745762dd', 'Really makes you think.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', NULL, FALSE, FALSE, '2025-06-18T22:49:34.243471', 'ab2f7edc-4aa0-4880-8e7a-74ee2cb521a0'),
+    ('558cb4c6-268a-4207-9101-6ea29f6623c9', 'Classic example of this issue.', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', NULL, FALSE, FALSE, '2025-05-25T17:49:34.243471', 'ab2f7edc-4aa0-4880-8e7a-74ee2cb521a0'),
+    ('2ca85f1d-6b6e-477d-8275-803bb31ee94f', 'Couldn''t have said it better.', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', NULL, FALSE, FALSE, '2025-05-29T13:49:34.243471', 'f3019ac6-3b56-45d9-9e1a-fe77489ba941'),
+    ('5989a235-6bb2-43d7-af2d-cabf441c233f', 'This is wild.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', NULL, FALSE, FALSE, '2025-06-06T09:49:34.243471', 'f3019ac6-3b56-45d9-9e1a-fe77489ba941');
 
 INSERT INTO post_interactions (post_id, user_id, direction, created_at) VALUES
     ('4708e2ab-341e-4e51-bd67-d9dae8542576', '24cbd4c4-92c4-4b72-a036-d6ed31fe5c0b', 'up', now()),
@@ -642,40 +642,6 @@ INSERT INTO comment_interactions (comment_id, user_id, direction, created_at) VA
     ('5989a235-6bb2-43d7-af2d-cabf441c233f', 'fabf2432-5b0c-4e3a-a1bc-fd1b18373823', 'up', '2025-05-29T12:49:34.243471'),
     ('5989a235-6bb2-43d7-af2d-cabf441c233f', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', 'up', '2025-05-29T09:49:34.243471'),
     ('5989a235-6bb2-43d7-af2d-cabf441c233f', 'daf5c3ef-f11f-4da7-8586-cc181cd8ccdf', 'down', '2025-06-13T21:49:34.243471');
-
-UPDATE posts
-    SET up_votes = COALESCE(ups.count, 0),
-        down_votes = COALESCE(downs.count, 0)
-    FROM (
-        SELECT post_id, COUNT(*) AS count
-        FROM post_interactions
-        WHERE direction = 'up'
-        GROUP BY post_id
-    ) AS ups
-    FULL OUTER JOIN (
-        SELECT post_id, COUNT(*) AS count
-        FROM post_interactions
-        WHERE direction = 'down'
-        GROUP BY post_id
-    ) AS downs ON ups.post_id = downs.post_id
-    WHERE ups.post_id;
-
-UPDATE comments
-    SET up_votes = COALESCE(ups.count, 0),
-        down_votes = COALESCE(downs.count, 0)
-    FROM (
-        SELECT comment_id, COUNT(*) AS count
-        FROM comment_interactions
-        WHERE direction = 'up'
-        GROUP BY comment_id
-    ) AS ups
-    FULL OUTER JOIN (
-        SELECT comment_id, COUNT(*) AS count
-        FROM comment_interactions
-        WHERE direction = 'down'
-        GROUP BY comment_id
-    ) AS downs ON ups.comment_id = downs.comment_id
-    WHERE comments.id = ups.comment_id;
 
 -- noinspection SqlWithoutWhere
 UPDATE post_images

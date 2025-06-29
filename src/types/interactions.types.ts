@@ -7,6 +7,10 @@ export type CommentInteractionDb =
 	Database['public']['Tables']['comment_interactions']['Row'];
 export type PostInteractionDb =
 	Database['public']['Tables']['post_interactions']['Row'];
+export type CommentInteractionCountDb =
+	Database['public']['Tables']['comment_interaction_counts']['Row'];
+export type PostInteractionCountDb =
+	Database['public']['Tables']['post_interaction_counts']['Row'];
 
 export class CommentInteractionDto {
 	direction!: InteractionType;

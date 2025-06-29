@@ -9,6 +9,32 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      comment_interaction_counts: {
+        Row: {
+          comment_id: string
+          down_votes: number
+          up_votes: number
+        }
+        Insert: {
+          comment_id: string
+          down_votes?: number
+          up_votes?: number
+        }
+        Update: {
+          comment_id?: string
+          down_votes?: number
+          up_votes?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comment_interaction_counts_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: true
+            referencedRelation: "comments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       comment_interactions: {
         Row: {
           comment_id: string
@@ -64,36 +90,30 @@ export type Database = {
           comment: string
           created_at: string
           deleted: boolean | null
-          down_votes: number | null
           edited: boolean | null
           id: string
           original_comment: string | null
           post_id: string
-          up_votes: number | null
           user_id: string
         }
         Insert: {
           comment: string
           created_at?: string
           deleted?: boolean | null
-          down_votes?: number | null
           edited?: boolean | null
           id?: string
           original_comment?: string | null
           post_id: string
-          up_votes?: number | null
           user_id: string
         }
         Update: {
           comment?: string
           created_at?: string
           deleted?: boolean | null
-          down_votes?: number | null
           edited?: boolean | null
           id?: string
           original_comment?: string | null
           post_id?: string
-          up_votes?: number | null
           user_id?: string
         }
         Relationships: [
@@ -160,6 +180,35 @@ export type Database = {
           },
         ]
       }
+      post_interaction_counts: {
+        Row: {
+          comment_count: number
+          down_votes: number
+          post_id: string
+          up_votes: number
+        }
+        Insert: {
+          comment_count?: number
+          down_votes?: number
+          post_id: string
+          up_votes?: number
+        }
+        Update: {
+          comment_count?: number
+          down_votes?: number
+          post_id?: string
+          up_votes?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_interaction_counts_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: true
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       post_interactions: {
         Row: {
           created_at: string
@@ -181,6 +230,20 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "fk_post_interactions_post"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_post_interactions_user"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "rantr_users"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "post_interactions_post_id_fkey"
             columns: ["post_id"]
             isOneToOne: false
@@ -201,33 +264,27 @@ export type Database = {
           content: string
           created_at: string
           deleted: boolean | null
-          down_votes: number | null
           id: string
           title: string
           type: Database["public"]["Enums"]["post_type_enum"]
-          up_votes: number | null
           user_id: string
         }
         Insert: {
           content: string
           created_at?: string
           deleted?: boolean | null
-          down_votes?: number | null
           id?: string
           title: string
           type?: Database["public"]["Enums"]["post_type_enum"]
-          up_votes?: number | null
           user_id: string
         }
         Update: {
           content?: string
           created_at?: string
           deleted?: boolean | null
-          down_votes?: number | null
           id?: string
           title?: string
           type?: Database["public"]["Enums"]["post_type_enum"]
-          up_votes?: number | null
           user_id?: string
         }
         Relationships: [

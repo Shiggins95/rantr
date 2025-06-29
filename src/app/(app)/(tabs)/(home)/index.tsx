@@ -9,18 +9,25 @@ import { Page } from '@/src/components/page';
 import { spacing } from '@/src/constants/spacing';
 import { useCallback, useMemo, useState } from 'react';
 import { Post } from '@/src/components/pages/tabs/home/feed/post';
+import { useCurrentUser } from '@/src/context/auth-context';
 
 export default function HomeScreen() {
 	const [currentTag, setCurrentTag] = useState('');
+	const currentUser = useCurrentUser();
 
 	const { data, fetchNextPage, hasNextPage, isFetching, resetAndRefetch } =
-		useSupabaseInfiniteQuery(['posts'], getPosts, undefined, {
-			getNextPageParam: (lastPage, allPages) => {
-				return lastPage?.length === POSTS_PER_PAGE
-					? allPages.length * POSTS_PER_PAGE
-					: undefined;
+		useSupabaseInfiniteQuery(
+			['posts'],
+			getPosts,
+			{ userId: currentUser?.id },
+			{
+				getNextPageParam: (lastPage, allPages) => {
+					return lastPage?.length === POSTS_PER_PAGE
+						? allPages.length * POSTS_PER_PAGE
+						: undefined;
+				},
 			},
-		});
+		);
 
 	const handleFetchNextPage = async () => {
 		if (!hasNextPage) return;
@@ -50,11 +57,11 @@ export default function HomeScreen() {
 				contentContainerStyle={styles.sectionListContent}
 				onEndReached={handleFetchNextPage}
 				onEndReachedThreshold={0.2}
-				initialNumToRender={5}
+				initialNumToRender={10}
 				refreshing={isFetching}
 				onRefresh={handleRefresh}
 				maxToRenderPerBatch={POSTS_PER_PAGE}
-				windowSize={5}
+				windowSize={10}
 			/>
 		);
 	}, [filteredData]);

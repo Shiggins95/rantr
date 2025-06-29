@@ -38,6 +38,7 @@ export const ImageCarousel = ({ images }: ImageCarouselProps) => {
 		<View f={1}>
 			<Carousel
 				enabled={images.length > 1}
+				loop={false}
 				ref={ref}
 				width={width - spacing.md * 2 - spacing.lg * 2}
 				height={width / 2}

@@ -7,8 +7,6 @@ CREATE TABLE posts (
     title TEXT NOT NULL,
     content TEXT NOT NULL, -- markdown-compatible
     user_id UUID NOT NULL REFERENCES rantr_users(id),
-    up_votes INTEGER DEFAULT 0,
-    down_votes INTEGER DEFAULT 0,
     deleted BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -25,8 +23,6 @@ CREATE TABLE comments (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     comment TEXT NOT NULL,
     user_id UUID NOT NULL REFERENCES rantr_users(id),
-    up_votes INTEGER DEFAULT 0,
-    down_votes INTEGER DEFAULT 0,
     original_comment TEXT,
     deleted BOOLEAN DEFAULT FALSE,
     edited BOOLEAN DEFAULT FALSE,
