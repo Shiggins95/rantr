@@ -40,6 +40,12 @@ const poppinsFace = {
 	},
 };
 
+const monospaceFace = {
+	400: {
+		normal: 'SyneMono-Regular',
+	},
+};
+
 export const headingFont = createFont({
 	family: 'Poppins-Regular',
 	size: defaultConfig.fonts.heading.size,
@@ -55,4 +61,14 @@ export const bodyFont = createFont({
 	lineHeight: defaultConfig.fonts.body.lineHeight,
 	weight: defaultConfig.fonts.body.weight,
 	letterSpacing: defaultConfig.fonts.body.letterSpacing,
+	face: poppinsFace,
+});
+
+export const monospaceFont = createFont({
+	family: 'SynMono-Regular',
+	size: defaultConfig.fonts.body.size,
+	lineHeight: defaultConfig.fonts.body.lineHeight,
+	weight: defaultConfig.fonts.body.weight,
+	letterSpacing: defaultConfig.fonts.body.letterSpacing,
+	face: monospaceFace,
 });

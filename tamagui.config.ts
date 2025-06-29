@@ -1,7 +1,7 @@
 import { createTamagui } from 'tamagui';
 import { defaultConfig } from '@tamagui/config/v4';
 import { darkColours, lightColours } from '@/themes/themes';
-import { bodyFont, headingFont } from '@/themes/fonts';
+import { bodyFont, headingFont, monospaceFont } from '@/themes/fonts';
 import { tokens } from '@/themes/tokens';
 
 const config = createTamagui({
@@ -10,6 +10,7 @@ const config = createTamagui({
 		heading: headingFont,
 		button: bodyFont,
 		body: bodyFont,
+		text: monospaceFont,
 	},
 	tokens,
 	themes: {

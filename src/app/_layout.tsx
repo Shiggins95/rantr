@@ -59,6 +59,8 @@ export default function RootLayout() {
 
 		'Poppins-Black': require('@assets/fonts/Poppins-Black.ttf'),
 		'Poppins-BlackItalic': require('@assets/fonts/Poppins-BlackItalic.ttf'),
+
+		'SyneMono-Regular': require('@assets/fonts/SyneMono-Regular.ttf'),
 	});
 
 	useEffect(() => {

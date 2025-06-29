@@ -165,7 +165,7 @@ export const Post = ({ post }: PostProps) => {
 						c={myInteraction === 'up' ? '$primary' : '$color.textMuted'}
 					/>
 				</Button>
-				<Body variant={BodyType.extraSmallMonospace} c={voteCountColour}>
+				<Body variant={BodyType.smallMonospace} c={voteCountColour}>
 					{formatVoteCount(totalVotes)}
 				</Body>
 				<Button variant="ghost" onPress={() => handleInteraction('down')}>
@@ -176,7 +176,7 @@ export const Post = ({ post }: PostProps) => {
 				</Button>
 				<Button variant="ghost" fd="row" p="$sm">
 					<MessageSquare size="$md" c="$color.textMuted" />
-					<Body c="$textMuted" variant={BodyType.extraSmallMonospace}>
+					<Body c="$textMuted" variant={BodyType.smallMonospace}>
 						{commentCount}
 					</Body>
 				</Button>
