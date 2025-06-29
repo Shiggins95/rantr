@@ -10,13 +10,6 @@ export default function OnboardingLayout() {
 					gestureEnabled: false,
 				}}
 			/>
-			<Stack.Screen
-				name="join-reason"
-				options={{
-					headerShown: false,
-					gestureEnabled: false,
-				}}
-			/>
 		</Stack>
 	);
 }

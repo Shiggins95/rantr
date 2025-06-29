@@ -9,19 +9,21 @@ import {
 import { SupabaseAuthClientOptions } from '@supabase/supabase-js/dist/module/lib/types';
 import { getConfigValue } from '@/src/utils/config';
 
+const authProps = {
+	auth: {
+		// doing this manual cast as we want to solidly type that the key is supposed to be our enum but the ts gods don't like that
+		// so casting the type to appease them
+		storage: authStorageMethods as SupabaseAuthClientOptions['storage'],
+		autoRefreshToken: true,
+		persistSession: true,
+		detectSessionInUrl: false,
+	},
+};
+
 export const supabase = createClient(
 	getConfigValue('supabaseUrl')!,
 	getConfigValue('supabaseAnonToken')!,
-	{
-		auth: {
-			// doing this manual cast as we want to solidly type that the key is supposed to be our enum but the ts gods don't like that
-			// so casting the type to appease them
-			storage: authStorageMethods as SupabaseAuthClientOptions['storage'],
-			autoRefreshToken: true,
-			persistSession: true,
-			detectSessionInUrl: false,
-		},
-	},
+	authProps,
 );
 
 export const getSupabaseAnonymousClient = () => {
@@ -32,6 +34,7 @@ export const getSupabaseAuthenticatedClient = () => {
 	return createClient(
 		getConfigValue('supabaseUrl')!,
 		getStorageString(StorageKey.AccessToken),
+		authProps,
 	);
 };
 

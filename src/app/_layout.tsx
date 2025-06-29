@@ -81,7 +81,8 @@ export default function RootLayout() {
 									value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
 								>
 									<Slot />
-									<ToastViewport multipleToasts bottom={0} left={0} right={0} />
+									<ToastViewport bottom={0} left={0} right={0} />
+									<ToastViewport name="top-toast" top={0} left={0} right={0} />
 									<CurrentToast />
 								</ThemeProvider>
 							</TamaguiProvider>

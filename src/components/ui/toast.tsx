@@ -4,16 +4,30 @@ import { Body, BodyType } from '@ui/body';
 import { spacing } from '@/src/constants/spacing';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TriangleAlert } from '@tamagui/lucide-icons';
+import { useMemo } from 'react';
 
 const CurrentToast = () => {
 	const currentToast = useToastState();
 	const toastController = useToastController();
 
-	const { bottom } = useSafeAreaInsets();
+	const { bottom, top } = useSafeAreaInsets();
 
 	const hideToast = () => {
 		toastController.hide();
 	};
+
+	const toastBottomOrTopProps = useMemo(() => {
+		if (currentToast?.viewportName === 'top-toast') {
+			return {
+				top: top + spacing.md,
+				fromY: -100,
+			};
+		}
+		return {
+			bottom: bottom + spacing.md,
+			fromY: 100,
+		};
+	}, [currentToast?.viewportName]);
 
 	if (!currentToast || currentToast.isHandledNatively) return null;
 
@@ -35,10 +49,11 @@ const CurrentToast = () => {
 		<Toast
 			key={currentToast.id}
 			duration={currentToast.duration}
-			enterStyle={{ opacity: 0, y: 100 }}
-			exitStyle={{ opacity: 0, y: 100 }}
+			enterStyle={{ opacity: 0, y: toastBottomOrTopProps.fromY }}
+			exitStyle={{ opacity: 0, y: toastBottomOrTopProps.fromY }}
 			opacity={1}
-			bottom={bottom + spacing.md}
+			bottom={toastBottomOrTopProps.bottom}
+			top={toastBottomOrTopProps.top}
 			animation="quick"
 			viewportName={currentToast.viewportName}
 			fd="row"
@@ -53,7 +68,7 @@ const CurrentToast = () => {
 				alignItems="center"
 				py="$sm"
 				px="$lg"
-				bg="$background"
+				bg="rgba(20,20,20,0.7)"
 				borderBottomWidth={3}
 				w={'100%'}
 				borderRadius="$l"

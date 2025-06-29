@@ -1,5 +1,5 @@
 import { FlatList, StyleSheet } from 'react-native';
-import { getPosts } from '@/src/api/methods/posts/get-posts';
+import { getAnonPosts, getPosts } from '@/src/api/methods/posts/get-posts';
 import { useSupabaseInfiniteQuery } from '@/src/api/hooks/use-supabase-infinite-query';
 import { POSTS_PER_PAGE } from '@/src/constants/query';
 import { HomeHeader } from '@/src/components/pages/tabs/home/header';
@@ -18,7 +18,7 @@ export default function HomeScreen() {
 	const { data, fetchNextPage, hasNextPage, isFetching, resetAndRefetch } =
 		useSupabaseInfiniteQuery(
 			['posts'],
-			getPosts,
+			currentUser ? getPosts : getAnonPosts,
 			{ userId: currentUser?.id },
 			{
 				getNextPageParam: (lastPage, allPages) => {

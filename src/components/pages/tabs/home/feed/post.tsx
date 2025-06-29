@@ -10,8 +10,10 @@ import { ChevronDown, ChevronUp, MessageSquare } from '@tamagui/lucide-icons';
 import { useSupabaseMutation } from '@/src/api/hooks/use-supabase-mutation';
 import { createPostInteraction } from '@/src/api/methods/posts/create-post-interaction';
 import { editPostInteraction } from '@/src/api/methods/posts/edit-post-interaction';
-import { useCurrentUser } from '@/src/context/auth-context';
+import { useAuthContext, useCurrentUser } from '@/src/context/auth-context';
 import { deletePostInteraction } from '@/src/api/methods/posts/delete-post-interaction';
+import { useToastController } from '@tamagui/toast';
+import { formatVoteCount } from '@/src/utils/numbers';
 
 type PostProps = {
 	post: PostDto;
@@ -21,11 +23,13 @@ export const Post = ({ post }: PostProps) => {
 	const [totalVotes, setTotalVotes] = useState(
 		Math.abs(post.upVotes) - Math.abs(post.downVotes),
 	);
+	const toast = useToastController();
 	const [commentCount, setCommentCount] = useState(post.commentCount);
-	console.log('commentcount', commentCount);
 	const [myInteraction, setMyInteraction] = useState(
 		post.myInteraction?.direction,
 	);
+
+	const { guestMode } = useAuthContext();
 
 	const { mutateAsync: createInteraction } = useSupabaseMutation(
 		createPostInteraction,
@@ -63,7 +67,7 @@ export const Post = ({ post }: PostProps) => {
 			postId: post.id,
 		});
 
-		// TODO - voting not working. Up voting multiple times in a row making negative numbers go down down down
+		// TODO - ask chatgpt how to ensure the width of my text stays the same no matter the size of the text
 
 		const multiplier = myInteraction === 'up' ? -1 : 1;
 		setTotalVotes((prev) => prev + multiplier);
@@ -94,6 +98,15 @@ export const Post = ({ post }: PostProps) => {
 	};
 
 	const handleInteraction = async (direction: 'up' | 'down') => {
+		if (guestMode) {
+			toast.show('Please sign in to interact with posts', {
+				message: 'You must be signed in to interact with posts',
+				duration: 1500,
+				type: 'warning',
+				viewportName: 'top-toast',
+			});
+			return;
+		}
 		try {
 			if (!myInteraction) {
 				console.log('creating');
@@ -114,6 +127,14 @@ export const Post = ({ post }: PostProps) => {
 		}
 	};
 
+	const voteCountColour = useMemo(() => {
+		if (myInteraction) {
+			return myInteraction === 'up' ? '$primary' : '$accent';
+		}
+
+		return '$textMuted';
+	}, [totalVotes, myInteraction]);
+
 	return (
 		<View
 			f={1}
@@ -122,7 +143,7 @@ export const Post = ({ post }: PostProps) => {
 			borderRadius="$l"
 			bw={1}
 			borderColor="$borderColor"
-			bg="$background15"
+			bg="$background"
 			marginHorizontal="$md"
 		>
 			<PostHeader post={post} />
@@ -134,33 +155,30 @@ export const Post = ({ post }: PostProps) => {
 			</View>
 			<Body variant={BodyType.small}>{post.content}</Body>
 			<View fd="row" alignItems="center" pt="$sm">
-				<Button variant="ghost" onPress={() => handleInteraction('up')}>
+				<Button
+					variant="ghost"
+					onPress={() => handleInteraction('up')}
+					paddingLeft={0}
+				>
 					<ChevronUp
 						size="$md"
-						c={myInteraction === 'up' ? '$primary' : undefined}
+						c={myInteraction === 'up' ? '$primary' : '$color.textMuted'}
 					/>
 				</Button>
-				<Body
-					variant={BodyType.small}
-					c={
-						myInteraction === 'up' || totalVotes > 0
-							? '$primary'
-							: myInteraction === 'down' || totalVotes <= 0
-								? '$accent'
-								: '$text'
-					}
-				>
-					{totalVotes}
+				<Body variant={BodyType.extraSmallMonospace} c={voteCountColour}>
+					{formatVoteCount(totalVotes)}
 				</Body>
 				<Button variant="ghost" onPress={() => handleInteraction('down')}>
 					<ChevronDown
 						size="$md"
-						c={myInteraction === 'down' ? '$accent' : undefined}
+						c={myInteraction === 'down' ? '$accent' : '$color.textMuted'}
 					/>
 				</Button>
 				<Button variant="ghost" fd="row" p="$sm">
-					<MessageSquare size="$md" />
-					<Body variant={BodyType.small}>{commentCount}</Body>
+					<MessageSquare size="$md" c="$color.textMuted" />
+					<Body c="$textMuted" variant={BodyType.extraSmallMonospace}>
+						{commentCount}
+					</Body>
 				</Button>
 			</View>
 		</View>

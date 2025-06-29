@@ -1,5 +1,6 @@
-import { styled } from 'tamagui';
+import { GetThemeValueForKey, styled } from 'tamagui';
 import { Text } from 'tamagui';
+import { Platform } from 'react-native';
 
 export enum BodyType {
 	normal = 'normal',
@@ -14,7 +15,15 @@ export enum BodyType {
 	smallItalic = 'smallItalic',
 	smallBoldItalic = 'smallBoldItalic',
 	smallExtraBoldItalic = 'smallExtraBoldItalic',
+	normalMonospace = 'normalMonospace',
+	smallMonospace = 'smallMonospace',
+	extraSmallMonospace = 'extraSmallMonospace',
 }
+
+const monospaceTypeface = Platform.select({
+	ios: 'Menlo',
+	android: 'monospace',
+});
 
 export const Body = styled(Text, {
 	c: '$text',
@@ -68,6 +77,23 @@ export const Body = styled(Text, {
 				fontSize: '$5',
 				fontWeight: '700',
 				fontStyle: 'italic',
+			},
+			[BodyType.normalMonospace]: {
+				fontWeight: '400',
+				fontFamily:
+					monospaceTypeface as string as GetThemeValueForKey<'fontFamily'>,
+			},
+			[BodyType.smallMonospace]: {
+				fontWeight: '400',
+				fontSize: '$3',
+				fontFamily:
+					monospaceTypeface as string as GetThemeValueForKey<'fontFamily'>,
+			},
+			[BodyType.extraSmallMonospace]: {
+				fontWeight: '400',
+				fontSize: '$3',
+				fontFamily:
+					monospaceTypeface as string as GetThemeValueForKey<'fontFamily'>,
 			},
 		},
 	} as const,
