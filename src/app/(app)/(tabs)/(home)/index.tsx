@@ -31,8 +31,6 @@ export default function HomeScreen() {
 			},
 		);
 
-	console.log('post data', data);
-
 	const handleFetchNextPage = async () => {
 		if (!hasNextPage) return;
 		await fetchNextPage();
@@ -54,6 +52,7 @@ export default function HomeScreen() {
 	const flatList = useMemo(() => {
 		return (
 			<FlatList<PostDto>
+				showsVerticalScrollIndicator={false}
 				data={filteredData}
 				keyExtractor={(i) => i.id}
 				renderItem={renderItem}
@@ -81,7 +80,6 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
 	contentContainer: {
 		flex: 1,
-		// paddingTop: 100,
 	},
 	sectionListContent: {
 		paddingBottom: 100,

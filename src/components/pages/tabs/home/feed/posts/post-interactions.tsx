@@ -15,9 +15,13 @@ import { onSuccess } from '@/src/api/invalidations/post-interaction-mutation';
 
 type PostInteractionsProps = {
 	post: PostDto;
+	isFullPage?: boolean;
 };
 
-export const PostInteractions = ({ post }: PostInteractionsProps) => {
+export const PostInteractions = ({
+	post,
+	isFullPage,
+}: PostInteractionsProps) => {
 	// region state variables
 	const upVotes = Math.abs(post.upVotes);
 	const downVotes = Math.abs(post.downVotes);
@@ -30,6 +34,7 @@ export const PostInteractions = ({ post }: PostInteractionsProps) => {
 	const toast = useToastController();
 	// endregion
 
+	// region mutations
 	const { mutateAsync: createInteraction } = useSupabaseMutation(
 		createPostInteraction,
 		{ onSuccess },
@@ -148,12 +153,21 @@ export const PostInteractions = ({ post }: PostInteractionsProps) => {
 					c={myInteraction === 'down' ? '$accent' : '$color.textMuted'}
 				/>
 			</Button>
-			<Button variant="ghost" fd="row" p="$sm">
-				<MessageSquare size="$md" c="$color.textMuted" />
-				<Body c="$textMuted" variant={BodyType.smallMonospace}>
-					{commentCount}
-				</Body>
-			</Button>
+			{!isFullPage ? (
+				<Button variant="ghost" fd="row" p="$sm">
+					<MessageSquare size="$md" c="$color.textMuted" />
+					<Body c="$textMuted" variant={BodyType.smallMonospace}>
+						{commentCount}
+					</Body>
+				</Button>
+			) : (
+				<View fd="row" p="$sm" gap="$sm">
+					<MessageSquare size="$md" c="$color.textMuted" />
+					<Body c="$textMuted" variant={BodyType.smallMonospace}>
+						{commentCount}
+					</Body>
+				</View>
+			)}
 		</View>
 	);
 };

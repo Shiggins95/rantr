@@ -2,8 +2,8 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { PostDto } from '@/src/types/posts.types';
 import { POSTS_PER_PAGE } from '@/src/constants/query';
 import {
-	ANON_POSTS_SCHEMA,
-	POSTS_SCHEMA,
+	ANON_MULTI_POSTS_SCHEMA,
+	MULTI_POSTS_SCHEMA,
 } from '@/src/api/schemas/posts.schema';
 
 export const getPosts = async (
@@ -14,7 +14,7 @@ export const getPosts = async (
 	const page = Number(_page);
 	const { data, error } = await supabase
 		.from('posts')
-		.select(POSTS_SCHEMA)
+		.select(MULTI_POSTS_SCHEMA)
 		.eq('my_interaction.user_id', userId)
 		.order('created_at', { ascending: false })
 		.range(page, page + POSTS_PER_PAGE - 1);
@@ -32,7 +32,7 @@ export const getAnonPosts = async (
 	const page = Number(_page);
 	const { data, error } = await supabase
 		.from('posts')
-		.select(ANON_POSTS_SCHEMA)
+		.select(ANON_MULTI_POSTS_SCHEMA)
 		.order('created_at', { ascending: false })
 		.range(page, page + POSTS_PER_PAGE - 1);
 

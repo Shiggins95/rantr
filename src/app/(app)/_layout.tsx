@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 import { useAuthContext } from '@/src/context/auth-context';
 import { useAndroidStatusBar } from '@hooks/use-android-status-bar';
+import React from 'react';
 
 export default function AppLayout() {
 	const { session, isLoading, user, guestMode } = useAuthContext();
@@ -26,6 +27,7 @@ export default function AppLayout() {
 		<>
 			<Stack>
 				<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+				<Stack.Screen name="(out-of-tabs)" options={{ headerShown: false }} />
 			</Stack>
 			<StatusBar style="auto" />
 		</>

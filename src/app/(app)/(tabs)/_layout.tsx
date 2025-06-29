@@ -8,8 +8,6 @@ import { Colours } from '@/src/constants/colours';
 import { useColorScheme } from '@hooks/useColorScheme';
 import * as Icon from '@tamagui/lucide-icons';
 
-// const x: keyof typeof Icon = 'User2';
-
 export default function TabLayout() {
 	const colorScheme = useColorScheme();
 
@@ -25,10 +23,12 @@ export default function TabLayout() {
 					ios: {
 						// Use a transparent background on iOS to show the blur effect
 						position: 'absolute',
-						backgroundColor: 'rgba(255,255,255, 0.1)',
+						backgroundColor: 'rgba(20,20,20,0.1)',
 						paddingTop: 10,
 					},
-					default: {},
+					default: {
+						backgroundColor: 'rgba(20,20,20,0.1)',
+					},
 				}),
 			}}
 		>

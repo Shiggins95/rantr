@@ -88,7 +88,7 @@ INSERT INTO posts (id, title, content, user_id, deleted, created_at, type) VALUE
     ('433d4c3b-8661-46e7-a774-c570ef67f218', 'Shoutout to the crossing guard', 'Rain or shine, they''re always smiling. Respect.', 'daf5c3ef-f11f-4da7-8586-cc181cd8ccdf', FALSE, '2025-06-18T09:46:43.191136', 'OTHER'),
     ('8fe9dffe-ac9a-48c9-ab5d-278ff1680b6a', 'Potholes on 3rd street', 'Five dollars for drip coffee? Are we serious?', '01138b38-a7eb-493b-be18-00bfad6164b1', FALSE, '2025-05-25T21:46:43.191157', 'OTHER'),
     ('b0834c79-fd94-4154-8371-199c31a3451a', 'Noisy neighbors again', 'Rain or shine, they''re always smiling. Respect.', '01138b38-a7eb-493b-be18-00bfad6164b1', FALSE, '2025-05-30T17:46:43.191210', 'OTHER'),
-    ('955b362b-4654-44ed-a698-fe8b7349e18d', 'Fix the streetlights please', 'My car hit one. Sent the bill to the city. Still no response.', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', FALSE, '2025-06-08T18:46:43.191328', 'OTHER'),
+    ('955b362b-4654-44ed-a698-fe8b7349e18d', 'Fix the streetlights please', 'My car hit one. Sent the bill to the city. Still no response.', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', FALSE, '2025-06-29T18:46:43.191328', 'OTHER'),
     ('a49d1bfc-e493-4146-a54b-b294ade64737', 'Can''t deal with city parking', 'Finally found a place to vent. Thank you!', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', FALSE, '2025-06-11T07:46:43.191377', 'OTHER'),
     ('1d6a19b4-7852-48ba-a6cd-aef215afdb22', 'Love this weather lately', 'Finally found a place to vent. Thank you!', 'c3310d9b-6f55-4e9b-8781-8c2f2fccd898', FALSE, '2025-05-25T09:46:43.191414', 'OTHER'),
     ('cc1ccd14-899a-4464-a587-1a69219e9616', 'Noisy neighbors again', 'Five dollars for drip coffee? Are we serious?', '01138b38-a7eb-493b-be18-00bfad6164b1', FALSE, '2025-06-15T23:46:43.191450', 'OTHER'),
@@ -215,6 +215,26 @@ INSERT INTO comments (id, comment, user_id, original_comment, deleted, edited, c
     ('52cd735b-6fb9-4179-ad70-54e01f103456', 'More people need to see this.', 'f2150dc7-36d4-41fb-a59c-cf47b81f6e43', NULL, FALSE, FALSE, '2025-06-07T16:49:34.243471', 'b0834c79-fd94-4154-8371-199c31a3451a'),
     ('ad473418-f551-4146-96c6-559e43f52030', 'You''re spot on.', '6b871c47-df2d-4bcc-b702-966bf0d158d8', NULL, FALSE, FALSE, '2025-05-25T06:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d'),
     ('aed70542-06b1-43ca-bdd2-0edaaf2cd70d', 'Totally agree with this.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', NULL, FALSE, FALSE, '2025-05-24T23:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d'),
+
+
+
+    ('cf8d64f7-ff7c-445a-84e3-5c1a180da71b', 'You''re spot on.', '6b871c47-df2d-4bcc-b702-966bf0d158d8', NULL, FALSE, FALSE, '2025-05-25T06:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d'),
+    ('d4fd0da3-0db6-410e-b4f8-85e8186a5a51', 'Yes brother!', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', NULL, FALSE, FALSE, '2025-05-24T23:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d'),
+    ('c0ef5564-c507-485f-802c-f83bf9b1110a', 'What absolute shit', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', NULL, FALSE, FALSE, '2025-05-25T06:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d'),
+    ('07988ecb-e15e-4016-9716-3e3ba5fddd08', 'Why am I even here', 'ee70ffed-2079-4763-a3d9-b370853a8f01', NULL, FALSE, FALSE, '2025-05-24T23:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d'),
+    ('1a544035-77c1-43f9-a102-6b5d6a1e4eab', 'Ths is actually so true my friend. Kudos', '6b871c47-df2d-4bcc-b702-966bf0d158d8', NULL, FALSE, FALSE, '2025-05-25T06:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d'),
+    ('8fb51570-ccd6-4326-a9f2-0c0badf50fe7', 'WTF???', '01138b38-a7eb-493b-be18-00bfad6164b1', NULL, FALSE, FALSE, '2025-05-24T23:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d'),
+    ('299f9f36-c649-4cb2-995c-43722fc457c4', 'Ye WTFFFF!', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', NULL, FALSE, FALSE, '2025-05-25T06:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d'),
+    ('e0208047-1223-4419-b573-99c029baab6f', 'This is a load of balonie homie, your so ful of shit', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', NULL, FALSE, FALSE, '2025-05-24T23:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d'),
+    ('0850ebb9-537a-4935-8faa-fc9642085564', 'BS', 'c3310d9b-6f55-4e9b-8781-8c2f2fccd898', NULL, FALSE, FALSE, '2025-05-25T06:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d'),
+    ('361dc768-6ac8-4d8c-bb38-bf812ddc4c89', 'True.', 'fabf2432-5b0c-4e3a-a1bc-fd1b18373823', NULL, FALSE, FALSE, '2025-05-24T23:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d'),
+    ('425d8c37-827d-4bd6-a2fb-dbe3fac88d43', 'Hell ye', '6b871c47-df2d-4bcc-b702-966bf0d158d8', NULL, FALSE, FALSE, '2025-05-25T06:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d'),
+    ('fc2787b8-2f51-4bdf-b007-31a3806b805b', 'Why', 'f2150dc7-36d4-41fb-a59c-cf47b81f6e43', NULL, FALSE, FALSE, '2025-05-24T23:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d'),
+    ('0b9b1d48-08de-4e06-a8dc-8946f3604594', 'Fucking brutal', '6b871c47-df2d-4bcc-b702-966bf0d158d8', NULL, FALSE, FALSE, '2025-05-25T06:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d'),
+    ('ac03c3d7-22fb-419a-941a-8b265a8380f5', 'Agreed!..', '6b871c47-df2d-4bcc-b702-966bf0d158d8', NULL, FALSE, FALSE, '2025-05-24T23:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d'),
+
+
+
     ('1c8ee943-3159-4e9b-b0b5-8aa1d71d03e9', 'What a take!', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', NULL, FALSE, FALSE, '2025-06-07T07:49:34.243471', 'a49d1bfc-e493-4146-a54b-b294ade64737'),
     ('f50d86f4-9e06-4c78-9a2f-4aa7b2647dd6', 'Couldn''t have said it better.', 'ee70ffed-2079-4763-a3d9-b370853a8f01', NULL, FALSE, FALSE, '2025-06-13T22:49:34.243471', 'a49d1bfc-e493-4146-a54b-b294ade64737'),
     ('d92fdf34-30e7-475d-b88a-10b7f25e70cf', 'This is wild.', 'ee70ffed-2079-4763-a3d9-b370853a8f01', NULL, FALSE, FALSE, '2025-06-24T01:49:34.243471', '1d6a19b4-7852-48ba-a6cd-aef215afdb22'),
@@ -646,6 +666,20 @@ INSERT INTO comment_interactions (comment_id, user_id, direction, created_at) VA
 -- noinspection SqlWithoutWhere
 UPDATE post_images
 SET image_url = 'https://picsum.photos/seed/' || encode(gen_random_bytes(6), 'hex') || '/600/800';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

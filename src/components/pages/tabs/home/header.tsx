@@ -41,9 +41,6 @@ export const HomeHeader = ({ setCurrentTag, currentTag }: HeaderProps) => {
 
 	const handleFilterPress = (tag: string) => {
 		setCurrentTag(tag);
-		setTimeout(() => {
-			setOpenFilters(false);
-		}, 100);
 	};
 
 	return (
@@ -66,13 +63,7 @@ export const HomeHeader = ({ setCurrentTag, currentTag }: HeaderProps) => {
 					setOpen={setOpenFilters}
 					icon={
 						<View position="relative" marginRight="$md">
-							<ListFilter
-								size="$xl"
-								// c={!!currentTag ? '$background' : '$primary'}
-								c={'$primary'}
-								// bg={!!currentTag ? '$primary' : 'transparent'}
-								borderRadius="$l"
-							/>
+							<ListFilter size="$xl" c={'$primary'} borderRadius="$l" />
 							{!!currentTag && (
 								<View
 									position="absolute"

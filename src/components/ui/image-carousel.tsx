@@ -1,5 +1,5 @@
 import { PostImageDto } from '@/src/types/post-images.types';
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { Dimensions } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import Carousel, {
@@ -14,11 +14,12 @@ import { useColorScheme } from '@hooks/useColorScheme';
 
 type ImageCarouselProps = {
 	images: PostImageDto[];
+	isFullPage?: boolean;
 };
 
 const { width } = Dimensions.get('window');
 
-export const ImageCarousel = ({ images }: ImageCarouselProps) => {
+export const ImageCarousel = ({ images, isFullPage }: ImageCarouselProps) => {
 	const ref = useRef<ICarouselInstance>(null);
 	const progress = useSharedValue<number>(0);
 	const theme = useColorScheme() ?? 'dark';
@@ -34,13 +35,20 @@ export const ImageCarousel = ({ images }: ImageCarouselProps) => {
 		});
 	};
 
+	const componentWidth = useMemo(() => {
+		if (isFullPage) {
+			return width - spacing.md * 2;
+		}
+		return width - spacing.md * 2 - spacing.lg * 2;
+	}, [isFullPage, width, spacing.md, spacing.lg]);
+
 	return (
 		<View f={1}>
 			<Carousel
 				enabled={images.length > 1}
 				loop={false}
 				ref={ref}
-				width={width - spacing.md * 2 - spacing.lg * 2}
+				width={componentWidth}
 				height={width / 2}
 				data={images}
 				onProgressChange={progress}

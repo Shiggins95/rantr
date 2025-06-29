@@ -2,20 +2,33 @@ import { useAuthContext } from '@/src/context/auth-context';
 import { XStack, YStack } from 'tamagui';
 import { Body, BodyType } from '@ui/body';
 import { UserAvatar } from '@ui/user-avatar';
-import { PostDto } from '@/src/types/posts.types';
 import { getTimestamp } from '@/src/utils/date';
 import Popover from '@ui/popover';
 import { useState } from 'react';
-import { MoreVertical } from '@tamagui/lucide-icons';
+import { ChevronLeft, MoreVertical } from '@tamagui/lucide-icons';
 import { Button } from '@ui/button';
+import { UserDto } from '@/src/types/user.types';
+import { Pressable } from 'react-native';
 
-type PostHeaderProps = {
-	post: PostDto;
+type PostCommentHeaderProps = {
+	createdAt: Date;
+	user: UserDto;
+	withNav?: boolean;
+	onBackPress?: () => void;
 };
 
-const AnonPostBar = ({ post }: PostHeaderProps) => {
+const AnonPostBar = ({
+	createdAt,
+	withNav,
+	onBackPress,
+}: Omit<PostCommentHeaderProps, 'user'>) => {
 	return (
 		<XStack pb="$md" jc="space-between">
+			{withNav && (
+				<Pressable onPress={onBackPress}>
+					<ChevronLeft size="$xl" c="$primary" />
+				</Pressable>
+			)}
 			<XStack gap="$md" alignItems="center">
 				<UserAvatar size="sm" />
 				<YStack gap="$sm">
@@ -26,32 +39,43 @@ const AnonPostBar = ({ post }: PostHeaderProps) => {
 			</XStack>
 			<XStack gap="$md" alignItems="center">
 				<Body c="$textMuted" variant={BodyType.small}>
-					{getTimestamp(post.createdAt)}
+					{getTimestamp(createdAt)}
 				</Body>
 			</XStack>
 		</XStack>
 	);
 };
 
-export const PostHeader = ({ post }: PostHeaderProps) => {
+export const PostCommentHeader = ({
+	createdAt,
+	user,
+	withNav,
+	onBackPress,
+}: PostCommentHeaderProps) => {
 	const { guestMode } = useAuthContext();
 	const [openMenu, setOpenMenu] = useState(false);
 
-	if (guestMode || !post.user) return <AnonPostBar post={post} />;
+	if (guestMode || !user)
+		return <AnonPostBar withNav={withNav} createdAt={createdAt} />;
 
 	return (
 		<XStack pb="$md" jc="space-between">
+			{withNav && (
+				<Pressable onPress={onBackPress}>
+					<ChevronLeft size="$xl" c="$primary" />
+				</Pressable>
+			)}
 			<XStack gap="$md" alignItems="center">
-				<UserAvatar size="sm" user={post.user} />
+				<UserAvatar size="sm" user={user} />
 				<YStack gap="$sm">
 					<Body variant={BodyType.small} c="$primary">
-						@{post.user.username}
+						@{user.username}
 					</Body>
 				</YStack>
 			</XStack>
 			<XStack gap="$md" alignItems="center" jc="space-between">
 				<Body c="$textMuted" variant={BodyType.small}>
-					{getTimestamp(post.createdAt)}
+					{getTimestamp(createdAt)}
 				</Body>
 				<Popover
 					open={openMenu}

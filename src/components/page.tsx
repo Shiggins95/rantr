@@ -49,13 +49,13 @@ export const Page: FC<PageProps> = ({
 		let paddingTop = isIos ? 0 : spacing.md;
 
 		if (isSafeArea) {
-			paddingTop = top;
+			paddingTop += top;
 			stylesArr.push({
 				paddingBottom: bottom + spacing.md,
 			});
 		}
 
-		if (isSafeAreaTop && paddingTop === 0) {
+		if (isSafeAreaTop && paddingTop <= spacing.md) {
 			paddingTop += top;
 		}
 
@@ -91,18 +91,15 @@ export const Page: FC<PageProps> = ({
 			accessible={false}
 		>
 			<>
-				<ImageBackground style={styles.imageBg} source={bgImage}/>
-				{/*<Image style={styles.imageBg} source={bgImage}/>*/}
-				<View style={containerStyles}>
-					{children}
-				</View>
+				<ImageBackground style={styles.imageBg} source={bgImage} />
+				<View style={containerStyles}>{children}</View>
 			</>
 		</TouchableWithoutFeedback>
 	);
 };
 
 const useStyles = () => {
-	const {width, height} = Dimensions.get('window')
+	const { width, height } = Dimensions.get('window');
 	return StyleSheet.create({
 		container: {
 			flex: 1,
@@ -120,6 +117,6 @@ const useStyles = () => {
 			minWidth: width,
 			resizeMode: 'cover',
 			opacity: 0.5,
-		}
+		},
 	});
 };

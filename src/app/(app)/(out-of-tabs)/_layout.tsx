@@ -1,7 +1,8 @@
 import { Stack } from 'expo-router';
 import React from 'react';
+import { PostPageHeader } from '@/src/components/navigation/post-header';
 
-export default function SearchStack() {
+export default function OuterTabsStack() {
 	return (
 		<Stack
 			screenOptions={{
@@ -9,10 +10,11 @@ export default function SearchStack() {
 			}}
 		>
 			<Stack.Screen
-				name="search"
+				name="post/[id]/post"
 				options={{
-					title: 'Search',
+					headerShown: true,
 					gestureEnabled: true,
+					header: PostPageHeader,
 				}}
 			/>
 		</Stack>
