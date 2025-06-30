@@ -16,7 +16,7 @@ import { ImageCarousel } from '@ui/image-carousel';
 import { getRootComments } from '@/src/api/methods/comments/get-root-comments';
 import { CommentView } from '@/src/components/pages/posts/comments';
 import { useSupabaseInfiniteQuery } from '@/src/api/hooks/use-supabase-infinite-query';
-import { COMMENTS_PER_PAGE, POSTS_PER_PAGE } from '@/src/constants/query';
+import { COMMENTS_PER_PAGE } from '@/src/constants/query';
 
 type SinglePostHeaderProps = {
 	post: PostDto;
