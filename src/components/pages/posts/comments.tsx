@@ -9,8 +9,7 @@ import {
 	getReplyComments,
 } from '@/src/api/methods/comments/get-reply-comments';
 import { useSupabaseInfiniteQuery } from '@/src/api/hooks/use-supabase-infinite-query';
-import { ActivityIndicator } from 'react-native';
-import { darkColours } from '@/themes/themes';
+import { CommentSkeleton } from '@/src/components/pages/posts/comment.skeleton';
 
 type CommentViewProps = {
 	comment: CommentDto;
@@ -35,8 +34,8 @@ export const CommentView = ({ comment, depth = 0 }: CommentViewProps) => {
 
 	const isLoading = loadingReplies || fetchingReplies;
 
-	if (isLoading) {
-		return <ActivityIndicator color={darkColours.color.primary.val} />;
+	if (isLoading && depth === 0) {
+		return <CommentSkeleton depth={depth} />;
 	}
 
 	return (
@@ -44,7 +43,7 @@ export const CommentView = ({ comment, depth = 0 }: CommentViewProps) => {
 			bg="$background"
 			paddingLeft="$md"
 			pt="$md"
-			pb="$xs"
+			pb={depth === 0 ? '$xs' : 0}
 			alignItems="center"
 			my="$xs"
 			mb={depth > 0 ? 0 : '$xs'}

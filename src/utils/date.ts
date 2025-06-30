@@ -2,7 +2,6 @@ import {
 	differenceInMinutes,
 	differenceInHours,
 	differenceInDays,
-	differenceInMonths,
 	differenceInYears,
 } from 'date-fns';
 
@@ -13,8 +12,6 @@ export const getTimestamp = (date: Date) => {
 	const hoursDiff = differenceInHours(now, date);
 	if (hoursDiff < 24) return `${hoursDiff} h`;
 	const daysDiff = differenceInDays(now, date);
-	if (daysDiff < 30) return `${daysDiff} d`;
-	const monthsDiff = differenceInMonths(now, date);
-	if (monthsDiff < 12) return `${monthsDiff} M`;
-	return `${differenceInYears(now, date)} y`;
+	if (daysDiff < 365) return `${daysDiff} w`;
+	return `${differenceInYears(now, date)} yrs`;
 };

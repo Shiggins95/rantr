@@ -74,7 +74,7 @@ export const PostCommentHeader = ({
 				</YStack>
 			</XStack>
 			<XStack gap="$md" alignItems="center" jc="space-between">
-				<Body c="$textMuted" variant={BodyType.small}>
+				<Body c="$textMuted" variant={BodyType.extraSmallMonospace}>
 					{getTimestamp(createdAt)}
 				</Body>
 				<Popover

@@ -43,7 +43,7 @@ export default function PostFullPage() {
 	const { id } = useLocalSearchParams();
 	const currentUser = useCurrentUser();
 	const { isLoading: isLoadingPost, data: post } = useSupabaseQuery(
-		[`post.${id}`],
+		['post', id],
 		currentUser ? getPost : getPostAnon,
 		{
 			userId: currentUser?.id,

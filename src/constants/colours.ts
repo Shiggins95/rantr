@@ -42,7 +42,7 @@ export const Colours = {
 		primary20: 'rgba(210,76,17,0.2)',
 		primary30: 'rgba(210,76,17,0.3)',
 		primary40: 'rgba(210,76,17,0.4)',
-		$primary50: 'rgba(210,76,17,0.5)',
+		primary50: 'rgba(210,76,17,0.5)',
 		secondary: '#4cbcac',
 		secondaryHover: '#429f92',
 		accent: '#a958ff',
