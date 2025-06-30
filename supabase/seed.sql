@@ -217,7 +217,6 @@ INSERT INTO comments (id, comment, user_id, original_comment, deleted, edited, c
     ('aed70542-06b1-43ca-bdd2-0edaaf2cd70d', 'Totally agree with this.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', NULL, FALSE, FALSE, '2025-05-24T23:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d'),
 
 
-
     ('cf8d64f7-ff7c-445a-84e3-5c1a180da71b', 'You''re spot on.', '6b871c47-df2d-4bcc-b702-966bf0d158d8', NULL, FALSE, FALSE, '2025-05-25T06:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d'),
     ('d4fd0da3-0db6-410e-b4f8-85e8186a5a51', 'Yes brother!', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', NULL, FALSE, FALSE, '2025-05-24T23:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d'),
     ('c0ef5564-c507-485f-802c-f83bf9b1110a', 'What absolute shit', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', NULL, FALSE, FALSE, '2025-05-25T06:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d'),
@@ -275,6 +274,11 @@ INSERT INTO comments (id, comment, user_id, original_comment, deleted, edited, c
     ('558cb4c6-268a-4207-9101-6ea29f6623c9', 'Classic example of this issue.', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', NULL, FALSE, FALSE, '2025-05-25T17:49:34.243471', 'ab2f7edc-4aa0-4880-8e7a-74ee2cb521a0'),
     ('2ca85f1d-6b6e-477d-8275-803bb31ee94f', 'Couldn''t have said it better.', 'd07aeaf4-4464-4ee8-8de3-627898211cd6', NULL, FALSE, FALSE, '2025-05-29T13:49:34.243471', 'f3019ac6-3b56-45d9-9e1a-fe77489ba941'),
     ('5989a235-6bb2-43d7-af2d-cabf441c233f', 'This is wild.', 'c5c437b6-8162-425e-91a6-3dd5f4eabb9a', NULL, FALSE, FALSE, '2025-06-06T09:49:34.243471', 'f3019ac6-3b56-45d9-9e1a-fe77489ba941');
+
+INSERT INTO comments (id, comment, user_id, original_comment, deleted, edited, created_at, post_id, reply_id) VALUES
+    ('21831e7d-cb61-494c-a4f4-c2cf671febce', 'Again Spot on', '6b871c47-df2d-4bcc-b702-966bf0d158d8', NULL, FALSE, FALSE, '2025-05-25T06:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d', 'cf8d64f7-ff7c-445a-84e3-5c1a180da71b'),
+    ('605e2aba-90a7-4f1e-bed4-15f5ec1fbb7d', 'Yeah fr.', '6b871c47-df2d-4bcc-b702-966bf0d158d8', NULL, FALSE, FALSE, '2025-05-25T06:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d', 'cf8d64f7-ff7c-445a-84e3-5c1a180da71b'),
+    ('251e593a-cd55-433a-bd0d-6cfcaf885a1e', 'Yeah fr fr.', '6b871c47-df2d-4bcc-b702-966bf0d158d8', NULL, FALSE, FALSE, '2025-05-25T06:49:34.243471', '955b362b-4654-44ed-a698-fe8b7349e18d', '605e2aba-90a7-4f1e-bed4-15f5ec1fbb7d');
 
 INSERT INTO post_interactions (post_id, user_id, direction, created_at) VALUES
     ('4708e2ab-341e-4e51-bd67-d9dae8542576', '24cbd4c4-92c4-4b72-a036-d6ed31fe5c0b', 'up', now()),

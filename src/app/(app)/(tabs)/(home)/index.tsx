@@ -21,8 +21,6 @@ export default function HomeScreen() {
 			currentUser ? getPosts : getAnonPosts,
 			{ userId: currentUser?.id },
 			{
-				refetchOnWindowFocus: true,
-				refetchOnMount: true,
 				getNextPageParam: (lastPage, allPages) => {
 					return lastPage?.length === POSTS_PER_PAGE
 						? allPages.length * POSTS_PER_PAGE

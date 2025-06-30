@@ -6,7 +6,6 @@ export const onSuccess = (interaction: {
 	postId: string;
 	direction: 'up' | 'down';
 }) => {
-	void queryClient.invalidateQueries([`post.${interaction.postId}`]);
 	queryClient.setQueryData(
 		['posts'],
 		(oldData: { pages: PostDto[][] } | undefined): { pages: PostDto[][] } => {

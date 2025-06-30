@@ -9,10 +9,12 @@ export type CommentDbBase = Database['public']['Tables']['comments']['Row'];
 export type CommentDb = CommentDbBase & {
 	user?: UserDbBase;
 	interactions?: CommentInteractionDb[];
+	replies?: CommentDb[];
 };
 
 export class CommentDto {
 	id!: string;
+	postId!: string;
 	comment!: string;
 	userId!: string;
 	upVotes!: number;
@@ -23,13 +25,13 @@ export class CommentDto {
 	createdAt!: Date;
 	user!: UserDto;
 	interactions: CommentInteractionDto[] = [];
+	replies: CommentDto[] = [];
 
 	constructor(entity: CommentDb) {
 		this.id = entity.id;
+		this.postId = entity.post_id;
 		this.comment = entity.comment;
 		this.userId = entity.user_id;
-		this.upVotes = entity.up_votes || 0;
-		this.downVotes = entity.down_votes || 0;
 		this.originalComment = entity.original_comment || '';
 		this.deleted = entity.deleted || false;
 		this.edited = entity.edited || false;
@@ -43,6 +45,10 @@ export class CommentDto {
 
 		if (entity.user) {
 			this.user = new UserDto(entity.user);
+		}
+
+		if (entity.replies) {
+			this.replies = entity.replies.map((c) => new CommentDto(c));
 		}
 	}
 }

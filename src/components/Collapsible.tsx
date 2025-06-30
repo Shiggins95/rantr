@@ -1,49 +1,24 @@
-import { PropsWithChildren, useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { PropsWithChildren, ReactNode, useState } from 'react';
+import { TouchableOpacity } from 'react-native';
+import { View } from 'tamagui';
 
-import { ThemedText } from '@/src/components/ThemedText';
-import { ThemedView } from '@/src/components/ThemedView';
-import { IconSymbol } from '@/src/components/ui/IconSymbol';
-import { Colours } from '@/src/constants/colours';
-import { useColorScheme } from '@/src/hooks/useColorScheme';
+type Props = PropsWithChildren & {
+	heading: ReactNode;
+	isOpenDefault?: boolean;
+};
 
-export function Collapsible({
-	children,
-	title,
-}: PropsWithChildren & { title: string }) {
-	const [isOpen, setIsOpen] = useState(false);
-	const theme = useColorScheme() ?? 'dark';
+export function Collapsible({ children, heading, isOpenDefault }: Props) {
+	const [isOpen, setIsOpen] = useState(isOpenDefault || false);
 
 	return (
-		<ThemedView>
+		<View>
 			<TouchableOpacity
-				style={styles.heading}
 				onPress={() => setIsOpen((value) => !value)}
 				activeOpacity={0.8}
 			>
-				<IconSymbol
-					name="chevron.right"
-					size={18}
-					weight="medium"
-					color={theme === 'light' ? Colours.light.icon : Colours.dark.icon}
-					style={{ transform: [{ rotate: isOpen ? '90deg' : '0deg' }] }}
-				/>
-
-				<ThemedText type="defaultSemiBold">{title}</ThemedText>
+				{heading}
 			</TouchableOpacity>
-			{isOpen && <ThemedView style={styles.content}>{children}</ThemedView>}
-		</ThemedView>
+			{isOpen && <View pb="$md">{children}</View>}
+		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	heading: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		gap: 6,
-	},
-	content: {
-		marginTop: 6,
-		marginLeft: 24,
-	},
-});

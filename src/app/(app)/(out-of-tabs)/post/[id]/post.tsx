@@ -12,8 +12,11 @@ import { PostTag } from '@/src/components/pages/tabs/home/feed/posts/post-tag';
 import { PostDto } from '@/src/types/posts.types';
 import { FlatList } from 'react-native';
 import { CommentDto } from '@/src/types/comments.types';
-import { PostCommentHeader } from '@/src/components/pages/tabs/home/feed/posts/post-comment-header';
 import { ImageCarousel } from '@ui/image-carousel';
+import { getRootComments } from '@/src/api/methods/comments/get-root-comments';
+import { CommentView } from '@/src/components/pages/posts/comments';
+import { useSupabaseInfiniteQuery } from '@/src/api/hooks/use-supabase-infinite-query';
+import { COMMENTS_PER_PAGE, POSTS_PER_PAGE } from '@/src/constants/query';
 
 type SinglePostHeaderProps = {
 	post: PostDto;
@@ -39,14 +42,37 @@ export default function PostFullPage() {
 	const router = useRouter();
 	const { id } = useLocalSearchParams();
 	const currentUser = useCurrentUser();
+	const { isLoading: isLoadingPost, data: post } = useSupabaseQuery(
+		[`post.${id}`],
+		currentUser ? getPost : getPostAnon,
+		{
+			userId: currentUser?.id,
+			postId: id as string,
+		},
+	);
+
 	const {
-		isLoading,
-		isFetching,
-		data: post,
-	} = useSupabaseQuery([`post/${id}`], currentUser ? getPost : getPostAnon, {
-		userId: currentUser?.id,
-		postId: id as string,
-	});
+		isLoading: isLoadingComments,
+		fetchNextPage,
+		hasNextPage,
+		data: comments,
+	} = useSupabaseInfiniteQuery(
+		[`comments.${id}`],
+		getRootComments,
+		{
+			userId: currentUser?.id,
+			postId: id as string,
+		},
+		{
+			getNextPageParam: (lastPage, allPages) => {
+				return lastPage?.length === COMMENTS_PER_PAGE
+					? allPages.length * COMMENTS_PER_PAGE
+					: undefined;
+			},
+		},
+	);
+
+	const isLoading = isLoadingPost || isLoadingComments;
 
 	useEffect(() => {
 		if (!post) return;
@@ -57,27 +83,28 @@ export default function PostFullPage() {
 	}, [post]);
 
 	const renderItem = ({ item }: { item: CommentDto }) => {
-		return (
-			<View bg="$background" p="$md" my="$xs">
-				<PostCommentHeader createdAt={item.createdAt} user={item.user} />
-				<Body>{item.comment}</Body>
-			</View>
-		);
+		return <CommentView comment={item} depth={0} />;
+	};
+
+	const onEndReached = async () => {
+		console.log('getting next page§', hasNextPage);
+		await fetchNextPage();
 	};
 
 	return (
 		<Page withNavigationHeader isSafeAreaTop>
-			{(isLoading || isFetching) && <Headline>Loading...</Headline>}
-			{!isLoading && !isFetching && post && (
+			{isLoading && <Headline>Loading...</Headline>}
+			{!isLoading && post && (
 				<FlatList
 					showsVerticalScrollIndicator={false}
 					bounces={(post.commentCount || 0) > 5}
-					data={post.comments}
+					data={comments}
 					contentContainerStyle={{
 						paddingBottom: 100,
 					}}
 					renderItem={renderItem}
 					ListHeaderComponent={() => <SinglePostHeader post={post} />}
+					onEndReached={onEndReached}
 				/>
 			)}
 		</Page>
