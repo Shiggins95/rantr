@@ -1,12 +1,7 @@
-import { useSupabaseInfiniteQuery } from '@/src/api/hooks/use-supabase-infinite-query';
-import {
-	getAnonReplyComments,
-	getReplyComments,
-} from '@/src/api/methods/comments/get-reply-comments';
+import { useGetReplies } from '@/src/api/hooks/comments/use-get-replies';
 import { CommentSkeleton } from '@/src/components/pages/posts/comment.skeleton';
 import { PostCommentHeader } from '@/src/components/pages/tabs/home/feed/posts/post-comment-header';
 import { spacing } from '@/src/constants/spacing';
-import { useCurrentUser } from '@/src/context/auth-context';
 import { CommentDto } from '@/src/types/comments.types';
 import { ArrowRight } from '@tamagui/lucide-icons';
 import { Body, BodyType } from '@ui/body';
@@ -23,7 +18,6 @@ type CommentViewProps = {
 const MAX_COMMENT_DEPTH = 2;
 
 export const CommentView = ({ comment, depth = 0 }: CommentViewProps) => {
-	const currentUser = useCurrentUser();
 	const styles = useStyles();
 	const router = useRouter();
 
@@ -31,15 +25,11 @@ export const CommentView = ({ comment, depth = 0 }: CommentViewProps) => {
 		data: replies,
 		isLoading: loadingReplies,
 		isFetching: fetchingReplies,
-	} = useSupabaseInfiniteQuery(
-		['replies', comment.id],
-		currentUser ? getReplyComments : getAnonReplyComments,
-		{
-			postId: comment.postId,
-			parentId: comment.id,
-			userId: currentUser?.id,
-		},
-	);
+	} = useGetReplies({
+		commentId: comment.id,
+		postId: comment.postId,
+		enabled: true,
+	});
 
 	const navigateToPostWithComments = () => {
 		router.push({

@@ -1,17 +1,17 @@
-import { Button } from '@ui/button';
-import { ChevronDown, ChevronUp, MessageSquare } from '@tamagui/lucide-icons';
-import { Body, BodyType } from '@ui/body';
-import { formatVoteCount } from '@/src/utils/numbers';
-import { View } from 'tamagui';
-import { useEffect, useMemo, useState } from 'react';
-import { useToastController } from '@tamagui/toast';
-import { useAuthContext } from '@/src/context/auth-context';
-import { useSupabaseMutation } from '@/src/api/hooks/use-supabase-mutation';
-import { createPostInteraction } from '@/src/api/methods/posts/create-post-interaction';
-import { editPostInteraction } from '@/src/api/methods/posts/edit-post-interaction';
-import { deletePostInteraction } from '@/src/api/methods/posts/delete-post-interaction';
-import { PostDto } from '@/src/types/posts.types';
+import { useSupabaseMutation } from '@/src/api/hooks/common/use-supabase-mutation';
 import { onSuccess } from '@/src/api/invalidations/post-interaction-mutation';
+import { createPostInteraction } from '@/src/api/methods/posts/create-post-interaction';
+import { deletePostInteraction } from '@/src/api/methods/posts/delete-post-interaction';
+import { editPostInteraction } from '@/src/api/methods/posts/edit-post-interaction';
+import { useAuthContext } from '@/src/context/auth-context';
+import { PostDto } from '@/src/types/posts.types';
+import { formatVoteCount } from '@/src/utils/numbers';
+import { ChevronDown, ChevronUp, MessageSquare } from '@tamagui/lucide-icons';
+import { useToastController } from '@tamagui/toast';
+import { Body, BodyType } from '@ui/body';
+import { Button } from '@ui/button';
+import { useEffect, useMemo, useState } from 'react';
+import { View } from 'tamagui';
 
 type PostInteractionsProps = {
 	post: PostDto;

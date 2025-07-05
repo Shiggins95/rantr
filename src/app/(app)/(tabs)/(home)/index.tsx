@@ -1,15 +1,15 @@
-import { FlatList, StyleSheet } from 'react-native';
+import { useSupabaseInfiniteQuery } from '@/src/api/hooks/common/use-supabase-infinite-query';
 import { getAnonPosts, getPosts } from '@/src/api/methods/posts/get-posts';
-import { useSupabaseInfiniteQuery } from '@/src/api/hooks/use-supabase-infinite-query';
-import { POSTS_PER_PAGE } from '@/src/constants/query';
-import { HomeHeader } from '@/src/components/pages/tabs/home/header';
-import { PostDto } from '@/src/types/posts.types';
-import { View } from 'tamagui';
 import { Page } from '@/src/components/page';
-import { spacing } from '@/src/constants/spacing';
-import { useCallback, useMemo, useState } from 'react';
 import { Post } from '@/src/components/pages/tabs/home/feed/posts/post';
+import { HomeHeader } from '@/src/components/pages/tabs/home/header';
+import { POSTS_PER_PAGE } from '@/src/constants/query';
+import { spacing } from '@/src/constants/spacing';
 import { useCurrentUser } from '@/src/context/auth-context';
+import { PostDto } from '@/src/types/posts.types';
+import { useCallback, useMemo, useState } from 'react';
+import { FlatList, StyleSheet } from 'react-native';
+import { View } from 'tamagui';
 
 export default function HomeScreen() {
 	const [currentTag, setCurrentTag] = useState('');

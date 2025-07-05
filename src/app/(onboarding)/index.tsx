@@ -1,23 +1,23 @@
+import { useSupabaseMutation } from '@/src/api/hooks/common/use-supabase-mutation';
+import { agreeToTerms } from '@/src/api/methods/user/agree-to-terms';
+import { updateUser } from '@/src/api/methods/user/update-user';
 import { Page } from '@/src/components/page';
-import { Headline, HeadlineType } from '@ui/healine';
-import { YStack } from 'tamagui';
-import { ProfilePhotoPicker } from '@ui/profile-photo-picker';
-import { Body, BodyType } from '@ui/body';
-import InputField from '@ui/input-field';
-import { Button } from '@ui/button';
 import { TermsCheckbox } from '@/src/components/pages/onboarding/terms-checkbox';
-import { FormProvider, useForm } from 'react-hook-form';
-import { supabase } from '@/src/utils/supabase';
-import { useState } from 'react';
 import { useAuthContext } from '@/src/context/auth-context';
+import { UserDto } from '@/src/types/user.types';
+import { supabase } from '@/src/utils/supabase';
+import { useToastController } from '@tamagui/toast';
+import { Body, BodyType } from '@ui/body';
+import { Button } from '@ui/button';
+import { Headline, HeadlineType } from '@ui/healine';
+import InputField from '@ui/input-field';
+import { ProfilePhotoPicker } from '@ui/profile-photo-picker';
 import { decode } from 'base64-arraybuffer';
 import * as FileSystem from 'expo-file-system';
 import { useRouter } from 'expo-router';
-import { useToastController } from '@tamagui/toast';
-import { UserDto } from '@/src/types/user.types';
-import { useSupabaseMutation } from '@/src/api/hooks/use-supabase-mutation';
-import { updateUser } from '@/src/api/methods/user/update-user';
-import { agreeToTerms } from '@/src/api/methods/user/agree-to-terms';
+import { useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { YStack } from 'tamagui';
 
 type PersonalDetailsForm = {
 	profilePhotoUrl?: string;

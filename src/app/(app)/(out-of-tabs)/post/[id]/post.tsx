@@ -1,13 +1,11 @@
-import { useSupabaseInfiniteQuery } from '@/src/api/hooks/use-supabase-infinite-query';
-import { useSupabaseQuery } from '@/src/api/hooks/use-supabase-query';
-import { getReplyComments } from '@/src/api/methods/comments/get-reply-comments';
-import { getRootComments } from '@/src/api/methods/comments/get-root-comments';
+import { useGetComments } from '@/src/api/hooks/comments/use-get-comments';
+import { useGetReplies } from '@/src/api/hooks/comments/use-get-replies';
+import { useSupabaseQuery } from '@/src/api/hooks/common/use-supabase-query';
 import { getPost, getPostAnon } from '@/src/api/methods/posts/get-post';
 import { Page } from '@/src/components/page';
 import { CommentView } from '@/src/components/pages/posts/comments';
 import { PostInteractions } from '@/src/components/pages/tabs/home/feed/posts/post-interactions';
 import { PostTag } from '@/src/components/pages/tabs/home/feed/posts/post-tag';
-import { COMMENTS_PER_PAGE } from '@/src/constants/query';
 import { useCurrentUser } from '@/src/context/auth-context';
 import { CommentDto } from '@/src/types/comments.types';
 import { PostDto } from '@/src/types/posts.types';
@@ -58,45 +56,18 @@ export default function PostFullPage() {
 		fetchNextPage,
 		hasNextPage,
 		data: comments,
-	} = useSupabaseInfiniteQuery(
-		[`comments.${id}`],
-		getRootComments,
-		{
-			userId: currentUser?.id,
-			postId: id as string,
-		},
-		{
-			enabled: !commentId,
-			getNextPageParam: (lastPage, allPages) => {
-				return lastPage?.length === COMMENTS_PER_PAGE
-					? allPages.length * COMMENTS_PER_PAGE
-					: undefined;
-			},
-		},
-	);
+	} = useGetComments({ postId: id as string, enabled: !commentId });
 
 	const {
 		isLoading: isLoadingReplyComments,
 		fetchNextPage: fetchNextReplyPage,
 		hasNextPage: hasNextReplyPage,
 		data: replies,
-	} = useSupabaseInfiniteQuery(
-		[`post-reply-comments.${commentId}`],
-		getReplyComments,
-		{
-			userId: currentUser?.id,
-			postId: id as string,
-			parentId: commentId as string,
-		},
-		{
-			enabled: !!commentId,
-			getNextPageParam: (lastPage, allPages) => {
-				return lastPage?.length === COMMENTS_PER_PAGE
-					? allPages.length * COMMENTS_PER_PAGE
-					: undefined;
-			},
-		},
-	);
+	} = useGetReplies({
+		commentId: commentId as string,
+		postId: id as string,
+		enabled: !!commentId,
+	});
 
 	const isLoading = isLoadingPost || isLoadingComments;
 	// endregion
