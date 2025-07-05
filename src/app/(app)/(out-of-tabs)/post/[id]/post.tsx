@@ -1,22 +1,23 @@
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Page } from '@/src/components/page';
-import { Headline, HeadlineType } from '@ui/healine';
-import { useSupabaseQuery } from '@/src/api/hooks/use-supabase-query';
-import { useCurrentUser } from '@/src/context/auth-context';
-import { getPost, getPostAnon } from '@/src/api/methods/posts/get-post';
-import { PostInteractions } from '@/src/components/pages/tabs/home/feed/posts/post-interactions';
-import { useEffect, useMemo, useRef } from 'react';
-import { View } from 'tamagui';
-import { Body, BodyType } from '@ui/body';
-import { PostTag } from '@/src/components/pages/tabs/home/feed/posts/post-tag';
-import { PostDto } from '@/src/types/posts.types';
-import { FlatList, StyleSheet } from 'react-native';
-import { CommentDto } from '@/src/types/comments.types';
-import { getRootComments } from '@/src/api/methods/comments/get-root-comments';
-import { CommentView } from '@/src/components/pages/posts/comments';
 import { useSupabaseInfiniteQuery } from '@/src/api/hooks/use-supabase-infinite-query';
+import { useSupabaseQuery } from '@/src/api/hooks/use-supabase-query';
+import { getReplyComments } from '@/src/api/methods/comments/get-reply-comments';
+import { getRootComments } from '@/src/api/methods/comments/get-root-comments';
+import { getPost, getPostAnon } from '@/src/api/methods/posts/get-post';
+import { Page } from '@/src/components/page';
+import { CommentView } from '@/src/components/pages/posts/comments';
+import { PostInteractions } from '@/src/components/pages/tabs/home/feed/posts/post-interactions';
+import { PostTag } from '@/src/components/pages/tabs/home/feed/posts/post-tag';
 import { COMMENTS_PER_PAGE } from '@/src/constants/query';
+import { useCurrentUser } from '@/src/context/auth-context';
+import { CommentDto } from '@/src/types/comments.types';
+import { PostDto } from '@/src/types/posts.types';
+import { Body, BodyType } from '@ui/body';
 import { ExpandableImageCarousel } from '@ui/expandable-image-carousel';
+import { Headline, HeadlineType } from '@ui/healine';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect, useMemo, useRef } from 'react';
+import { FlatList, StyleSheet } from 'react-native';
+import { View } from 'tamagui';
 
 type SinglePostHeaderProps = {
 	post: PostDto;
@@ -35,10 +36,14 @@ const SinglePostHeader = ({ post }: SinglePostHeaderProps) => {
 };
 
 export default function PostFullPage() {
+	// region state
 	const router = useRouter();
-	const { id, toComments } = useLocalSearchParams();
+	const { id, toComments, commentId } = useLocalSearchParams();
 	const flatListRef = useRef<FlatList | null>(null);
 	const currentUser = useCurrentUser();
+	// endregion
+
+	// region queries
 	const { isLoading: isLoadingPost, data: post } = useSupabaseQuery(
 		['post', id],
 		currentUser ? getPost : getPostAnon,
@@ -61,6 +66,30 @@ export default function PostFullPage() {
 			postId: id as string,
 		},
 		{
+			enabled: !commentId,
+			getNextPageParam: (lastPage, allPages) => {
+				return lastPage?.length === COMMENTS_PER_PAGE
+					? allPages.length * COMMENTS_PER_PAGE
+					: undefined;
+			},
+		},
+	);
+
+	const {
+		isLoading: isLoadingReplyComments,
+		fetchNextPage: fetchNextReplyPage,
+		hasNextPage: hasNextReplyPage,
+		data: replies,
+	} = useSupabaseInfiniteQuery(
+		[`post-reply-comments.${commentId}`],
+		getReplyComments,
+		{
+			userId: currentUser?.id,
+			postId: id as string,
+			parentId: commentId as string,
+		},
+		{
+			enabled: !!commentId,
 			getNextPageParam: (lastPage, allPages) => {
 				return lastPage?.length === COMMENTS_PER_PAGE
 					? allPages.length * COMMENTS_PER_PAGE
@@ -70,20 +99,22 @@ export default function PostFullPage() {
 	);
 
 	const isLoading = isLoadingPost || isLoadingComments;
+	// endregion
 
+	// region useEffects
 	useEffect(() => {
-		if (!post || !comments || isLoading) return;
-		if (
-			toComments === 'true' &&
-			flatListRef.current &&
-			(post.commentCount || 0) > 0
-		) {
+		const commentsToUse = commentId ? replies : comments;
+		const isLoadingToUse = commentId
+			? isLoadingReplyComments
+			: isLoadingComments;
+		if (!post || !commentsToUse || isLoadingToUse) return;
+		if (toComments === 'true' && flatListRef.current) {
 			flatListRef.current.scrollToIndex({
 				index: 0,
 				animated: true,
 			});
 		}
-	}, [post, comments, toComments]);
+	}, [post, comments, toComments, commentId]);
 
 	useEffect(() => {
 		if (!post) return;
@@ -92,21 +123,30 @@ export default function PostFullPage() {
 			createdAt: post.createdAt.toISOString(),
 		});
 	}, [post]);
+	// endregion
 
+	// region methods
 	const renderItem = ({ item }: { item: CommentDto }) => {
 		return <CommentView comment={item} depth={0} />;
 	};
 
 	const onEndReached = async () => {
-		if (hasNextPage) {
-			await fetchNextPage();
+		if (commentId) {
+			if (!hasNextReplyPage) return;
+			await fetchNextReplyPage();
+			return;
 		}
+		if (!hasNextPage) return;
+		await fetchNextPage();
 	};
+	// endregion
 
+	// region memos
 	const postHeader = useMemo(() => {
 		if (!post || isLoading) return null;
 		return <SinglePostHeader post={post} />;
-	}, [post, isLoading, comments]);
+	}, [post, isLoading]);
+	// endregion
 
 	return (
 		<Page withNavigationHeader isSafeAreaTop>
@@ -116,7 +156,7 @@ export default function PostFullPage() {
 					ref={flatListRef}
 					showsVerticalScrollIndicator={false}
 					bounces={(post.commentCount || 0) > 5}
-					data={comments}
+					data={commentId ? replies : comments}
 					contentContainerStyle={styles.contentContainer}
 					renderItem={renderItem}
 					ListHeaderComponent={postHeader}

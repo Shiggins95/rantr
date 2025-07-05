@@ -1,9 +1,9 @@
-import { Database } from '@/src/types/supabase';
-import { UserDbBase, UserDto } from '@/src/types/user.types';
 import {
 	CommentInteractionDb,
 	CommentInteractionDto,
 } from '@/src/types/interactions.types';
+import { Database } from '@/src/types/supabase';
+import { UserDbBase, UserDto } from '@/src/types/user.types';
 
 export type CommentDbBase = Database['public']['Tables']['comments']['Row'];
 export type CommentDb = CommentDbBase & {
@@ -26,6 +26,7 @@ export class CommentDto {
 	user!: UserDto;
 	interactions: CommentInteractionDto[] = [];
 	replies: CommentDto[] = [];
+	replyId: string | null;
 
 	constructor(entity: CommentDb) {
 		this.id = entity.id;
@@ -36,6 +37,7 @@ export class CommentDto {
 		this.deleted = entity.deleted || false;
 		this.edited = entity.edited || false;
 		this.createdAt = new Date(entity.created_at);
+		this.replyId = entity.reply_id;
 
 		if (entity.interactions) {
 			this.interactions = entity.interactions.map(

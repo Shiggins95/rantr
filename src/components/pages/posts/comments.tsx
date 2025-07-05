@@ -1,23 +1,32 @@
-import { CommentDto } from '@/src/types/comments.types';
-import { PostCommentHeader } from '@/src/components/pages/tabs/home/feed/posts/post-comment-header';
-import { Body } from '@ui/body';
-import { View } from 'tamagui';
-import { Collapsible } from '../../Collapsible';
-import { useCurrentUser } from '@/src/context/auth-context';
+import { useSupabaseInfiniteQuery } from '@/src/api/hooks/use-supabase-infinite-query';
 import {
 	getAnonReplyComments,
 	getReplyComments,
 } from '@/src/api/methods/comments/get-reply-comments';
-import { useSupabaseInfiniteQuery } from '@/src/api/hooks/use-supabase-infinite-query';
 import { CommentSkeleton } from '@/src/components/pages/posts/comment.skeleton';
+import { PostCommentHeader } from '@/src/components/pages/tabs/home/feed/posts/post-comment-header';
+import { spacing } from '@/src/constants/spacing';
+import { useCurrentUser } from '@/src/context/auth-context';
+import { CommentDto } from '@/src/types/comments.types';
+import { ArrowRight } from '@tamagui/lucide-icons';
+import { Body, BodyType } from '@ui/body';
+import { useRouter } from 'expo-router';
+import { Pressable, StyleSheet } from 'react-native';
+import { View } from 'tamagui';
+import { Collapsible } from '../../Collapsible';
 
 type CommentViewProps = {
 	comment: CommentDto;
 	depth?: number;
 };
 
+const MAX_COMMENT_DEPTH = 2;
+
 export const CommentView = ({ comment, depth = 0 }: CommentViewProps) => {
 	const currentUser = useCurrentUser();
+	const styles = useStyles();
+	const router = useRouter();
+
 	const {
 		data: replies,
 		isLoading: loadingReplies,
@@ -31,6 +40,18 @@ export const CommentView = ({ comment, depth = 0 }: CommentViewProps) => {
 			userId: currentUser?.id,
 		},
 	);
+
+	const navigateToPostWithComments = () => {
+		router.push({
+			pathname: '/(app)/(out-of-tabs)/post/[id]/[commentId]/post',
+			params: {
+				id: comment.postId,
+				// use the parent id so that this comment is returned in the response
+				commentId: comment.replyId || '',
+				toComments: 'true',
+			},
+		});
+	};
 
 	const isLoading = loadingReplies || fetchingReplies;
 
@@ -69,6 +90,7 @@ export const CommentView = ({ comment, depth = 0 }: CommentViewProps) => {
 						<>
 							<Body>{comment.comment}</Body>
 							{replies &&
+								depth < MAX_COMMENT_DEPTH &&
 								replies.map((reply) => (
 									<CommentView
 										key={reply.id}
@@ -76,10 +98,33 @@ export const CommentView = ({ comment, depth = 0 }: CommentViewProps) => {
 										depth={depth + 1}
 									/>
 								))}
+							{comment.replies.length > 0 && depth >= MAX_COMMENT_DEPTH && (
+								<Pressable
+									style={styles.continueThread}
+									onPress={navigateToPostWithComments}
+								>
+									<Body c="$primary" variant={BodyType.small}>
+										Continue thread
+									</Body>
+									<ArrowRight size="$size.sm" c="$primary" />
+								</Pressable>
+							)}
 						</>
 					)}
 				</Collapsible>
 			</View>
 		</View>
 	);
+};
+
+const useStyles = () => {
+	return StyleSheet.create({
+		continueThread: {
+			paddingVertical: spacing.md,
+			paddingHorizontal: spacing.md,
+			flexDirection: 'row',
+			alignItems: 'center',
+			gap: spacing.sm,
+		},
+	});
 };

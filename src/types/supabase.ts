@@ -94,6 +94,8 @@ export type Database = {
           id: string
           original_comment: string | null
           post_id: string
+          reply_id: string | null
+          status: Database["public"]["Enums"]["comment_status"]
           user_id: string
         }
         Insert: {
@@ -104,6 +106,8 @@ export type Database = {
           id?: string
           original_comment?: string | null
           post_id: string
+          reply_id?: string | null
+          status?: Database["public"]["Enums"]["comment_status"]
           user_id: string
         }
         Update: {
@@ -114,6 +118,8 @@ export type Database = {
           id?: string
           original_comment?: string | null
           post_id?: string
+          reply_id?: string | null
+          status?: Database["public"]["Enums"]["comment_status"]
           user_id?: string
         }
         Relationships: [
@@ -136,6 +142,13 @@ export type Database = {
             columns: ["post_id"]
             isOneToOne: false
             referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_comments_reply"
+            columns: ["reply_id"]
+            isOneToOne: false
+            referencedRelation: "comments"
             referencedColumns: ["id"]
           },
           {
@@ -385,6 +398,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      comment_status: "ACTIVE" | "DELETED"
       interaction_type_enum: "up" | "down"
       post_type_enum: "RANT" | "ADVICE" | "OTHER"
       user_status: "SETUP_REQUIRED" | "COMPLETE" | "DELETED"
@@ -503,6 +517,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      comment_status: ["ACTIVE", "DELETED"],
       interaction_type_enum: ["up", "down"],
       post_type_enum: ["RANT", "ADVICE", "OTHER"],
       user_status: ["SETUP_REQUIRED", "COMPLETE", "DELETED"],
