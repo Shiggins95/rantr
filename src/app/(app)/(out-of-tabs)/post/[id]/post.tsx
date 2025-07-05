@@ -5,7 +5,7 @@ import { useSupabaseQuery } from '@/src/api/hooks/use-supabase-query';
 import { useCurrentUser } from '@/src/context/auth-context';
 import { getPost, getPostAnon } from '@/src/api/methods/posts/get-post';
 import { PostInteractions } from '@/src/components/pages/tabs/home/feed/posts/post-interactions';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { View } from 'tamagui';
 import { Body, BodyType } from '@ui/body';
 import { PostTag } from '@/src/components/pages/tabs/home/feed/posts/post-tag';
@@ -40,7 +40,8 @@ const SinglePostHeader = ({ post }: SinglePostHeaderProps) => {
 
 export default function PostFullPage() {
 	const router = useRouter();
-	const { id } = useLocalSearchParams();
+	const { id, toComments } = useLocalSearchParams();
+	const flatListRef = useRef<FlatList | null>(null);
 	const currentUser = useCurrentUser();
 	const { isLoading: isLoadingPost, data: post } = useSupabaseQuery(
 		['post', id],
@@ -75,6 +76,22 @@ export default function PostFullPage() {
 	const isLoading = isLoadingPost || isLoadingComments;
 
 	useEffect(() => {
+		if (!post || !comments || isLoading) return;
+		if (
+			toComments === 'true' &&
+			flatListRef.current &&
+			(post.commentCount || 0) > 0
+		) {
+			// Assuming the header is index 0, comments start at index 1
+			// But since you're using ListHeaderComponent, the first comment is at index 0
+			flatListRef.current.scrollToIndex({
+				index: 0,
+				animated: true,
+			});
+		}
+	}, [post, comments, toComments]);
+
+	useEffect(() => {
 		if (!post) return;
 		router.setParams({
 			user: JSON.stringify(post.user || {}),
@@ -87,8 +104,9 @@ export default function PostFullPage() {
 	};
 
 	const onEndReached = async () => {
-		console.log('getting next page§', hasNextPage);
-		await fetchNextPage();
+		if (hasNextPage) {
+			await fetchNextPage();
+		}
 	};
 
 	return (
@@ -96,6 +114,7 @@ export default function PostFullPage() {
 			{isLoading && <Headline>Loading...</Headline>}
 			{!isLoading && post && (
 				<FlatList
+					ref={flatListRef}
 					showsVerticalScrollIndicator={false}
 					bounces={(post.commentCount || 0) > 5}
 					data={comments}

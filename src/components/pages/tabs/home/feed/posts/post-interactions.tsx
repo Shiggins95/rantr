@@ -16,11 +16,13 @@ import { onSuccess } from '@/src/api/invalidations/post-interaction-mutation';
 type PostInteractionsProps = {
 	post: PostDto;
 	isFullPage?: boolean;
+	navigateToComments?: () => void;
 };
 
 export const PostInteractions = ({
 	post,
 	isFullPage,
+	navigateToComments,
 }: PostInteractionsProps) => {
 	// region state variables
 	const upVotes = Math.abs(post.upVotes);
@@ -154,7 +156,7 @@ export const PostInteractions = ({
 				/>
 			</Button>
 			{!isFullPage ? (
-				<Button variant="ghost" fd="row" p="$sm">
+				<Button variant="ghost" fd="row" p="$sm" onPress={navigateToComments}>
 					<MessageSquare size="$md" c="$color.textMuted" />
 					<Body c="$textMuted" variant={BodyType.smallMonospace}>
 						{commentCount}

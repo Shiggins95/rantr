@@ -15,13 +15,18 @@ type PostProps = {
 
 export const Post = ({ post }: PostProps) => {
 	const router = useRouter();
+	const navigateToPost = (toComments?: boolean) => {
+		router.navigate({
+			pathname: `/(app)/(out-of-tabs)/post/[id]/post`,
+			params: {
+				id: post.id,
+				toComments: toComments ? 'true' : 'false',
+			},
+		});
+	};
 
 	return (
-		<Pressable
-			onPress={() =>
-				router.navigate(`/(app)/(out-of-tabs)/post/${post.id}/post`)
-			}
-		>
+		<Pressable onPress={() => navigateToPost(false)}>
 			<View
 				f={1}
 				px="$md"
@@ -39,7 +44,10 @@ export const Post = ({ post }: PostProps) => {
 					{post.images.length > 0 && <ImageCarousel images={post.images} />}
 				</View>
 				<Body variant={BodyType.small}>{post.content}</Body>
-				<PostInteractions post={post} />
+				<PostInteractions
+					post={post}
+					navigateToComments={() => navigateToPost(true)}
+				/>
 			</View>
 		</Pressable>
 	);
