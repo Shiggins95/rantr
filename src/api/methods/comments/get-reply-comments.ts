@@ -1,10 +1,10 @@
-import { SupabaseClient } from '@supabase/supabase-js';
-import { COMMENTS_PER_PAGE } from '@/src/constants/query';
 import {
 	ANON_COMMENTS_SCHEMA,
 	COMMENTS_SCHEMA,
 } from '@/src/api/schemas/comments.schema';
+import { COMMENTS_PER_PAGE } from '@/src/constants/query';
 import { CommentDto } from '@/src/types/comments.types';
+import { SupabaseClient } from '@supabase/supabase-js';
 
 export const getReplyComments = async (
 	{
