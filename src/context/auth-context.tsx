@@ -1,3 +1,12 @@
+import { createUser } from '@/src/api/methods/user/create-user';
+import { getUser } from '@/src/api/methods/user/get-user';
+import { updateUser } from '@/src/api/methods/user/update-user';
+import { UserDto } from '@/src/types/user.types';
+import { setStorageItem, StorageKey } from '@/src/utils/storage';
+import { getSupabaseAuthenticatedClient, supabase } from '@/src/utils/supabase';
+import { AuthChangeEvent, Session } from '@supabase/supabase-js';
+import { useToastController } from '@tamagui/toast';
+import { useRouter } from 'expo-router';
 import {
 	createContext,
 	Dispatch,
@@ -7,15 +16,6 @@ import {
 	useEffect,
 	useState,
 } from 'react';
-import { getSupabaseAuthenticatedClient, supabase } from '@/src/utils/supabase';
-import { AuthChangeEvent, Session } from '@supabase/supabase-js';
-import { useRouter } from 'expo-router';
-import { setStorageItem, StorageKey } from '@/src/utils/storage';
-import { useToastController } from '@tamagui/toast';
-import { updateUser } from '@/src/api/methods/user/update-user';
-import { UserDto } from '@/src/types/user.types';
-import { getUser } from '@/src/api/methods/user/get-user';
-import { createUser } from '@/src/api/methods/user/create-user';
 
 type AuthContextType = {
 	signOut: () => void;
@@ -165,6 +165,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
 	const signOut = async () => {
 		setGuestMode(false);
+		setUser(undefined);
 		await supabase.auth.signOut();
 		router.navigate('/(auth)');
 	};

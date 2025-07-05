@@ -1,11 +1,14 @@
+import { Page } from '@/src/components/page';
+import { useAuthContext } from '@/src/context/auth-context';
+import { Button } from '@ui/button';
 import React, { type FC } from 'react';
-import { Body } from '@ui/body';
 
 const Profile: FC = () => {
 	// region define auth
 	// endregion
 
 	// region hooks
+	const { signOut } = useAuthContext();
 	// endregion
 
 	// region state variables
@@ -24,9 +27,9 @@ const Profile: FC = () => {
 	// endregion
 
 	return (
-		<>
-			<Body>Profile</Body>
-		</>
+		<Page isSafeAreaTop>
+			<Button onPress={signOut}>Sign out</Button>
+		</Page>
 	);
 };
 

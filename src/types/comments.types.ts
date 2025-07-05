@@ -28,6 +28,7 @@ export class CommentDto {
 	interactions: CommentInteractionDto[] = [];
 	replies: CommentDto[] = [];
 	replyId: string | null;
+	isLocal?: boolean = false;
 
 	constructor(entity: CommentDb) {
 		this.id = entity.id;

@@ -1,14 +1,14 @@
 import { useAuthContext } from '@/src/context/auth-context';
-import { XStack, YStack } from 'tamagui';
-import { Body, BodyType } from '@ui/body';
-import { UserAvatar } from '@ui/user-avatar';
-import { getTimestamp } from '@/src/utils/date';
-import Popover from '@ui/popover';
-import { useState } from 'react';
-import { ChevronLeft, MoreVertical } from '@tamagui/lucide-icons';
-import { Button } from '@ui/button';
 import { UserDto } from '@/src/types/user.types';
+import { getTimestamp } from '@/src/utils/date';
+import { ChevronLeft, MoreVertical } from '@tamagui/lucide-icons';
+import { Body, BodyType } from '@ui/body';
+import { Button } from '@ui/button';
+import Popover from '@ui/popover';
+import { UserAvatar } from '@ui/user-avatar';
+import { useState } from 'react';
 import { Pressable } from 'react-native';
+import { XStack, YStack } from 'tamagui';
 
 type PostCommentHeaderProps = {
 	createdAt: Date;
@@ -56,7 +56,13 @@ export const PostCommentHeader = ({
 	const [openMenu, setOpenMenu] = useState(false);
 
 	if (guestMode || !user)
-		return <AnonPostBar withNav={withNav} createdAt={createdAt} />;
+		return (
+			<AnonPostBar
+				withNav={withNav}
+				createdAt={createdAt}
+				onBackPress={onBackPress}
+			/>
+		);
 
 	return (
 		<XStack pb="$md" jc="space-between">

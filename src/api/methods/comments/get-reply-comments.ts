@@ -13,10 +13,8 @@ export const getReplyComments = async (
 		parentId,
 	}: { userId?: string; postId: string; parentId?: string },
 	supabase: SupabaseClient,
-	_page: unknown = 0,
+	lastCursor: unknown = new Date().toISOString(),
 ) => {
-	const page = Number(_page);
-
 	if (!parentId) return [];
 
 	const { data, error } = await supabase
@@ -25,22 +23,22 @@ export const getReplyComments = async (
 		.eq('my_interaction.user_id', userId)
 		.eq('post_id', postId)
 		.eq('reply_id', parentId)
+		.lt('created_at', lastCursor)
 		.limit(1, { referencedTable: 'comments' })
 		.order('created_at', { ascending: false })
 		.order('created_at', { referencedTable: 'comments', ascending: false })
-		.range(page, page + COMMENTS_PER_PAGE - 1);
+		.limit(COMMENTS_PER_PAGE);
 
 	if (error) throw error;
 
 	return data.map((comment) => new CommentDto(comment));
 };
+
 export const getAnonReplyComments = async (
 	{ postId, parentId }: { userId?: string; postId: string; parentId?: string },
 	supabase: SupabaseClient,
-	_page: unknown = 0,
+	lastCursor: unknown = new Date().toISOString(),
 ) => {
-	const page = Number(_page);
-
 	if (!parentId) return [];
 
 	const { data, error } = await supabase
@@ -48,10 +46,11 @@ export const getAnonReplyComments = async (
 		.select(ANON_COMMENTS_SCHEMA)
 		.eq('post_id', postId)
 		.eq('reply_id', parentId)
+		.lt('created_at', lastCursor)
 		.limit(1, { referencedTable: 'comments' })
 		.order('created_at', { ascending: false })
 		.order('created_at', { referencedTable: 'comments', ascending: false })
-		.range(page, page + COMMENTS_PER_PAGE - 1);
+		.limit(COMMENTS_PER_PAGE);
 
 	if (error) throw error;
 

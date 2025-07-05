@@ -9,15 +9,15 @@ import { SupabaseClient } from '@supabase/supabase-js';
 export const getPosts = async (
 	{ userId }: { userId?: string },
 	supabase: SupabaseClient,
-	_page: unknown = 0,
+	lastCursor: unknown = new Date().toISOString(),
 ) => {
-	const page = Number(_page);
 	const { data, error } = await supabase
 		.from('posts')
 		.select(MULTI_POSTS_SCHEMA)
+		.lt('created_at', lastCursor)
 		.eq('my_interaction.user_id', userId)
 		.order('created_at', { ascending: false })
-		.range(page, page + POSTS_PER_PAGE - 1);
+		.limit(POSTS_PER_PAGE);
 
 	if (error) throw error;
 
@@ -27,14 +27,14 @@ export const getPosts = async (
 export const getAnonPosts = async (
 	_: { userId?: string },
 	supabase: SupabaseClient,
-	_page: unknown = 0,
+	lastCursor: unknown = new Date().toISOString(),
 ) => {
-	const page = Number(_page);
 	const { data, error } = await supabase
 		.from('posts')
 		.select(ANON_MULTI_POSTS_SCHEMA)
+		.lt('created_at', lastCursor)
 		.order('created_at', { ascending: false })
-		.range(page, page + POSTS_PER_PAGE - 1);
+		.limit(POSTS_PER_PAGE);
 
 	if (error) throw error;
 

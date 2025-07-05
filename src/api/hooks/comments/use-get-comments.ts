@@ -3,7 +3,6 @@ import {
 	getAnonRootComments,
 	getRootComments,
 } from '@/src/api/methods/comments/get-root-comments';
-import { COMMENTS_PER_PAGE } from '@/src/constants/query';
 import { useCurrentUser } from '@/src/context/auth-context';
 
 type UseGetComments = {
@@ -22,10 +21,9 @@ export const useGetComments = ({ postId, enabled }: UseGetComments) => {
 		},
 		{
 			enabled,
-			getNextPageParam: (lastPage, allPages) => {
-				return lastPage?.length === COMMENTS_PER_PAGE
-					? allPages.length * COMMENTS_PER_PAGE
-					: undefined;
+			getNextPageParam: (lastPage) => {
+				if (lastPage.length === 0) return undefined;
+				return lastPage[lastPage.length - 1].createdAt.toISOString();
 			},
 		},
 	);

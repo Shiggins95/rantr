@@ -38,7 +38,7 @@ export function useSupabaseInfiniteQuery<TArgs, TPage extends object>(
 		queryKey: key,
 		queryFn: wrappedQueryFn,
 		...options,
-		initialPageParam: 0,
+		initialPageParam: new Date().toISOString(),
 	});
 
 	const pages =
