@@ -1,19 +1,18 @@
+import { Colours } from '@/src/constants/colours';
+import { spacing } from '@/src/constants/spacing';
 import { PostImageDto } from '@/src/types/post-images.types';
-import { forwardRef, useCallback, useMemo, useRef } from 'react';
+import { useColorScheme } from '@hooks/useColorScheme';
+import { RantrImage } from '@ui/image';
+import { RantrZoomableImage } from '@ui/zoomable-image';
+import { forwardRef, useCallback, useMemo } from 'react';
 import { Dimensions, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import Carousel, {
-	CarouselRenderItem,
 	ICarouselInstance,
 	Pagination,
 } from 'react-native-reanimated-carousel';
-import { View } from 'tamagui';
-import { RantrImage } from '@ui/image';
-import { spacing } from '@/src/constants/spacing';
-import { Colours } from '@/src/constants/colours';
-import { useColorScheme } from '@hooks/useColorScheme';
-import { RantrZoomableImage } from '@ui/zoomable-image';
 import { CarouselRenderItemInfo } from 'react-native-reanimated-carousel/lib/typescript/types';
+import { View } from 'tamagui';
 
 type ImageCarouselProps = {
 	images: PostImageDto[];

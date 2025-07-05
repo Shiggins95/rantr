@@ -35,15 +35,27 @@ module.exports = {
 				'@typescript-eslint/restrict-template-expressions': 'off',
 				'@typescript-eslint/consistent-type-assertions': 'off',
 				'react/display-name': 'off',
-				'@typescript-eslint/no-unused-vars': [
-					'error',
+				'@typescript-eslint/parameter-properties': [
+					2,
 					{
-						vars: 'all',
-						args: 'after-used',
-						ignoreRestSiblings: true,
-						caughtErrors: 'none',
+						allow: [
+							'public readonly',
+							'protected readonly',
+							'private readonly',
+						],
 					},
 				],
+				'@typescript-eslint/no-unnecessary-condition': 'off',
+				'no-unused-vars': 'off',
+				'@typescript-eslint/no-unused-vars': [
+					'warn',
+					{
+						argsIgnorePattern: '(^_|^[a-z]$)',
+						varsIgnorePattern: '(^_|^[a-z]$)',
+						caughtErrorsIgnorePattern: '(^_|^[a-z]$)',
+					},
+				],
+				'@typescript-eslint/no-misused-promises': 'off',
 			},
 		},
 	],
