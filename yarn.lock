@@ -3613,6 +3613,18 @@
   resolved "https://registry.yarnpkg.com/@tamagui/z-index-stack/-/z-index-stack-1.127.2.tgz#441d39fffcf8f56a1ff7a4a2ddf070c78aa86461"
   integrity sha512-tqWczwXrIOgA7ao8DpujvS2/UW7x0IP1kps0DTfNbuwqlcXKgvgvP7hnLzac+1Z8/ZqX2fDLbrJxWDWeaLb9Jg==
 
+"@tanstack/query-core@5.81.5":
+  version "5.81.5"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.81.5.tgz#14e0cc778bad8bc11d1cf130709910d8a353bb73"
+  integrity sha512-ZJOgCy/z2qpZXWaj/oxvodDx07XcQa9BF92c0oINjHkoqUPsmm3uG08HpTaviviZ/N9eP1f9CM7mKSEkIo7O1Q==
+
+"@tanstack/react-query@^5.81.5":
+  version "5.81.5"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.81.5.tgz#660dba8bb35f24c4cf3617b299a1e3990a3bb49e"
+  integrity sha512-lOf2KqRRiYWpQT86eeeftAGnjuTR35myTP8MXyvHa81VlomoAWNEd8x5vkcAfQefu0qtYCvyqLropFZqgI2EQw==
+  dependencies:
+    "@tanstack/query-core" "5.81.5"
+
 "@tokenizer/inflate@^0.2.6":
   version "0.2.7"
   resolved "https://registry.yarnpkg.com/@tokenizer/inflate/-/inflate-0.2.7.tgz#32dd9dfc9abe457c89b3d9b760fc0690c85a103b"
@@ -6357,6 +6369,11 @@ expo-blur@~14.0.3:
   version "14.0.3"
   resolved "https://registry.yarnpkg.com/expo-blur/-/expo-blur-14.0.3.tgz#656d6b2442bfbbfb2a6608c6bc1151b29bce6698"
   integrity sha512-BL3xnqBJbYm3Hg9t/HjNjdeY7N/q8eK5tsLYxswWG1yElISWZmMvrXYekl7XaVCPfyFyz8vQeaxd7q74ZY3Wrw==
+
+expo-clipboard@~7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/expo-clipboard/-/expo-clipboard-7.0.1.tgz#31d61270e77a37d2a6b7ae9abf79e060497ef43b"
+  integrity sha512-rqYk0+WoqitPcPKxmMxSpLonX1E5Ije3LBYfnYMbH3xU5Gr8EAH9QnOWOi4BgahUPvcot6nbFEnx+DqARrmxKQ==
 
 expo-constants@~17.0.5, expo-constants@~17.0.8:
   version "17.0.8"
@@ -10316,6 +10333,13 @@ react-native-mmkv@^3.2.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/react-native-mmkv/-/react-native-mmkv-3.3.0.tgz#a0816babdf68afd2bfd881a48e28c8815795286b"
   integrity sha512-2iPjIJ+IAODXN35wm53EN6nv+hR/0NXLLiLWOdPA/0gXDB2dYVrr6MqvoiFpxhLhdj0B8fkf5ARNVavJaSvuuQ==
+
+react-native-react-query-devtools@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-react-query-devtools/-/react-native-react-query-devtools-1.5.0.tgz#6e0445936e9ddd37c9f27e0178c1f38c52e62ba8"
+  integrity sha512-No9idmfJd0Kf3ax3qr2nCVziUe6AeNl47JrOq0wTgHgyt1Iuki2RXt7Cik/39fOPA8nqz0kUg4mbW6bDD1a4jw==
+  dependencies:
+    fast-deep-equal "^3.1.3"
 
 react-native-reanimated-carousel@^4.0.2:
   version "4.0.2"

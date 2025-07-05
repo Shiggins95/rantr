@@ -1,10 +1,10 @@
-import { SupabaseClient } from '@supabase/supabase-js';
+import { useAuthContext } from '@/src/context/auth-context';
 import {
 	getSupabaseAnonymousClient,
 	getSupabaseAuthenticatedClient,
 } from '@/src/utils/supabase';
-import { useMutation, UseMutationOptions } from 'react-query';
-import { useAuthContext } from '@/src/context/auth-context';
+import { SupabaseClient } from '@supabase/supabase-js';
+import { useMutation, UseMutationOptions } from '@tanstack/react-query';
 
 type MutationFn<TArgs, TResult> = (
 	args: TArgs,

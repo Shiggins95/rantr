@@ -1,10 +1,10 @@
-import { useQuery, UseQueryOptions, QueryKey } from 'react-query';
-import { SupabaseClient } from '@supabase/supabase-js';
+import { useAuthContext } from '@/src/context/auth-context';
 import {
 	getSupabaseAnonymousClient,
 	getSupabaseAuthenticatedClient,
 } from '@/src/utils/supabase';
-import { useAuthContext } from '@/src/context/auth-context';
+import { SupabaseClient } from '@supabase/supabase-js';
+import { QueryKey, useQuery, UseQueryOptions } from '@tanstack/react-query';
 
 type QueryFn<TArgs, TResult> = (
 	args: TArgs,

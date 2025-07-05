@@ -52,6 +52,7 @@ export const CommentView = ({ comment, depth = 0 }: CommentViewProps) => {
 	return (
 		<View
 			bg="$background"
+			paddingRight={depth === 0 ? '$md' : 0}
 			paddingLeft="$md"
 			pt="$md"
 			pb={depth === 0 ? '$xs' : 0}
@@ -74,32 +75,22 @@ export const CommentView = ({ comment, depth = 0 }: CommentViewProps) => {
 						/>
 					}
 				>
-					{isLoading ? (
-						<Body>Loading...</Body>
-					) : (
-						<>
-							<Body>{comment.comment}</Body>
-							{replies &&
-								depth < MAX_COMMENT_DEPTH &&
-								replies.map((reply) => (
-									<CommentView
-										key={reply.id}
-										comment={reply}
-										depth={depth + 1}
-									/>
-								))}
-							{comment.replies.length > 0 && depth >= MAX_COMMENT_DEPTH && (
-								<Pressable
-									style={styles.continueThread}
-									onPress={navigateToPostWithComments}
-								>
-									<Body c="$primary" variant={BodyType.small}>
-										Continue thread
-									</Body>
-									<ArrowRight size="$size.sm" c="$primary" />
-								</Pressable>
-							)}
-						</>
+					<Body>{comment.comment}</Body>
+					{replies &&
+						depth < MAX_COMMENT_DEPTH &&
+						replies.map((reply) => (
+							<CommentView key={reply.id} comment={reply} depth={depth + 1} />
+						))}
+					{comment.replies.length > 0 && depth >= MAX_COMMENT_DEPTH && (
+						<Pressable
+							style={styles.continueThread}
+							onPress={navigateToPostWithComments}
+						>
+							<Body c="$primary" variant={BodyType.small}>
+								Continue thread
+							</Body>
+							<ArrowRight size="$size.sm" c="$primary" />
+						</Pressable>
 					)}
 				</Collapsible>
 			</View>

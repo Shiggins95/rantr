@@ -5,7 +5,6 @@ import {
 } from '@/src/utils/supabase';
 import { SupabaseClient } from '@supabase/supabase-js';
 import {
-	InfiniteData,
 	useInfiniteQuery,
 	UseInfiniteQueryOptions,
 } from '@tanstack/react-query';
@@ -22,7 +21,7 @@ export function useSupabaseInfiniteQuery<TArgs, TPage extends object>(
 	args: TArgs,
 	options: Omit<
 		UseInfiniteQueryOptions<TPage[], Error, TPage[]>,
-		'queryKey' | 'queryFn' | 'initialPageParam'
+		'queryKey' | 'queryFn'
 	>,
 ) {
 	const { guestMode } = useAuthContext();
@@ -34,19 +33,10 @@ export function useSupabaseInfiniteQuery<TArgs, TPage extends object>(
 		return queryFn(args, supabase, pageParam);
 	};
 
-	const query = useInfiniteQuery<TPage[], Error, TPage[]>({
+	return useInfiniteQuery<TPage[], Error, TPage[]>({
 		queryKey: key,
 		queryFn: wrappedQueryFn,
 		...options,
 		initialPageParam: 0,
 	});
-
-	const pages =
-		(query.data as InfiniteData<TPage[], unknown> | undefined)?.pages ?? [];
-	const flatData = pages.flat();
-
-	return {
-		...query,
-		data: flatData,
-	};
 }

@@ -10,6 +10,7 @@ import { PostTag } from '@/src/components/pages/tabs/home/feed/posts/post-tag';
 import { useCurrentUser } from '@/src/context/auth-context';
 import { CommentDto } from '@/src/types/comments.types';
 import { PostDto } from '@/src/types/posts.types';
+import { useQueryClient } from '@tanstack/react-query';
 import { Body, BodyType } from '@ui/body';
 import { ExpandableImageCarousel } from '@ui/expandable-image-carousel';
 import { Headline, HeadlineType } from '@ui/healine';
@@ -44,6 +45,7 @@ const SinglePostHeader = ({ post }: SinglePostHeaderProps) => {
 
 export default function PostFullPage() {
 	// region state
+	const queryClient = useQueryClient();
 	const router = useRouter();
 	const { id, toComments, commentId } = useLocalSearchParams<{
 		id: string;
@@ -71,7 +73,6 @@ export default function PostFullPage() {
 	const {
 		isLoading: isLoadingComments,
 		fetchNextPage,
-		resetAndRefetch: resetAndRefetchComments,
 		hasNextPage,
 		data: comments,
 	} = useGetComments({ postId: id, enabled: !commentId });
@@ -80,7 +81,6 @@ export default function PostFullPage() {
 		isLoading: isLoadingReplyComments,
 		fetchNextPage: fetchNextReplyPage,
 		hasNextPage: hasNextReplyPage,
-		resetAndRefetch: resetAndRefetchReplies,
 		data: replies,
 	} = useGetReplies({ commentId: commentId, postId: id, enabled: !!commentId });
 
@@ -104,10 +104,9 @@ export default function PostFullPage() {
 
 	const onRefresh = async () => {
 		setRefreshing(true);
-		const commentsToRefresh = commentId
-			? resetAndRefetchReplies
-			: resetAndRefetchComments;
-		await commentsToRefresh();
+		queryClient.removeQueries({ queryKey: ['post', id] });
+		queryClient.removeQueries({ queryKey: ['comments', id] });
+		queryClient.removeQueries({ queryKey: ['replies'] });
 		await refetch();
 	};
 
@@ -178,7 +177,7 @@ export default function PostFullPage() {
 									onRefresh={onRefresh}
 								/>
 							</TouchableWithoutFeedback>
-							<AddCommentWidget title={post.title} />
+							{currentUser && <AddCommentWidget post={post} />}
 						</View>
 					</>
 				)}

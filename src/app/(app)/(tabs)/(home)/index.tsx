@@ -7,6 +7,7 @@ import { POSTS_PER_PAGE } from '@/src/constants/query';
 import { spacing } from '@/src/constants/spacing';
 import { useCurrentUser } from '@/src/context/auth-context';
 import { PostDto } from '@/src/types/posts.types';
+import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { View } from 'tamagui';
@@ -14,8 +15,9 @@ import { View } from 'tamagui';
 export default function HomeScreen() {
 	const [currentTag, setCurrentTag] = useState('');
 	const currentUser = useCurrentUser();
+	const queryClient = useQueryClient();
 
-	const { data, fetchNextPage, hasNextPage, isFetching, resetAndRefetch } =
+	const { data, fetchNextPage, hasNextPage, isFetching, refetch } =
 		useSupabaseInfiniteQuery(
 			['posts'],
 			currentUser ? getPosts : getAnonPosts,
@@ -35,7 +37,8 @@ export default function HomeScreen() {
 	};
 
 	const handleRefresh = async () => {
-		void resetAndRefetch();
+		queryClient.removeQueries({ queryKey: ['posts'] });
+		void refetch();
 	};
 
 	const renderItem = useCallback(({ item }: { item: PostDto }) => {

@@ -8,7 +8,8 @@ export const Input = styled(BaseInput, {
 		variant: {
 			default: {},
 			invisible: {
-				borderColor: 'transparent',
+				// borderColor: 'transparent',
+				flex: 1,
 				focusStyle: {
 					borderColor: 'transparent',
 				},

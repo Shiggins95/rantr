@@ -6,6 +6,7 @@ import { Database } from '@/src/types/supabase';
 import { UserDbBase, UserDto } from '@/src/types/user.types';
 
 export type CommentDbBase = Database['public']['Tables']['comments']['Row'];
+export type CommentInsert = Database['public']['Tables']['comments']['Insert'];
 export type CommentDb = CommentDbBase & {
 	user?: UserDbBase;
 	interactions?: CommentInteractionDb[];

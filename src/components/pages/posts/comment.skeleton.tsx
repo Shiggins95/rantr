@@ -1,12 +1,13 @@
+import { darkColours } from '@/themes/themes';
 import React from 'react';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import { darkColours } from '@/themes/themes';
 import { View } from 'tamagui';
 
 export function CommentSkeleton({ depth = 0 }) {
 	return (
 		<View
 			bg="$background"
+			paddingRight={depth === 0 ? '$md' : 0}
 			paddingLeft="$md"
 			pt="$md"
 			pb="$xs"

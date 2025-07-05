@@ -8,6 +8,7 @@ import {
 	ThemeProvider,
 } from '@react-navigation/native';
 import { ToastProvider, ToastViewport } from '@tamagui/toast';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { CurrentToast } from '@ui/toast';
 import { useFonts } from 'expo-font';
 import { Slot } from 'expo-router';
@@ -16,7 +17,6 @@ import React, { useEffect } from 'react';
 import 'react-native-gesture-handler';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
-import { QueryClientProvider } from 'react-query';
 import { PortalProvider, TamaguiProvider } from 'tamagui';
 
 if (__DEV__) {

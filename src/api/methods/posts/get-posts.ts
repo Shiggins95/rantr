@@ -1,10 +1,10 @@
-import { SupabaseClient } from '@supabase/supabase-js';
-import { PostDto } from '@/src/types/posts.types';
-import { POSTS_PER_PAGE } from '@/src/constants/query';
 import {
 	ANON_MULTI_POSTS_SCHEMA,
 	MULTI_POSTS_SCHEMA,
 } from '@/src/api/schemas/posts.schema';
+import { POSTS_PER_PAGE } from '@/src/constants/query';
+import { PostDto } from '@/src/types/posts.types';
+import { SupabaseClient } from '@supabase/supabase-js';
 
 export const getPosts = async (
 	{ userId }: { userId?: string },

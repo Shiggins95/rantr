@@ -17,6 +17,8 @@ type LocalProps = {
 	marginTop?: boolean;
 	marginVertical?: boolean;
 	variant?: 'default' | 'invisible';
+	maxWidth?: number;
+	customPaddingBottom?: number;
 };
 
 export type InputErrorTypes = {
@@ -56,15 +58,25 @@ export const ControlledInputField = (props: ControlledInputFieldProps) => {
 
 const InputField = forwardRef<TextInput, InputFieldProps>(
 	(
-		{ label, marginVertical, marginBottom, marginTop, variant, ...rest },
+		{
+			label,
+			marginVertical,
+			marginBottom,
+			marginTop,
+			variant,
+			maxWidth,
+			customPaddingBottom,
+			...rest
+		},
 		ref,
 	) => {
 		return (
 			<YStack
 				my={marginVertical ? '$sm' : 0}
-				pb={marginBottom ? '$sm' : 0}
+				pb={customPaddingBottom || marginBottom ? '$sm' : 0}
 				pt={marginTop ? '$sm' : 0}
-				f={1}
+				maxWidth={maxWidth}
+				f={variant === 'invisible' ? 1 : undefined}
 			>
 				{!!label && (
 					<Body variant={BodyType.small} mb="$sm">
