@@ -26,6 +26,7 @@ export const RantrImage = ({ src, width, height, resizeMode }: ImageProps) => {
 		<Image
 			style={imageStyle as StyleProp<ImageStyle>}
 			source={{ uri: src }}
+			cachePolicy="memory-disk"
 			placeholder={{ blurhash }}
 			contentFit="cover"
 			transition={1000}

@@ -5,18 +5,18 @@ import { useSupabaseQuery } from '@/src/api/hooks/use-supabase-query';
 import { useCurrentUser } from '@/src/context/auth-context';
 import { getPost, getPostAnon } from '@/src/api/methods/posts/get-post';
 import { PostInteractions } from '@/src/components/pages/tabs/home/feed/posts/post-interactions';
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { View } from 'tamagui';
 import { Body, BodyType } from '@ui/body';
 import { PostTag } from '@/src/components/pages/tabs/home/feed/posts/post-tag';
 import { PostDto } from '@/src/types/posts.types';
-import { FlatList } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import { CommentDto } from '@/src/types/comments.types';
-import { ImageCarousel } from '@ui/image-carousel';
 import { getRootComments } from '@/src/api/methods/comments/get-root-comments';
 import { CommentView } from '@/src/components/pages/posts/comments';
 import { useSupabaseInfiniteQuery } from '@/src/api/hooks/use-supabase-infinite-query';
 import { COMMENTS_PER_PAGE } from '@/src/constants/query';
+import { ExpandableImageCarousel } from '@ui/expandable-image-carousel';
 
 type SinglePostHeaderProps = {
 	post: PostDto;
@@ -26,11 +26,7 @@ const SinglePostHeader = ({ post }: SinglePostHeaderProps) => {
 	return (
 		<View px="$md">
 			<PostTag post={post} />
-			<View my="$md">
-				{post.images.length > 0 && (
-					<ImageCarousel isFullPage images={post.images} />
-				)}
-			</View>
+			<ExpandableImageCarousel renderType="post-full" post={post} />
 			<Headline variant={HeadlineType.h3Thin}>{post.title}</Headline>
 			<Body variant={BodyType.small}>{post.content}</Body>
 			<PostInteractions isFullPage post={post} />
@@ -82,8 +78,6 @@ export default function PostFullPage() {
 			flatListRef.current &&
 			(post.commentCount || 0) > 0
 		) {
-			// Assuming the header is index 0, comments start at index 1
-			// But since you're using ListHeaderComponent, the first comment is at index 0
 			flatListRef.current.scrollToIndex({
 				index: 0,
 				animated: true,
@@ -109,6 +103,11 @@ export default function PostFullPage() {
 		}
 	};
 
+	const postHeader = useMemo(() => {
+		if (!post || isLoading) return null;
+		return <SinglePostHeader post={post} />;
+	}, [post, isLoading, comments]);
+
 	return (
 		<Page withNavigationHeader isSafeAreaTop>
 			{isLoading && <Headline>Loading...</Headline>}
@@ -118,14 +117,18 @@ export default function PostFullPage() {
 					showsVerticalScrollIndicator={false}
 					bounces={(post.commentCount || 0) > 5}
 					data={comments}
-					contentContainerStyle={{
-						paddingBottom: 100,
-					}}
+					contentContainerStyle={styles.contentContainer}
 					renderItem={renderItem}
-					ListHeaderComponent={() => <SinglePostHeader post={post} />}
+					ListHeaderComponent={postHeader}
 					onEndReached={onEndReached}
 				/>
 			)}
 		</Page>
 	);
 }
+
+const styles = StyleSheet.create({
+	contentContainer: {
+		paddingBottom: 100,
+	},
+});
