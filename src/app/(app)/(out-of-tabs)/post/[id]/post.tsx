@@ -45,7 +45,11 @@ const SinglePostHeader = ({ post }: SinglePostHeaderProps) => {
 export default function PostFullPage() {
 	// region state
 	const router = useRouter();
-	const { id, toComments, commentId } = useLocalSearchParams();
+	const { id, toComments, commentId } = useLocalSearchParams<{
+		id: string;
+		toComments: 'true' | 'false';
+		commentId: string;
+	}>();
 	const flatListRef = useRef<FlatList | null>(null);
 	const insets = useSafeAreaInsets();
 	const currentUser = useCurrentUser();
@@ -61,7 +65,7 @@ export default function PostFullPage() {
 		refetch,
 	} = useSupabaseQuery(['post', id], currentUser ? getPost : getPostAnon, {
 		userId: currentUser?.id,
-		postId: id as string,
+		postId: id,
 	});
 
 	const {
@@ -70,7 +74,7 @@ export default function PostFullPage() {
 		resetAndRefetch: resetAndRefetchComments,
 		hasNextPage,
 		data: comments,
-	} = useGetComments({ postId: id as string, enabled: !commentId });
+	} = useGetComments({ postId: id, enabled: !commentId });
 
 	const {
 		isLoading: isLoadingReplyComments,
@@ -78,11 +82,7 @@ export default function PostFullPage() {
 		hasNextPage: hasNextReplyPage,
 		resetAndRefetch: resetAndRefetchReplies,
 		data: replies,
-	} = useGetReplies({
-		commentId: commentId as string,
-		postId: id as string,
-		enabled: !!commentId,
-	});
+	} = useGetReplies({ commentId: commentId, postId: id, enabled: !!commentId });
 
 	const isLoading = isLoadingPost || isLoadingComments;
 	// endregion
