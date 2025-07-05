@@ -1,19 +1,22 @@
-import React, { type FC } from 'react';
-import { Input, YStack } from 'tamagui';
 import { Body, BodyType } from '@ui/body';
-import { TextInputProps } from 'react-native';
+import React, { forwardRef } from 'react';
 import {
 	LiteralUnion,
 	RegisterOptions,
 	useController,
 	UseControllerProps,
 } from 'react-hook-form';
+import { TextInputProps } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
+import { YStack } from 'tamagui';
+import { Input } from './input';
 
 type LocalProps = {
-	label: string;
+	label?: string;
 	marginBottom?: boolean;
 	marginTop?: boolean;
 	marginVertical?: boolean;
+	variant?: 'default' | 'invisible';
 };
 
 export type InputErrorTypes = {
@@ -24,65 +27,61 @@ export type InputErrorTypes = {
 	>;
 };
 
-export type InputFieldProps = TextInputProps &
+export type ControlledInputFieldProps = TextInputProps &
 	LocalProps &
 	UseControllerProps &
 	InputErrorTypes;
 
-const InputField: FC<InputFieldProps> = ({
-	label,
-	marginVertical,
-	marginBottom,
-	marginTop,
-	...rest
-}) => {
-	// region define auth
-	// endregion
+export type InputFieldProps = TextInputProps & LocalProps;
 
-	// region hooks
-	const { rules, defaultValue, name } = rest;
+export const ControlledInputField = (props: ControlledInputFieldProps) => {
+	const { rules, defaultValue, name } = props;
 	const { field } = useController({
 		name,
 		rules,
 		defaultValue: defaultValue || '',
 	});
-	// endregion
-
-	// region state variables
-	// endregion
-
-	// region useMemos
-	// endregion
-
-	// region define apis
-	// endregion
-
-	// region methods
-	// endregion
-
-	// region useEffects
-	// endregion
 
 	return (
-		<YStack
-			my={marginVertical ? '$sm' : 0}
-			pb={marginBottom ? '$sm' : 0}
-			pt={marginTop ? '$sm' : 0}
-		>
-			<Body variant={BodyType.small} mb="$sm">
-				{label}
-			</Body>
-			<Input
-				{...rest}
-				onChangeText={(value: string) => {
-					field.onChange(value);
-					rest.onChangeText?.(value);
-				}}
-				borderRadius="$radius.l"
-				value={field.value}
-			/>
-		</YStack>
+		<InputField
+			{...props}
+			onChangeText={(value: string) => {
+				field.onChange(value);
+				props.onChangeText?.(value);
+			}}
+			value={field.value}
+		/>
 	);
 };
+
+const InputField = forwardRef<TextInput, InputFieldProps>(
+	(
+		{ label, marginVertical, marginBottom, marginTop, variant, ...rest },
+		ref,
+	) => {
+		return (
+			<YStack
+				my={marginVertical ? '$sm' : 0}
+				pb={marginBottom ? '$sm' : 0}
+				pt={marginTop ? '$sm' : 0}
+				f={1}
+			>
+				{!!label && (
+					<Body variant={BodyType.small} mb="$sm">
+						{label}
+					</Body>
+				)}
+				<Input
+					{...rest}
+					ref={ref}
+					variant={variant}
+					onChangeText={rest.onChangeText}
+					borderRadius="$radius.l"
+					value={rest.value}
+				/>
+			</YStack>
+		);
+	},
+);
 
 export default InputField;

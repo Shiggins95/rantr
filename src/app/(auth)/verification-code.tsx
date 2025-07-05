@@ -1,16 +1,16 @@
-import React, { type FC } from 'react';
 import { Page } from '@/src/components/page';
-import { Headline, HeadlineType } from '@ui/healine';
-import InputField from '@ui/input-field';
-import { supabase } from '@/src/utils/supabase';
-import { useLocalSearchParams } from 'expo-router';
-import { Text, View } from 'tamagui';
-import { Button } from '@ui/button';
-import { Body, BodyType } from '@ui/body';
 import RantrHeading from '@/src/components/rantr-heading';
-import { Pressable } from 'react-native';
+import { supabase } from '@/src/utils/supabase';
 import { useToastController } from '@tamagui/toast';
+import { Body, BodyType } from '@ui/body';
+import { Button } from '@ui/button';
+import { Headline, HeadlineType } from '@ui/healine';
+import { ControlledInputField } from '@ui/input-field';
+import { useLocalSearchParams } from 'expo-router';
+import React, { type FC } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { Pressable } from 'react-native';
+import { Text, View } from 'tamagui';
 
 const VerificationCode: FC = () => {
 	// region define auth
@@ -96,7 +96,7 @@ const VerificationCode: FC = () => {
 							<Body variant={BodyType.normal} my="$sm">
 								Please enter the 6-digit verification code in your emails.
 							</Body>
-							<InputField
+							<ControlledInputField
 								name="verificationCode"
 								marginVertical
 								label="Verification Code"

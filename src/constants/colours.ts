@@ -4,6 +4,7 @@ const tintColorDark = '#313131';
 export const Colours = {
 	light: {
 		text: '#111827',
+		pureBg: 'rgb(245,245,245)',
 		background: '#EEEEEE',
 		backgroundOpaque: 'rgba(238,238,238,0.41)',
 		background15: 'rgba(238,238,238,0.15)',
@@ -30,8 +31,9 @@ export const Colours = {
 	dark: {
 		text: '#F9FAFB',
 		textMuted: '#9CA3AF',
+		pureBg: 'rgba(20,20,20,1)',
 		background: 'rgba(20,20,20,0.7)',
-		backgroundOpaque: 'rgba(20,20,20,0.4)',
+		backgroundOpaque: 'rgba(20,20,20,1)',
 		backgroundSubtle: 'rgba(20,20,20,0.6)',
 		background15: 'rgba(20,20,20,0.15)',
 		background40: 'rgba(20,20,20,0.40)',

@@ -1,5 +1,4 @@
-import { GetThemeValueForKey, styled } from 'tamagui';
-import { Text } from 'tamagui';
+import { GetThemeValueForKey, styled, Text } from 'tamagui';
 
 export enum BodyType {
 	normal = 'normal',
@@ -17,6 +16,8 @@ export enum BodyType {
 	normalMonospace = 'normalMonospace',
 	smallMonospace = 'smallMonospace',
 	extraSmallMonospace = 'extraSmallMonospace',
+	extraSmall = 'extraSmall',
+	extraSmallBold = 'extraSmallBold',
 }
 
 const monospaceTypeface =
@@ -88,6 +89,14 @@ export const Body = styled(Text, {
 				fontWeight: '400',
 				fontSize: '$3',
 				fontFamily: monospaceTypeface,
+			},
+			[BodyType.extraSmall]: {
+				fontWeight: '400',
+				fontSize: '$3',
+			},
+			[BodyType.extraSmallBold]: {
+				fontSize: '$3',
+				fontWeight: '600',
 			},
 		},
 	} as const,

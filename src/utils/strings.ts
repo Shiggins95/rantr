@@ -1,5 +1,15 @@
 import { PostDto } from '@/src/types/posts.types';
 
+declare global {
+	interface String {
+		truncate(length: number): string;
+	}
+}
+
+String.prototype.truncate = function (length: number) {
+	return this.substring(0, length) + (this.length > length ? '...' : '');
+};
+
 export const getPostTypeColourFromPost = (post: PostDto) => {
 	let colour: '$rantTagText' | '$adviceTagText' | '$otherTagText' | '$lime' =
 		'$lime';

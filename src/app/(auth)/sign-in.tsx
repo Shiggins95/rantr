@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { supabase } from '@/src/utils/supabase';
-import { Text, View } from 'tamagui';
-import { Button } from '@ui/button';
 import { Page } from '@/src/components/page';
-import { useRouter } from 'expo-router';
-import InputField from '@ui/input-field';
-import { Headline, HeadlineType } from '@ui/healine';
 import RantrHeading from '@/src/components/rantr-heading';
-import { Body, BodyType } from '@ui/body';
+import { supabase } from '@/src/utils/supabase';
 import { ToastViewport, useToastController } from '@tamagui/toast';
+import { Body, BodyType } from '@ui/body';
+import { Button } from '@ui/button';
+import { Headline, HeadlineType } from '@ui/healine';
+import { ControlledInputField } from '@ui/input-field';
+import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { Text, View } from 'tamagui';
 
 export default function SignIn() {
 	const [loading, setLoading] = useState(false);
@@ -77,7 +77,7 @@ export default function SignIn() {
 								Enter your email address and we'll send you a verification code
 								to sign in.
 							</Body>
-							<InputField
+							<ControlledInputField
 								name="email"
 								marginVertical
 								label="Email"

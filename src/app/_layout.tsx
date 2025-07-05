@@ -1,23 +1,23 @@
-import React, { useEffect } from 'react';
-import { Slot } from 'expo-router';
+import { AuthProvider, useAuthContext } from '@/src/context/auth-context';
+import { queryClient } from '@/src/utils/query-client';
 import tamaguiConfig from '@/tamagui.config';
-import * as SplashScreen from 'expo-splash-screen';
+import { useColorScheme } from '@hooks/useColorScheme';
 import {
 	DarkTheme,
 	DefaultTheme,
 	ThemeProvider,
 } from '@react-navigation/native';
-import { TamaguiProvider, PortalProvider } from 'tamagui';
-import { useColorScheme } from '@hooks/useColorScheme';
-import { AuthProvider } from '@/src/context/auth-context';
-import { useFonts } from 'expo-font';
-import { useAuthContext } from '@/src/context/auth-context';
-import 'react-native-gesture-handler';
 import { ToastProvider, ToastViewport } from '@tamagui/toast';
-import { QueryClientProvider } from 'react-query';
 import { CurrentToast } from '@ui/toast';
-import { queryClient } from '@/src/utils/query-client';
+import { useFonts } from 'expo-font';
+import { Slot } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import React, { useEffect } from 'react';
+import 'react-native-gesture-handler';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
+import { QueryClientProvider } from 'react-query';
+import { PortalProvider, TamaguiProvider } from 'tamagui';
 
 if (__DEV__) {
 	require('../reactotron.config');
@@ -71,27 +71,34 @@ export default function RootLayout() {
 
 	return (
 		<GestureHandlerRootView>
-			<QueryClientProvider client={queryClient}>
-				<PortalProvider>
-					<ToastProvider>
-						<AuthProvider>
-							<TamaguiProvider
-								config={tamaguiConfig}
-								defaultTheme={colorScheme || 'light'}
-							>
-								<ThemeProvider
-									value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+			<KeyboardProvider>
+				<QueryClientProvider client={queryClient}>
+					<PortalProvider>
+						<ToastProvider>
+							<AuthProvider>
+								<TamaguiProvider
+									config={tamaguiConfig}
+									defaultTheme={colorScheme || 'light'}
 								>
-									<Slot />
-									<ToastViewport bottom={0} left={0} right={0} />
-									<ToastViewport name="top-toast" top={0} left={0} right={0} />
-									<CurrentToast />
-								</ThemeProvider>
-							</TamaguiProvider>
-						</AuthProvider>
-					</ToastProvider>
-				</PortalProvider>
-			</QueryClientProvider>
+									<ThemeProvider
+										value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+									>
+										<Slot />
+										<ToastViewport bottom={0} left={0} right={0} />
+										<ToastViewport
+											name="top-toast"
+											top={0}
+											left={0}
+											right={0}
+										/>
+										<CurrentToast />
+									</ThemeProvider>
+								</TamaguiProvider>
+							</AuthProvider>
+						</ToastProvider>
+					</PortalProvider>
+				</QueryClientProvider>
+			</KeyboardProvider>
 		</GestureHandlerRootView>
 	);
 }

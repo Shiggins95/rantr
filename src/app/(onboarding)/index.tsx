@@ -10,7 +10,7 @@ import { useToastController } from '@tamagui/toast';
 import { Body, BodyType } from '@ui/body';
 import { Button } from '@ui/button';
 import { Headline, HeadlineType } from '@ui/healine';
-import InputField from '@ui/input-field';
+import { ControlledInputField } from '@ui/input-field';
 import { ProfilePhotoPicker } from '@ui/profile-photo-picker';
 import { decode } from 'base64-arraybuffer';
 import * as FileSystem from 'expo-file-system';
@@ -135,19 +135,19 @@ export default function PersonalDetails() {
 								isImageCompressing={isImageCompressing}
 							/>
 						</YStack>
-						<InputField
+						<ControlledInputField
 							rules={{ required: true }}
 							name="username"
 							label="Username*"
 							textContentType="username"
 						/>
-						<InputField
+						<ControlledInputField
 							rules={{ required: true }}
 							name="firstName"
 							label="First name*"
 							textContentType="givenName"
 						/>
-						<InputField
+						<ControlledInputField
 							rules={{ required: true }}
 							name="lastName"
 							label="Last name*"
