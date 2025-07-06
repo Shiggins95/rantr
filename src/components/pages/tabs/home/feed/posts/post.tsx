@@ -15,19 +15,18 @@ type PostProps = {
 
 export const Post = ({ post }: PostProps) => {
 	const router = useRouter();
-	const navigateToPost = (toComments?: boolean) => {
+	const navigateToPost = () => {
 		router.navigate({
 			pathname: `/(app)/(out-of-tabs)/post/[id]/post`,
 			params: {
 				id: post.id,
-				toComments: toComments ? 'true' : 'false',
 			},
 		});
 	};
 
 	return (
 		<>
-			<Pressable onPress={() => navigateToPost(false)}>
+			<Pressable onPress={navigateToPost}>
 				<View
 					f={1}
 					px="$md"
@@ -46,7 +45,7 @@ export const Post = ({ post }: PostProps) => {
 					<PostInteractions
 						item={post}
 						type="post"
-						navigateToComments={() => navigateToPost(true)}
+						onCommentButtonPress={navigateToPost}
 					/>
 				</View>
 			</Pressable>

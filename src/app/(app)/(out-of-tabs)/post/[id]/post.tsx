@@ -47,9 +47,8 @@ export default function PostFullPage() {
 	// region state
 	const queryClient = useQueryClient();
 	const router = useRouter();
-	const { id, toComments, parentId, commentId } = useLocalSearchParams<{
+	const { id, parentId, commentId } = useLocalSearchParams<{
 		id: string;
-		toComments: 'true' | 'false';
 		parentId: string;
 		commentId: string;
 	}>();
@@ -61,7 +60,7 @@ export default function PostFullPage() {
 	const { height: screenHeight } = Dimensions.get('window');
 	const commentInsertedRef = useRef(false);
 	const [focussedComment, setFocussedComment] = useState<
-		CommentDto | undefined
+		(CommentDto & { depth: number }) | undefined
 	>();
 	// endregion
 
@@ -96,12 +95,13 @@ export default function PostFullPage() {
 		filterByCommentId: commentId,
 	});
 
-	const isLoading = isLoadingPost || isLoadingComments;
+	const isLoading =
+		isLoadingPost || isLoadingComments || isLoadingReplyComments;
 	// endregion
 
 	// region methods
-	const onCommentReplyPress = (comment: CommentDto) => {
-		setFocussedComment(comment);
+	const onCommentReplyPress = (comment: CommentDto, depth: number) => {
+		setFocussedComment({ ...comment, depth });
 		inputRef.current?.focus();
 	};
 
@@ -151,21 +151,7 @@ export default function PostFullPage() {
 	}, [post, isLoading]);
 	// endregion
 
-	// region useEffect
-	useEffect(() => {
-		const commentsToUse = parentId ? replies : comments;
-		const isLoadingToUse = parentId
-			? isLoadingReplyComments
-			: isLoadingComments;
-		if (!post || !commentsToUse || isLoadingToUse) return;
-		if (toComments === 'true' && flatListRef.current) {
-			flatListRef.current.scrollToIndex({
-				index: 0,
-				animated: true,
-			});
-		}
-	}, [post, comments, toComments, parentId, replies]);
-
+	// region useEffects
 	useEffect(() => {
 		console.log('post', post);
 		if (!post) return;

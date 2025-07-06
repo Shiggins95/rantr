@@ -1,5 +1,7 @@
 import { PRIVATE_USERS_SCHEMA } from '@/src/api/schemas/private-users.schema';
 
+export const MAX_COMMENT_DEPTH = 4;
+
 export const COMMENTS_SCHEMA = `
 	*,
 	user:rantr_users!fk_comments_user (

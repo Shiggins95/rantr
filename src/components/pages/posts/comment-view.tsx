@@ -1,4 +1,5 @@
 import { useGetReplies } from '@/src/api/hooks/comments/use-get-replies';
+import { MAX_COMMENT_DEPTH } from '@/src/api/schemas/comments.schema';
 import { CommentSkeleton } from '@/src/components/pages/posts/comment.skeleton';
 import { PostCommentHeader } from '@/src/components/pages/tabs/home/feed/posts/post-comment-header';
 import { PostInteractions } from '@/src/components/pages/tabs/home/feed/posts/post-interactions';
@@ -23,11 +24,9 @@ import { Collapsible } from '../../Collapsible';
 type CommentViewProps = {
 	comment: CommentDto;
 	depth?: number;
-	onCommentReplyPress: (comment: CommentDto) => void;
+	onCommentReplyPress: (comment: CommentDto, depth: number) => void;
 	onLongPress?: () => void;
 };
-
-const MAX_COMMENT_DEPTH = 4;
 
 export const CommentView = ({
 	comment,
@@ -61,7 +60,6 @@ export const CommentView = ({
 				id: comment.postId,
 				// use the parent id so that this comment is returned in the response
 				parentId: comment.replyId || '',
-				toComments: 'true',
 				commentId: comment.id,
 			},
 		});
@@ -82,10 +80,6 @@ export const CommentView = ({
 		};
 	});
 
-	if (depth === 2) {
-		console.log('comment', comment);
-	}
-
 	useEffect(() => {
 		if (isLoading) {
 			colourProgress.value = 0;
@@ -99,7 +93,7 @@ export const CommentView = ({
 	}, [comment.isLocal, isLoading]);
 
 	const triggerCommentReply = () => {
-		onCommentReplyPress(comment);
+		onCommentReplyPress(comment, depth);
 	};
 
 	if (isLoading && depth === 0) {

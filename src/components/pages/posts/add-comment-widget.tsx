@@ -46,7 +46,7 @@ type AddCommentWidgetProps = {
 	post: PostDto;
 	flatListRef: RefObject<FlatList | null>;
 	onCommentAdd: () => void;
-	replyToComment?: CommentDto;
+	replyToComment?: CommentDto & { depth: number };
 	clearReplyToComment: () => void;
 };
 
@@ -187,6 +187,7 @@ export const AddCommentWidget = forwardRef<TextInput, AddCommentWidgetProps>(
 					post_id: post.id,
 					user_id: currentUser.id,
 					reply_id: replyToComment ? replyToComment.id : undefined,
+					depth: replyToComment?.depth || 0,
 				});
 				if (!replyToComment) {
 					flatListRef.current?.scrollToOffset({

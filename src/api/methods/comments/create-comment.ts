@@ -7,15 +7,19 @@ import {
 import { SupabaseClient } from '@supabase/supabase-js';
 
 export const createComment = async (
-	commentBody: CommentInsert,
+	commentBody: CommentInsert & { depth: number },
 	supabase: SupabaseClient,
 ) => {
+	const { depth, ...rest } = commentBody;
 	const { data, error } = await supabase
 		.from('comments')
-		.insert(commentBody)
+		.insert(rest)
 		.select(COMMENTS_SCHEMA)
 		.single();
 	if (error) throw error;
 
-	return new CommentDto(data as CommentDb);
+	return {
+		entity: new CommentDto(data as CommentDb),
+		depth,
+	};
 };

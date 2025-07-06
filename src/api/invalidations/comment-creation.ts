@@ -1,6 +1,9 @@
+import { MAX_COMMENT_DEPTH } from '@/src/api/schemas/comments.schema';
 import { CommentDto } from '@/src/types/comments.types';
 import { PostDto } from '@/src/types/posts.types';
 import { queryClient } from '@/src/utils/query-client';
+
+type OnSuccessArgs = { entity: CommentDto; depth: number };
 
 const invalidateRest = (comment: CommentDto) => {
 	queryClient.setQueryData(
@@ -39,14 +42,13 @@ const invalidateRest = (comment: CommentDto) => {
 	);
 };
 
-export const onSuccessReplyCreate = (reply: CommentDto) => {
+export const onSuccessReplyCreate = ({ entity, depth }: OnSuccessArgs) => {
 	queryClient.setQueryData(
-		['replies', reply.replyId],
+		['replies', entity.replyId],
 		(
 			oldData: { pages: CommentDto[][] } | undefined,
 		): { pages: CommentDto[][]; pageParams?: unknown[] } => {
-			console.log('oldData', oldData);
-			const newItem = { ...reply, isLocal: true };
+			const newItem = { ...entity, isLocal: depth < MAX_COMMENT_DEPTH };
 			if (!oldData)
 				return { pages: [[newItem]], pageParams: [new Date().toISOString()] };
 
@@ -61,20 +63,20 @@ export const onSuccessReplyCreate = (reply: CommentDto) => {
 			};
 		},
 	);
-	invalidateRest(reply);
+	invalidateRest(entity);
 };
 
-export const onSuccessCommentCreate = (comment: CommentDto) => {
-	if (comment.replyId) {
-		return onSuccessReplyCreate(comment);
+export const onSuccessCommentCreate = ({ entity, depth }: OnSuccessArgs) => {
+	if (entity.replyId) {
+		return onSuccessReplyCreate({ entity, depth });
 	}
 
 	queryClient.setQueryData(
-		['comments', comment.postId],
+		['comments', entity.postId],
 		(
 			oldData: { pages: CommentDto[][] } | undefined,
 		): { pages: CommentDto[][]; pageParams?: unknown[] } => {
-			const newItem = { ...comment, isLocal: true } as CommentDto;
+			const newItem = { ...entity, isLocal: true } as CommentDto;
 			if (!oldData)
 				return { pages: [[newItem]], pageParams: [new Date().toISOString()] };
 
@@ -90,5 +92,5 @@ export const onSuccessCommentCreate = (comment: CommentDto) => {
 		},
 	);
 
-	invalidateRest(comment);
+	invalidateRest(entity);
 };
