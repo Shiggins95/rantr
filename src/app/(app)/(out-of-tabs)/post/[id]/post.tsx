@@ -58,6 +58,7 @@ export default function PostFullPage() {
 	const [refreshing, setRefreshing] = useState(false);
 	const inputRef = useRef<TextInput | null>(null);
 	const { height: screenHeight } = Dimensions.get('window');
+	const commentInsertedRef = useRef(false);
 	// endregion
 
 	// region queries
@@ -153,6 +154,13 @@ export default function PostFullPage() {
 			setRefreshing(false);
 		}
 	}, [comments, replies, post]);
+
+	useEffect(() => {
+		return () => {
+			if (!commentInsertedRef.current) return;
+			queryClient.removeQueries({ queryKey: ['comments', id] });
+		};
+	}, []);
 	// endregion
 
 	return (
@@ -177,7 +185,14 @@ export default function PostFullPage() {
 									onRefresh={onRefresh}
 								/>
 							</TouchableWithoutFeedback>
-							{currentUser && <AddCommentWidget post={post} />}
+							{currentUser && (
+								<AddCommentWidget
+									flatListRef={flatListRef}
+									ref={inputRef}
+									post={post}
+									onCommentAdd={() => (commentInsertedRef.current = true)}
+								/>
+							)}
 						</View>
 					</>
 				)}

@@ -11,14 +11,19 @@ import { useToastController } from '@tamagui/toast';
 import { Body, BodyType } from '@ui/body';
 import { Button } from '@ui/button';
 import InputField from '@ui/input-field';
-import { useMemo, useState } from 'react';
+import { forwardRef, RefObject, useMemo, useState } from 'react';
 import {
 	Dimensions,
+	FlatList,
 	Keyboard,
 	StyleSheet,
 	TouchableWithoutFeedback,
 } from 'react-native';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import {
+	Gesture,
+	GestureDetector,
+	TextInput,
+} from 'react-native-gesture-handler';
 import {
 	useKeyboardHandler,
 	useKeyboardState,
@@ -38,199 +43,220 @@ import { Text, View } from 'tamagui';
 
 type AddCommentWidgetProps = {
 	post: PostDto;
+	flatListRef: RefObject<FlatList | null>;
+	onCommentAdd: () => void;
 };
 
-export const AddCommentWidget = ({ post }: AddCommentWidgetProps) => {
-	// region state & vars
-	const { height: screenHeight, width: screenWidth } = Dimensions.get('window');
-	const translateY = useSharedValue(0);
-	const insets = useSafeAreaInsets();
-	const extraHeight = useSharedValue(0);
-	const baseExtraHeight = useSharedValue(0);
-	const theme = useColorScheme() ?? 'dark';
-	const { height: keyboardHeight } = useKeyboardState();
-	const currentUser = useCurrentUser();
-	const [visible, setVisible] = useState(false);
-	const [comment, setComment] = useState('');
-	const toast = useToastController();
-	// endregion
+export const AddCommentWidget = forwardRef<TextInput, AddCommentWidgetProps>(
+	({ post, flatListRef, onCommentAdd }, ref) => {
+		// region state & vars
+		const { height: screenHeight, width: screenWidth } =
+			Dimensions.get('window');
+		const translateY = useSharedValue(0);
+		const insets = useSafeAreaInsets();
+		const extraHeight = useSharedValue(0);
+		const baseExtraHeight = useSharedValue(0);
+		const theme = useColorScheme() ?? 'dark';
+		const { height: keyboardHeight } = useKeyboardState();
+		const currentUser = useCurrentUser();
+		const [visible, setVisible] = useState(false);
+		const [comment, setComment] = useState('');
+		const toast = useToastController();
+		// endregion
 
-	// region styles
-	const styles = useStyles();
-	const borderStyle = useMemo(() => {
-		return {
-			borderColor: visible ? Colours[theme].primary : 'transparent',
+		// region styles
+		const styles = useStyles();
+		const borderStyle = useMemo(() => {
+			return {
+				borderColor: visible ? Colours[theme].primary : 'transparent',
+			};
+		}, [visible]);
+
+		const maxAllowedHeight =
+			screenHeight - keyboardHeight - insets.top - HEADER_HEIGHT;
+
+		const animatedStyle = useAnimatedStyle(() => {
+			const paddingTopValue = interpolate(
+				translateY.value,
+				[0, 50],
+				[spacing.sm, 50],
+				Extrapolation.CLAMP,
+			);
+
+			return {
+				transform: [{ translateY: -translateY.value }],
+				...styles.container,
+				...borderStyle,
+				paddingBottom: insets.bottom + spacing.md,
+				paddingTop: paddingTopValue,
+				minHeight: INPUT_HEIGHT + extraHeight.value,
+				maxHeight: maxAllowedHeight,
+			};
+		});
+		// endregion
+
+		// region methods
+
+		const dismissKeyboard = () => {
+			Keyboard.dismiss();
 		};
-	}, [visible]);
 
-	const maxAllowedHeight =
-		screenHeight - keyboardHeight - insets.top - HEADER_HEIGHT;
-
-	const animatedStyle = useAnimatedStyle(() => {
-		const paddingTopValue = interpolate(
-			translateY.value,
-			[0, 50],
-			[spacing.sm, 50],
-			Extrapolation.CLAMP,
-		);
-
-		return {
-			transform: [{ translateY: -translateY.value }],
-			...styles.container,
-			...borderStyle,
-			paddingBottom: insets.bottom + spacing.md,
-			paddingTop: paddingTopValue,
-			minHeight: INPUT_HEIGHT + extraHeight.value,
-			maxHeight: maxAllowedHeight,
-		};
-	});
-	// endregion
-
-	// region gestures & animations
-
-	const dismissKeyboard = () => {
-		Keyboard.dismiss();
-	};
-
-	const panGesture = Gesture.Pan()
-		.onStart(() => {
-			baseExtraHeight.value = extraHeight.value;
-		})
-		.onUpdate((e) => {
-			'worklet';
-			const unclamped = baseExtraHeight.value - e.translationY;
-			const maxAllowed = Math.max(maxAllowedHeight - INPUT_HEIGHT, 0);
-
-			extraHeight.value = Math.max(Math.min(unclamped, maxAllowed), 0);
-		})
-		.onEnd((e) => {
-			'worklet';
-			const maxAllowed = Math.max(maxAllowedHeight - INPUT_HEIGHT, 0);
-
-			if (Math.abs(e.velocityY) > 200) {
-				cancelAnimation(extraHeight); // cancel any previous
-				const existing = extraHeight.value;
-				extraHeight.value = withDecay(
-					{
-						velocity: -e.velocityY,
-						clamp: [
-							e.velocityY < 0 ? 0 : -25,
-							e.velocityY < 0 ? maxAllowed + 25 : 25,
-						],
-						// We skip clamp to allow overshoot
-					},
-					() => {
-						'worklet';
-						if (existing <= 50) {
-							runOnJS(dismissKeyboard)();
-						}
-						if (extraHeight.value < 0) {
-							extraHeight.value = withSpring(0);
-						} else if (extraHeight.value > maxAllowed) {
-							extraHeight.value = withSpring(maxAllowed);
-						}
-					},
-				);
+		const clearInput = () => {
+			if (ref && 'current' in ref && ref.current) {
+				ref.current.clear();
+				ref.current.blur();
+				Keyboard.dismiss();
 			}
-		})
-		.enabled(visible);
+		};
+		// endregion
 
-	useKeyboardHandler(
-		{
-			onStart(e) {
+		// region gestures & animations
+		const panGesture = Gesture.Pan()
+			.onStart(() => {
+				baseExtraHeight.value = extraHeight.value;
+			})
+			.onUpdate((e) => {
 				'worklet';
-				runOnJS(setVisible)(e.progress === 1);
-			},
-			onMove: (event) => {
+				const unclamped = baseExtraHeight.value - e.translationY;
+				const maxAllowed = Math.max(maxAllowedHeight - INPUT_HEIGHT, 0);
+
+				extraHeight.value = Math.max(Math.min(unclamped, maxAllowed), 0);
+			})
+			.onEnd((e) => {
 				'worklet';
-				translateY.value = Math.max(event.height, 0);
+				const maxAllowed = Math.max(maxAllowedHeight - INPUT_HEIGHT, 0);
+
+				if (Math.abs(e.velocityY) > 200) {
+					cancelAnimation(extraHeight); // cancel any previous
+					const existing = extraHeight.value;
+					extraHeight.value = withDecay(
+						{
+							velocity: -e.velocityY,
+							clamp: [
+								e.velocityY < 0 ? 0 : -25,
+								e.velocityY < 0 ? maxAllowed + 25 : 25,
+							],
+							// We skip clamp to allow overshoot
+						},
+						() => {
+							'worklet';
+							if (existing <= 50) {
+								runOnJS(dismissKeyboard)();
+							}
+							if (extraHeight.value < 0) {
+								extraHeight.value = withSpring(0);
+							} else if (extraHeight.value > maxAllowed) {
+								extraHeight.value = withSpring(maxAllowed);
+							}
+						},
+					);
+				}
+			})
+			.enabled(visible);
+
+		useKeyboardHandler(
+			{
+				onStart(e) {
+					'worklet';
+					runOnJS(setVisible)(e.progress === 1);
+				},
+				onMove: (event) => {
+					'worklet';
+					translateY.value = Math.max(event.height, 0);
+				},
 			},
-		},
-		[],
-	);
-	// endregion
+			[],
+		);
+		// endregion
 
-	// region mutations
-	const { mutateAsync } = useSupabaseMutation(createComment, {
-		onSuccess: onSuccessCommentCreate,
-	});
-	const handleCommentCreate = async () => {
-		if (!currentUser) return;
-		try {
-			await mutateAsync({
-				comment,
-				post_id: post.id,
-				user_id: currentUser.id,
-			});
-		} catch (e) {
-			toast.show('Something went wrong', {
-				message: 'Something went wrong when creating your comment',
-				type: 'error',
-				viewportName: 'top-toast',
-			});
-		}
-	};
-	// endregion
+		// region mutations
+		const { mutateAsync } = useSupabaseMutation(createComment, {
+			onSuccess: onSuccessCommentCreate,
+		});
+		const handleCommentCreate = async () => {
+			if (!currentUser) return;
+			try {
+				await mutateAsync({
+					comment,
+					post_id: post.id,
+					user_id: currentUser.id,
+				});
+				flatListRef.current?.scrollToIndex({
+					index: 0,
+				});
+				clearInput();
+				onCommentAdd();
+			} catch (e) {
+				toast.show('Something went wrong', {
+					message: 'Something went wrong when creating your comment',
+					type: 'error',
+					viewportName: 'top-toast',
+				});
+			}
+		};
+		// endregion
 
-	return (
-		<GestureDetector gesture={panGesture}>
-			<Animated.View style={animatedStyle}>
-				{visible && (
-					<View
-						py="$sm"
-						position="absolute"
-						w={screenWidth}
-						fd="column"
-						px="$md"
-						jc="center"
-						pt={20}
-					>
+		return (
+			<GestureDetector gesture={panGesture}>
+				<Animated.View style={animatedStyle}>
+					{visible && (
 						<View
+							py="$sm"
 							position="absolute"
-							top={10}
-							left={(screenWidth / 5) * 2}
-							h={2}
-							w={screenWidth / 5}
-							bg="$primary40"
-						/>
-						<Text>
-							<Body variant={BodyType.extraSmall}>Commenting on</Body>{' '}
-							<Body variant={BodyType.extraSmallBold}>
-								{post.title.truncate(40)}
-							</Body>
-						</Text>
-					</View>
-				)}
-				<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-					<View
-						style={{
-							flex: 1,
-							flexDirection: 'row',
-							justifyContent: 'space-between',
-							alignItems: 'flex-start',
-						}}
-					>
-						<InputField
-							maxWidth={screenWidth - spacing.md * 4}
-							value={comment}
-							onChangeText={setComment}
-							placeholder="Add a comment"
-							variant="invisible"
-							multiline
-							maxLength={500}
-							customPaddingBottom={comment.split('\n').length > 5 ? 500 : 0}
-						/>
-						<View>
-							<Button variant="ghost" onPress={handleCommentCreate}>
-								<SendHorizontal size="$size.md" c="$primary" />
-							</Button>
+							w={screenWidth}
+							fd="column"
+							px="$md"
+							jc="center"
+							pt={20}
+						>
+							<View
+								position="absolute"
+								top={10}
+								left={(screenWidth / 5) * 2}
+								h={2}
+								w={screenWidth / 5}
+								bg="$primary40"
+							/>
+							<Text>
+								<Body variant={BodyType.extraSmall}>Commenting on</Body>{' '}
+								<Body variant={BodyType.extraSmallBold}>
+									{post.title.truncate(40)}
+								</Body>
+							</Text>
 						</View>
-					</View>
-				</TouchableWithoutFeedback>
-			</Animated.View>
-		</GestureDetector>
-	);
-};
+					)}
+					<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+						<View
+							style={{
+								flex: 1,
+								flexDirection: 'row',
+								justifyContent: 'space-between',
+								alignItems: 'flex-start',
+							}}
+						>
+							<InputField
+								maxWidth={screenWidth - spacing.md * 4}
+								value={comment}
+								onChangeText={setComment}
+								placeholder="Add a comment"
+								variant="invisible"
+								multiline
+								ref={ref}
+								maxLength={500}
+								customPaddingBottom={comment.split('\n').length > 5 ? 500 : 0}
+							/>
+							<View>
+								<Button variant="ghost" onPress={handleCommentCreate}>
+									<SendHorizontal size="$size.md" c="$primary" />
+								</Button>
+							</View>
+						</View>
+					</TouchableWithoutFeedback>
+				</Animated.View>
+			</GestureDetector>
+		);
+	},
+);
 
 const useStyles = () => {
 	const theme = useColorScheme() ?? 'dark';

@@ -11,7 +11,6 @@ export const getRootComments = async (
 	supabase: SupabaseClient,
 	lastCursor: unknown = 0,
 ) => {
-	console.log('lastCursor', lastCursor);
 	const { data, error } = await supabase
 		.from('comments')
 		.select(COMMENTS_SCHEMA)

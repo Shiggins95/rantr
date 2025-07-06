@@ -17,7 +17,5 @@ export const createComment = async (
 		.single();
 	if (error) throw error;
 
-	console.log('inserted comment', data);
-
 	return new CommentDto(data as CommentDb);
 };
