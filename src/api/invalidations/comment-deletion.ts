@@ -49,7 +49,7 @@ export const onSuccessDeleteReply = (comment: CommentDto) => {
 
 			return {
 				...oldData,
-				pages: oldData.pages.map((page, idx) => {
+				pages: oldData.pages.map((page) => {
 					return page.filter((item) => item.id !== comment.id);
 				}),
 			};
