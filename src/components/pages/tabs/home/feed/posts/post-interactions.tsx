@@ -131,6 +131,8 @@ export const PostInteractions = ({
 	}, [totalVotes, myInteraction]);
 	// endregion
 
+	const areCommentsDisabled = (item as PostDto).disableComments || false;
+
 	// endregion useEffects
 	useEffect(() => {
 		setMyInteraction(myInteractionDirection);
@@ -171,7 +173,7 @@ export const PostInteractions = ({
 					c={myInteraction === 'down' ? '$accent' : '$color.textMuted'}
 				/>
 			</Button>
-			{!isFullPage ? (
+			{!isFullPage && !areCommentsDisabled && (
 				<Button
 					disabled={item.deleted}
 					variant="ghost"
@@ -184,7 +186,9 @@ export const PostInteractions = ({
 						{commentCount < 0 ? 0 : commentCount}
 					</Body>
 				</Button>
-			) : (
+			)}
+
+			{isFullPage && !areCommentsDisabled && (
 				<View fd="row" p="$sm" gap="$sm">
 					<MessageSquare size="$md" c="$color.textMuted" />
 					<Body c="$textMuted" variant={BodyType.smallMonospace}>

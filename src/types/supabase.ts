@@ -280,6 +280,7 @@ export type Database = {
           content: string
           created_at: string
           deleted: boolean | null
+          disable_comments: boolean
           id: string
           title: string
           type: Database["public"]["Enums"]["post_type_enum"]
@@ -289,6 +290,7 @@ export type Database = {
           content: string
           created_at?: string
           deleted?: boolean | null
+          disable_comments?: boolean
           id?: string
           title: string
           type?: Database["public"]["Enums"]["post_type_enum"]
@@ -298,6 +300,7 @@ export type Database = {
           content?: string
           created_at?: string
           deleted?: boolean | null
+          disable_comments?: boolean
           id?: string
           title?: string
           type?: Database["public"]["Enums"]["post_type_enum"]

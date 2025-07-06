@@ -1,12 +1,12 @@
-import { Database } from '@/src/types/supabase';
+import { CommentDb, CommentDto } from '@/src/types/comments.types';
 import {
 	PostInteractionCountDb,
 	PostInteractionDb,
 	PostInteractionDto,
 } from '@/src/types/interactions.types';
-import { CommentDb, CommentDto } from '@/src/types/comments.types';
-import { UserDbBase, UserDto } from '@/src/types/user.types';
 import { PostImageDb, PostImageDto } from '@/src/types/post-images.types';
+import { Database } from '@/src/types/supabase';
+import { UserDbBase, UserDto } from '@/src/types/user.types';
 
 export type PostType = Database['public']['Enums']['post_type_enum'];
 export type PostDbBase = Database['public']['Tables']['posts']['Row'];
@@ -35,6 +35,7 @@ export class PostDto {
 	images: PostImageDto[] = [];
 	myInteraction?: PostInteractionDto;
 	commentCount?: number;
+	disableComments?: boolean;
 
 	constructor(entity: PostDb) {
 		this.id = entity.id;
@@ -46,6 +47,8 @@ export class PostDto {
 		this.deleted = entity.deleted || false;
 		this.createdAt = new Date(entity.created_at);
 		this.type = entity.type;
+		this.disableComments = entity.disable_comments;
+
 		if (entity.interactions) {
 			this.interactions = entity.interactions.map(
 				(i) => new PostInteractionDto(i),

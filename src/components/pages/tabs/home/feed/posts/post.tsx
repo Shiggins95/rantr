@@ -7,7 +7,7 @@ import { ExpandableImageCarousel } from '@ui/expandable-image-carousel';
 import { Headline, HeadlineType } from '@ui/healine';
 import { useRouter } from 'expo-router';
 import { Pressable } from 'react-native';
-import { View } from 'tamagui';
+import { Text, View } from 'tamagui';
 
 type PostProps = {
 	post: PostDto;
@@ -45,9 +45,39 @@ export const Post = ({ post }: PostProps) => {
 						]}
 					/>
 					<PostTag post={post} />
-					<Headline variant={HeadlineType.h3Thin}>{post.title}</Headline>
+					<Text>
+						<Headline variant={HeadlineType.h3Thin}>
+							{post.title.truncate(100)}
+						</Headline>
+						{post.title.length > 100 && (
+							<>
+								{'    '}
+								<Body
+									textDecorationLine="underline"
+									c="$primary"
+									variant={BodyType.small}
+								>
+									see more
+								</Body>
+							</>
+						)}
+					</Text>
 					<ExpandableImageCarousel renderType="feed" post={post} />
-					<Body variant={BodyType.small}>{post.content}</Body>
+					<Text>
+						<Body variant={BodyType.small}>{post.content.truncate(200)}</Body>
+						{post.title.length > 50 && (
+							<>
+								{'    '}
+								<Body
+									textDecorationLine="underline"
+									c="$primary"
+									variant={BodyType.extraSmall}
+								>
+									see more
+								</Body>
+							</>
+						)}
+					</Text>
 					<PostInteractions
 						item={post}
 						type="post"

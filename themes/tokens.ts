@@ -1,6 +1,6 @@
-import { createTokens } from 'tamagui';
-import { darkColours } from '@/themes/themes';
 import { spacing } from '@/src/constants/spacing';
+import { darkColours } from '@/themes/themes';
+import { createTokens } from 'tamagui';
 
 export const tokens = createTokens({
 	color: darkColours.color,
@@ -17,6 +17,7 @@ export const tokens = createTokens({
 		md: 18,
 		lg: 24,
 		xl: 32,
+		xxl: 42,
 	},
 	zIndex: {
 		true: 0,

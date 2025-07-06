@@ -83,7 +83,10 @@ export default function PostFullPage() {
 		fetchNextPage,
 		hasNextPage,
 		data: comments,
-	} = useGetComments({ postId: id, enabled: !parentId });
+	} = useGetComments({
+		postId: id,
+		enabled: !parentId && !post?.disableComments,
+	});
 
 	const {
 		isLoading: isLoadingReplyComments,
@@ -93,7 +96,7 @@ export default function PostFullPage() {
 	} = useGetReplies({
 		commentId: parentId,
 		postId: id,
-		enabled: !!parentId,
+		enabled: !!parentId && !post?.disableComments,
 		filterByCommentId: commentId,
 	});
 
@@ -113,6 +116,7 @@ export default function PostFullPage() {
 	};
 
 	const renderItem = ({ item }: { item: CommentDto }) => {
+		if (post?.disableComments) return null;
 		return (
 			<CommentView
 				onEditCommentPress={onEditCommentPress}
@@ -206,7 +210,7 @@ export default function PostFullPage() {
 									onRefresh={onRefresh}
 								/>
 							</TouchableWithoutFeedback>
-							{currentUser && (
+							{currentUser && !post.disableComments && (
 								<AddCommentWidget
 									clearReplyToComment={clearFocussedComments}
 									flatListRef={flatListRef}

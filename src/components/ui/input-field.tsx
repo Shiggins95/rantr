@@ -18,6 +18,7 @@ type LocalProps = {
 	marginVertical?: boolean;
 	variant?: 'default' | 'invisible';
 	maxWidth?: number;
+	height?: number;
 	customPaddingBottom?: number;
 };
 
@@ -66,6 +67,7 @@ const InputField = forwardRef<TextInput, InputFieldProps>(
 			variant,
 			maxWidth,
 			customPaddingBottom,
+			height,
 			...rest
 		},
 		ref,
@@ -90,6 +92,9 @@ const InputField = forwardRef<TextInput, InputFieldProps>(
 					onChangeText={rest.onChangeText}
 					borderRadius="$radius.l"
 					value={rest.value}
+					h={height}
+					bg="$background"
+					borderColor="$color.borderColor"
 				/>
 			</YStack>
 		);

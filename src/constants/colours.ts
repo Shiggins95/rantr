@@ -63,7 +63,7 @@ export const Colours = {
 		buttonTextColour: '#F9FAFB',
 		shadowColour: '#181f2a',
 		overlay: 'rgba(0, 0, 0, 0.5)',
-		borderColor: 'rgba(255,255,255,0.2)',
+		borderColor: 'rgba(210,76,17,0.3)',
 		rantTagText: '#ff5a5f',
 		adviceTagText: '#4cbcac',
 		otherTagText: '#b458ff',
