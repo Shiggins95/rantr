@@ -2,20 +2,27 @@ import { SupabaseClient } from '@supabase/supabase-js';
 
 type PostInteractParams = {
 	userId: string;
-	postId: string;
+	entityId: string;
 	direction: 'up' | 'down';
+	type: 'post' | 'comment' | 'reply';
 };
 
 export const deletePostInteraction = async (
-	{ userId, postId, direction }: PostInteractParams,
+	{ userId, entityId, direction, type }: PostInteractParams,
 	supabase: SupabaseClient,
 ) => {
+	const column = type === 'post' ? 'post_id' : 'comment_id';
 	const { error } = await supabase
-		.from('post_interactions')
+		.from(type === 'post' ? 'post_interactions' : 'comment_interactions')
 		.delete()
 		.eq('user_id', userId)
-		.eq('post_id', postId);
+		.eq(column, entityId);
 
 	if (error) throw error;
-	return { postId, type: 'delete' as 'delete', direction: direction };
+	return {
+		entityId,
+		type: 'delete' as 'delete',
+		direction: direction,
+		tableType: type,
+	};
 };

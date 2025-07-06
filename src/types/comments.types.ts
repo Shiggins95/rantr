@@ -1,4 +1,5 @@
 import {
+	CommentInteractionCountDb,
 	CommentInteractionDb,
 	CommentInteractionDto,
 } from '@/src/types/interactions.types';
@@ -11,6 +12,8 @@ export type CommentDb = CommentDbBase & {
 	user?: UserDbBase;
 	interactions?: CommentInteractionDb[];
 	replies?: CommentDb[];
+	my_interaction?: CommentInteractionDb[] | null;
+	interaction_count?: CommentInteractionCountDb | null;
 };
 
 export class CommentDto {
@@ -29,6 +32,8 @@ export class CommentDto {
 	replies: CommentDto[] = [];
 	replyId: string | null;
 	isLocal?: boolean = false;
+	myInteraction?: CommentInteractionDto | null;
+	commentCount?: number;
 
 	constructor(entity: CommentDb) {
 		this.id = entity.id;
@@ -40,6 +45,15 @@ export class CommentDto {
 		this.edited = entity.edited || false;
 		this.createdAt = new Date(entity.created_at);
 		this.replyId = entity.reply_id;
+
+		if (entity.interaction_count) {
+			this.upVotes = entity.interaction_count.up_votes;
+			this.downVotes = entity.interaction_count.down_votes;
+		}
+
+		if (entity.my_interaction && entity.my_interaction.length > 0) {
+			this.myInteraction = new CommentInteractionDto(entity.my_interaction[0]);
+		}
 
 		if (entity.interactions) {
 			this.interactions = entity.interactions.map(

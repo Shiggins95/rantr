@@ -1,6 +1,7 @@
 import { useGetReplies } from '@/src/api/hooks/comments/use-get-replies';
 import { CommentSkeleton } from '@/src/components/pages/posts/comment.skeleton';
 import { PostCommentHeader } from '@/src/components/pages/tabs/home/feed/posts/post-comment-header';
+import { PostInteractions } from '@/src/components/pages/tabs/home/feed/posts/post-interactions';
 import { Colours } from '@/src/constants/colours';
 import { spacing } from '@/src/constants/spacing';
 import { CommentDto } from '@/src/types/comments.types';
@@ -117,6 +118,7 @@ export const CommentView = ({ comment, depth = 0 }: CommentViewProps) => {
 						}
 					>
 						<Body>{comment.comment}</Body>
+						<PostInteractions item={comment} type="comment" isFullPage />
 						{replies &&
 							depth < MAX_COMMENT_DEPTH &&
 							replies.map((reply) => (

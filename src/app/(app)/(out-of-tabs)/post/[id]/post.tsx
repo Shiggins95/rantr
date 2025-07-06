@@ -38,7 +38,7 @@ const SinglePostHeader = ({ post }: SinglePostHeaderProps) => {
 			<ExpandableImageCarousel renderType="post-full" post={post} />
 			<Headline variant={HeadlineType.h3Thin}>{post.title}</Headline>
 			<Body variant={BodyType.small}>{post.content}</Body>
-			<PostInteractions isFullPage post={post} />
+			<PostInteractions isFullPage item={post} type="post" />
 		</View>
 	);
 };
@@ -174,7 +174,6 @@ export default function PostFullPage() {
 								<FlatList
 									ref={flatListRef}
 									showsVerticalScrollIndicator={false}
-									bounces={(post.commentCount || 0) > 5}
 									data={commentId ? replies : comments}
 									contentContainerStyle={styles.contentContainer}
 									renderItem={renderItem}

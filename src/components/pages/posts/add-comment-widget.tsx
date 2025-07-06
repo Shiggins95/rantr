@@ -181,8 +181,8 @@ export const AddCommentWidget = forwardRef<TextInput, AddCommentWidgetProps>(
 					post_id: post.id,
 					user_id: currentUser.id,
 				});
-				flatListRef.current?.scrollToIndex({
-					index: 0,
+				flatListRef.current?.scrollToOffset({
+					offset: 0,
 				});
 				clearInput();
 				onCommentAdd();

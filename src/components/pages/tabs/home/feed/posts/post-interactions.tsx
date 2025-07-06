@@ -4,6 +4,7 @@ import { createPostInteraction } from '@/src/api/methods/posts/create-post-inter
 import { deletePostInteraction } from '@/src/api/methods/posts/delete-post-interaction';
 import { editPostInteraction } from '@/src/api/methods/posts/edit-post-interaction';
 import { useAuthContext } from '@/src/context/auth-context';
+import { CommentDto } from '@/src/types/comments.types';
 import { PostDto } from '@/src/types/posts.types';
 import { formatVoteCount } from '@/src/utils/numbers';
 import { ChevronDown, ChevronUp, MessageSquare } from '@tamagui/lucide-icons';
@@ -14,22 +15,24 @@ import { useEffect, useMemo, useState } from 'react';
 import { View } from 'tamagui';
 
 type PostInteractionsProps = {
-	post: PostDto;
+	item: PostDto | CommentDto;
 	isFullPage?: boolean;
 	navigateToComments?: () => void;
+	type: 'post' | 'comment' | 'reply';
 };
 
 export const PostInteractions = ({
-	post,
+	item,
 	isFullPage,
 	navigateToComments,
+	type,
 }: PostInteractionsProps) => {
 	// region state variables
-	const upVotes = Math.abs(post.upVotes);
-	const downVotes = Math.abs(post.downVotes);
-	const myInteractionDirection = post.myInteraction?.direction;
+	const upVotes = Math.abs(item.upVotes) || 0;
+	const downVotes = Math.abs(item.downVotes) || 0;
+	const myInteractionDirection = item.myInteraction?.direction;
 	const [totalVotes, setTotalVotes] = useState(upVotes - downVotes);
-	const [commentCount, setCommentCount] = useState(post.commentCount);
+	const [commentCount, setCommentCount] = useState(item.commentCount);
 	const [myInteraction, setMyInteraction] = useState(myInteractionDirection);
 
 	const { guestMode, user: currentUser } = useAuthContext();
@@ -55,8 +58,9 @@ export const PostInteractions = ({
 	const handleDeleteInteraction = async (direction: 'up' | 'down') => {
 		await deleteInteraction({
 			userId: currentUser?.id || '',
-			postId: post.id,
+			entityId: item.id,
 			direction,
+			type,
 		});
 
 		const multiplier = myInteraction === 'up' ? -1 : 1;
@@ -68,7 +72,8 @@ export const PostInteractions = ({
 		await editInteraction({
 			direction,
 			userId: currentUser?.id || '',
-			postId: post.id,
+			entityId: item.id,
+			type,
 		});
 
 		const multiplier = direction === 'up' ? 2 : -2;
@@ -80,7 +85,8 @@ export const PostInteractions = ({
 		await createInteraction({
 			direction,
 			userId: currentUser?.id || '',
-			postId: post.id,
+			entityId: item.id,
+			type,
 		});
 		const multiplier = direction === 'up' ? 1 : -1;
 		setTotalVotes((prev) => prev + multiplier);
@@ -130,8 +136,8 @@ export const PostInteractions = ({
 		// this feels super fucking dirty, but it's the best way to handle it when the post changes e.g. if the queries are invalidated
 		setMyInteraction(myInteractionDirection);
 		setTotalVotes(upVotes - downVotes);
-		setCommentCount(post.commentCount);
-	}, [post]);
+		setCommentCount(item.commentCount);
+	}, [item]);
 	// endregion
 
 	return (

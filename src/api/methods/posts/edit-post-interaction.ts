@@ -3,21 +3,23 @@ import { SupabaseClient } from '@supabase/supabase-js';
 type PostInteractParams = {
 	userId: string;
 	direction: 'up' | 'down';
-	postId: string;
+	entityId: string;
+	type: 'post' | 'comment' | 'reply';
 };
 
 export const editPostInteraction = async (
-	{ userId, direction, postId }: PostInteractParams,
+	{ userId, direction, entityId, type }: PostInteractParams,
 	supabase: SupabaseClient,
 ) => {
+	const column = type === 'post' ? 'post_id' : 'comment_id';
 	const { error } = await supabase
-		.from('post_interactions')
+		.from(type === 'post' ? 'post_interactions' : 'comment_interactions')
 		.update({
 			direction,
 		})
 		.eq('user_id', userId)
-		.eq('post_id', postId);
+		.eq(column, entityId);
 
 	if (error) throw error;
-	return { postId, direction, type: 'edit' as 'edit' };
+	return { entityId, direction, type: 'edit' as 'edit', tableType: type };
 };
