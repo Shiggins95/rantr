@@ -67,7 +67,7 @@ export const FullScreenImageCarousel = ({
 	const carousel = useMemo(() => {
 		return (
 			<ImageCarousel
-				mode="parallax"
+				mode={images.length > 1 ? 'parallax' : undefined}
 				height={height - spacing.md * 2}
 				width={width}
 				renderType="image-full"
