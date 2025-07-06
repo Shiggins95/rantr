@@ -23,6 +23,7 @@ type ImageCarouselProps = {
 	onClose?: () => void;
 	onSingleTap?: () => void;
 	startingIndex?: number;
+	mode?: 'parallax';
 };
 
 const { width: windowWidth } = Dimensions.get('window');
@@ -38,6 +39,7 @@ export const ImageCarousel = forwardRef<ICarouselInstance, ImageCarouselProps>(
 			onClose,
 			onSingleTap,
 			startingIndex,
+			mode,
 		},
 		ref,
 	) => {
@@ -101,6 +103,7 @@ export const ImageCarousel = forwardRef<ICarouselInstance, ImageCarouselProps>(
 		return (
 			<View f={1}>
 				<Carousel
+					mode={mode}
 					defaultIndex={startingIndex}
 					enabled={images.length > 1}
 					loop={false}

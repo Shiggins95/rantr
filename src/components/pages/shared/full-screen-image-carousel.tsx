@@ -1,19 +1,19 @@
-import { ImageCarousel } from '@ui/image-carousel';
-import { Dialog, View, XStack } from 'tamagui';
-import { PostImageDto } from '@/src/types/post-images.types';
-import { Dimensions, Pressable, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Colours } from '@/src/constants/colours';
 import { HEADER_HEIGHT, spacing } from '@/src/constants/spacing';
+import { PostImageDto } from '@/src/types/post-images.types';
+import { useColorScheme } from '@hooks/useColorScheme';
+import { X } from '@tamagui/lucide-icons';
+import { ImageCarousel } from '@ui/image-carousel';
+import { useMemo, useRef } from 'react';
+import { Dimensions, Pressable, StyleSheet } from 'react-native';
 import Animated, {
 	useAnimatedStyle,
 	useSharedValue,
 	withTiming,
 } from 'react-native-reanimated';
-import { useMemo, useRef } from 'react';
-import { X } from '@tamagui/lucide-icons';
-import { Colours } from '@/src/constants/colours';
-import { useColorScheme } from '@hooks/useColorScheme';
 import { ICarouselInstance } from 'react-native-reanimated-carousel';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Dialog, View, XStack } from 'tamagui';
 
 type FullScreenImageCarouselProps = {
 	postId: string;
@@ -67,6 +67,7 @@ export const FullScreenImageCarousel = ({
 	const carousel = useMemo(() => {
 		return (
 			<ImageCarousel
+				mode="parallax"
 				height={height - spacing.md * 2}
 				width={width}
 				renderType="image-full"
