@@ -37,7 +37,13 @@ export const Post = ({ post }: PostProps) => {
 					borderColor="$primary30"
 					marginHorizontal="$md"
 				>
-					<PostCommentHeader user={post.user!} createdAt={post.createdAt} />
+					<PostCommentHeader
+						user={post.user!}
+						createdAt={post.createdAt}
+						contextOptions={[
+							{ label: 'Report', onPress: () => console.log('report') },
+						]}
+					/>
 					<PostTag post={post} />
 					<Headline variant={HeadlineType.h3Thin}>{post.title}</Headline>
 					<ExpandableImageCarousel renderType="feed" post={post} />

@@ -1,13 +1,20 @@
 import { useGetReplies } from '@/src/api/hooks/comments/use-get-replies';
+import { useSupabaseMutation } from '@/src/api/hooks/common/use-supabase-mutation';
+import { onSuccessDeleteComment } from '@/src/api/invalidations/comment-deletion';
+import { deleteComment } from '@/src/api/methods/comments/delete-comment';
 import { MAX_COMMENT_DEPTH } from '@/src/api/schemas/comments.schema';
 import { CommentSkeleton } from '@/src/components/pages/posts/comment.skeleton';
-import { PostCommentHeader } from '@/src/components/pages/tabs/home/feed/posts/post-comment-header';
+import {
+	ContextOption,
+	PostCommentHeader,
+} from '@/src/components/pages/tabs/home/feed/posts/post-comment-header';
 import { PostInteractions } from '@/src/components/pages/tabs/home/feed/posts/post-interactions';
 import { Colours } from '@/src/constants/colours';
 import { spacing } from '@/src/constants/spacing';
 import { CommentDto } from '@/src/types/comments.types';
 import { useColorScheme } from '@hooks/useColorScheme';
 import { ArrowRight } from '@tamagui/lucide-icons';
+import { useToastController } from '@tamagui/toast';
 import { Body, BodyType } from '@ui/body';
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
@@ -42,6 +49,7 @@ export const CommentView = ({
 	const colourProgress = useSharedValue(0);
 	const [open, setOpen] = useState(depth <= 1 || comment.isLocal || false);
 	const onLongPress = depth === 0 ? () => setOpen(false) : _onLongPress;
+	const toast = useToastController();
 
 	const {
 		data: replies,
@@ -52,6 +60,11 @@ export const CommentView = ({
 		postId: comment.postId,
 		enabled: !comment.isLocal,
 	});
+
+	const { mutateAsync: deleteCommentMutation } = useSupabaseMutation(
+		deleteComment,
+		{ onSuccess: onSuccessDeleteComment },
+	);
 
 	const navigateToPostWithComments = () => {
 		router.push({
@@ -66,6 +79,21 @@ export const CommentView = ({
 	};
 
 	const isLoading = loadingReplies || fetchingReplies;
+
+	const handleDeleteComment = async () => {
+		try {
+			await deleteCommentMutation(comment);
+			toast.show('Comment deleted', {
+				message: 'Comment deleted successfully',
+				type: 'success',
+			});
+		} catch (e) {
+			toast.show('Something went wrong', {
+				message: 'Failed to delete comment',
+				type: 'error',
+			});
+		}
+	};
 
 	const animatedStyle = useAnimatedStyle(() => {
 		const backgroundColor = interpolateColor(
@@ -95,6 +123,10 @@ export const CommentView = ({
 	const triggerCommentReply = () => {
 		onCommentReplyPress(comment, depth);
 	};
+
+	const contextMenuOptions: ContextOption[] = [
+		{ label: 'Delete', onPress: handleDeleteComment },
+	];
 
 	if (isLoading && depth === 0) {
 		return <CommentSkeleton depth={depth} />;
@@ -129,6 +161,7 @@ export const CommentView = ({
 								<PostCommentHeader
 									createdAt={comment.createdAt}
 									user={comment.user}
+									contextOptions={contextMenuOptions}
 								/>
 							}
 						>

@@ -1,11 +1,11 @@
-import { useGlobalSearchParams, useRouter } from 'expo-router';
-import { View } from 'tamagui';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { PostCommentHeader } from '@/src/components/pages/tabs/home/feed/posts/post-comment-header';
 import { HEADER_HEIGHT } from '@/src/constants/spacing';
 import { useCurrentUser } from '@/src/context/auth-context';
-import { useMemo } from 'react';
 import { UserDto } from '@/src/types/user.types';
-import { PostCommentHeader } from '@/src/components/pages/tabs/home/feed/posts/post-comment-header';
+import { useGlobalSearchParams, useRouter } from 'expo-router';
+import { useMemo } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View } from 'tamagui';
 
 export const PostPageHeader = () => {
 	const { top } = useSafeAreaInsets();
@@ -49,6 +49,7 @@ export const PostPageHeader = () => {
 					onBackPress={handleBackPress}
 					createdAt={createdAt}
 					user={user}
+					contextOptions={[]}
 				/>
 			)}
 		</View>

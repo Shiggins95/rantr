@@ -164,14 +164,14 @@ export const PostInteractions = ({
 				<Button variant="ghost" fd="row" p="$sm" onPress={onCommentButtonPress}>
 					<MessageSquare size="$md" c="$color.textMuted" />
 					<Body c="$textMuted" variant={BodyType.smallMonospace}>
-						{commentCount}
+						{commentCount < 0 ? 0 : commentCount}
 					</Body>
 				</Button>
 			) : (
 				<View fd="row" p="$sm" gap="$sm">
 					<MessageSquare size="$md" c="$color.textMuted" />
 					<Body c="$textMuted" variant={BodyType.smallMonospace}>
-						{commentCount}
+						{commentCount < 0 ? 0 : commentCount}
 					</Body>
 				</View>
 			)}

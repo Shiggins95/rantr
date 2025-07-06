@@ -10,11 +10,17 @@ import { useState } from 'react';
 import { Pressable } from 'react-native';
 import { XStack, YStack } from 'tamagui';
 
+export type ContextOption = {
+	label: string;
+	onPress: () => void;
+};
+
 type PostCommentHeaderProps = {
 	createdAt: Date;
 	user: UserDto;
 	withNav?: boolean;
 	onBackPress?: () => void;
+	contextOptions: ContextOption[];
 };
 
 const AnonPostBar = ({
@@ -51,6 +57,7 @@ export const PostCommentHeader = ({
 	user,
 	withNav,
 	onBackPress,
+	contextOptions,
 }: PostCommentHeaderProps) => {
 	const { guestMode } = useAuthContext();
 	const [openMenu, setOpenMenu] = useState(false);
@@ -61,6 +68,7 @@ export const PostCommentHeader = ({
 				withNav={withNav}
 				createdAt={createdAt}
 				onBackPress={onBackPress}
+				contextOptions={contextOptions}
 			/>
 		);
 
@@ -90,7 +98,17 @@ export const PostCommentHeader = ({
 					width="$lg"
 					height="$lg"
 				>
-					<Button variant="ghost">Report</Button>
+					{contextOptions.map((option) => {
+						return (
+							<Button
+								key={option.label}
+								variant="ghost"
+								onPress={option.onPress}
+							>
+								{option.label}
+							</Button>
+						);
+					})}
 				</Popover>
 			</XStack>
 		</XStack>
