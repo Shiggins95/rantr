@@ -1,4 +1,3 @@
-import { MAX_COMMENT_DEPTH } from '@/src/api/schemas/comments.schema';
 import { CommentDto } from '@/src/types/comments.types';
 import { PostDto } from '@/src/types/posts.types';
 import { queryClient } from '@/src/utils/query-client';
@@ -42,13 +41,13 @@ const invalidateRest = (comment: CommentDto) => {
 	);
 };
 
-export const onSuccessReplyCreate = ({ entity, depth }: OnSuccessArgs) => {
+export const onSuccessReplyCreate = ({ entity }: OnSuccessArgs) => {
 	queryClient.setQueryData(
 		['replies', entity.replyId],
 		(
 			oldData: { pages: CommentDto[][] } | undefined,
 		): { pages: CommentDto[][]; pageParams?: unknown[] } => {
-			const newItem = { ...entity, isLocal: depth < MAX_COMMENT_DEPTH };
+			const newItem = { ...entity, isLocal: true };
 			if (!oldData)
 				return { pages: [[newItem]], pageParams: [new Date().toISOString()] };
 

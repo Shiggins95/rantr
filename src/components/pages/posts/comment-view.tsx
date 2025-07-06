@@ -22,6 +22,7 @@ import {
 	Trash,
 } from '@tamagui/lucide-icons';
 import { useToastController } from '@tamagui/toast';
+import { useQueryClient } from '@tanstack/react-query';
 import { Body, BodyType } from '@ui/body';
 import { useRouter } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
@@ -50,6 +51,7 @@ export const CommentView = ({
 	onLongPress: _onLongPress,
 	onEditCommentPress,
 }: CommentViewProps) => {
+	const queryClient = useQueryClient();
 	const styles = useStyles();
 	const router = useRouter();
 	const theme = useColorScheme() ?? 'dark';
@@ -79,6 +81,8 @@ export const CommentView = ({
 	);
 
 	const navigateToPostWithComments = () => {
+		queryClient.removeQueries({ queryKey: ['replies', comment.replyId] });
+		queryClient.removeQueries({ queryKey: ['replies', comment.id] });
 		router.push({
 			pathname: '/(app)/(out-of-tabs)/post/[id]/[parentId]/post',
 			params: {
