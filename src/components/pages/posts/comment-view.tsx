@@ -11,13 +11,14 @@ import {
 import { PostInteractions } from '@/src/components/pages/tabs/home/feed/posts/post-interactions';
 import { Colours } from '@/src/constants/colours';
 import { spacing } from '@/src/constants/spacing';
+import { useCurrentUser } from '@/src/context/auth-context';
 import { CommentDto } from '@/src/types/comments.types';
 import { useColorScheme } from '@hooks/useColorScheme';
-import { ArrowRight } from '@tamagui/lucide-icons';
+import { ArrowRight, Flag, Pencil, Trash } from '@tamagui/lucide-icons';
 import { useToastController } from '@tamagui/toast';
 import { Body, BodyType } from '@ui/body';
 import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import Animated, {
 	interpolateColor,
@@ -32,6 +33,7 @@ type CommentViewProps = {
 	comment: CommentDto;
 	depth?: number;
 	onCommentReplyPress: (comment: CommentDto, depth: number) => void;
+	onEditCommentPress: (comment: CommentDto) => void;
 	onLongPress?: () => void;
 };
 
@@ -40,6 +42,7 @@ export const CommentView = ({
 	depth = 0,
 	onCommentReplyPress,
 	onLongPress: _onLongPress,
+	onEditCommentPress,
 }: CommentViewProps) => {
 	const styles = useStyles();
 	const router = useRouter();
@@ -50,6 +53,7 @@ export const CommentView = ({
 	const [open, setOpen] = useState(depth <= 1 || comment.isLocal || false);
 	const onLongPress = depth === 0 ? () => setOpen(false) : _onLongPress;
 	const toast = useToastController();
+	const currentUser = useCurrentUser();
 
 	const {
 		data: replies,
@@ -124,9 +128,30 @@ export const CommentView = ({
 		onCommentReplyPress(comment, depth);
 	};
 
-	const contextMenuOptions: ContextOption[] = [
-		{ label: 'Delete', onPress: handleDeleteComment },
-	];
+	const contextMenuOptions = useMemo<ContextOption[]>(() => {
+		const options = [
+			{
+				label: 'Report',
+				icon: <Flag size="$size.md" c="$primary" />,
+				onPress: () => console.log('report'),
+			},
+		];
+
+		if (comment.userId === currentUser?.id) {
+			options.push({
+				label: 'Delete',
+				icon: <Trash size="$size.md" c="$primary" />,
+				onPress: handleDeleteComment,
+			});
+			options.push({
+				label: 'Edit',
+				icon: <Pencil size="$size.md" c="$primary" />,
+				onPress: () => onEditCommentPress(comment),
+			});
+		}
+
+		return options;
+	}, [comment, currentUser]);
 
 	if (isLoading && depth === 0) {
 		return <CommentSkeleton depth={depth} />;
@@ -162,10 +187,12 @@ export const CommentView = ({
 									createdAt={comment.createdAt}
 									user={comment.user}
 									contextOptions={contextMenuOptions}
+									deleted={comment.deleted}
 								/>
 							}
 						>
-							<Body>{comment.comment}</Body>
+							{!comment.deleted && <Body>{comment.comment}</Body>}
+							{comment.deleted && <Body c="$textMuted">Comment deleted</Body>}
 							<PostInteractions
 								item={comment}
 								type="comment"
@@ -175,6 +202,7 @@ export const CommentView = ({
 								depth < MAX_COMMENT_DEPTH &&
 								replies.map((reply) => (
 									<CommentView
+										onEditCommentPress={onEditCommentPress}
 										onCommentReplyPress={onCommentReplyPress}
 										key={reply.id}
 										comment={reply}

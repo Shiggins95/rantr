@@ -114,7 +114,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 			handleUserRetrieved(data, _session);
 			return;
 		} catch (e) {
-			console.log('error', e);
+			console.error('error', e);
 		}
 
 		toast.show("Couldn't complete sign in.", {

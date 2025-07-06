@@ -58,10 +58,12 @@ export default function PostFullPage() {
 	const [refreshing, setRefreshing] = useState(false);
 	const inputRef = useRef<TextInput | null>(null);
 	const { height: screenHeight } = Dimensions.get('window');
-	const commentInsertedRef = useRef(false);
+	const commentListModifiedRef = useRef(false);
 	const [focussedComment, setFocussedComment] = useState<
 		(CommentDto & { depth: number }) | undefined
 	>();
+	const [focussedCommentToEdit, setFocussedCommentToEdit] =
+		useState<CommentDto>();
 	// endregion
 
 	// region queries
@@ -105,9 +107,15 @@ export default function PostFullPage() {
 		inputRef.current?.focus();
 	};
 
+	const onEditCommentPress = (comment: CommentDto) => {
+		setFocussedCommentToEdit(comment);
+		inputRef.current?.focus();
+	};
+
 	const renderItem = ({ item }: { item: CommentDto }) => {
 		return (
 			<CommentView
+				onEditCommentPress={onEditCommentPress}
 				onCommentReplyPress={onCommentReplyPress}
 				comment={item}
 				depth={0}
@@ -138,11 +146,12 @@ export default function PostFullPage() {
 		// inputRef.current?.clear();
 		Keyboard.dismiss();
 	};
-	// endregion
 
-	if (parentId) {
-		console.log('commentId', parentId);
-	}
+	const clearFocussedComments = () => {
+		setFocussedComment(undefined);
+		setFocussedCommentToEdit(undefined);
+	};
+	// endregion
 
 	// region memos
 	const postHeader = useMemo(() => {
@@ -153,7 +162,6 @@ export default function PostFullPage() {
 
 	// region useEffects
 	useEffect(() => {
-		console.log('post', post);
 		if (!post) return;
 		router.setParams({
 			user: JSON.stringify(post.user || {}),
@@ -170,7 +178,7 @@ export default function PostFullPage() {
 
 	useEffect(() => {
 		return () => {
-			if (!commentInsertedRef.current) return;
+			if (!commentListModifiedRef.current) return;
 			queryClient.removeQueries({ queryKey: ['comments', id] });
 			queryClient.removeQueries({ queryKey: ['replies'] });
 		};
@@ -200,12 +208,13 @@ export default function PostFullPage() {
 							</TouchableWithoutFeedback>
 							{currentUser && (
 								<AddCommentWidget
-									clearReplyToComment={() => setFocussedComment(undefined)}
+									clearReplyToComment={clearFocussedComments}
 									flatListRef={flatListRef}
 									ref={inputRef}
 									post={post}
 									replyToComment={focussedComment}
-									onCommentAdd={() => (commentInsertedRef.current = true)}
+									focussedCommentToEdit={focussedCommentToEdit}
+									onCommentAdd={() => (commentListModifiedRef.current = true)}
 								/>
 							)}
 						</View>

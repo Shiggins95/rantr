@@ -1,5 +1,4 @@
 import { RantrImage } from '@ui/image';
-import { UserDto } from '@/src/types/user.types';
 import { View } from 'tamagui';
 
 export const USER_AVATAR_SIZES = {
@@ -9,11 +8,11 @@ export const USER_AVATAR_SIZES = {
 };
 
 type UserAvatarProps = {
-	user?: UserDto;
+	url?: string;
 	size?: keyof typeof USER_AVATAR_SIZES;
 };
 
-export const UserAvatar = ({ user, size = 'sm' }: UserAvatarProps) => {
+export const UserAvatar = ({ url, size = 'sm' }: UserAvatarProps) => {
 	return (
 		<View
 			w={USER_AVATAR_SIZES[size]}
@@ -24,7 +23,7 @@ export const UserAvatar = ({ user, size = 'sm' }: UserAvatarProps) => {
 			<RantrImage
 				width={USER_AVATAR_SIZES[size]}
 				height={USER_AVATAR_SIZES[size]}
-				src={user && !!user.profilePhoto ? user.profilePhoto : undefined}
+				src={url}
 			/>
 		</View>
 	);

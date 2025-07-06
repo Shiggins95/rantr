@@ -6,28 +6,36 @@ import { Body, BodyType } from '@ui/body';
 import { Button } from '@ui/button';
 import Popover from '@ui/popover';
 import { UserAvatar } from '@ui/user-avatar';
-import { useState } from 'react';
+import { ReactNode, useMemo, useState } from 'react';
 import { Pressable } from 'react-native';
-import { XStack, YStack } from 'tamagui';
+import { View, XStack, YStack } from 'tamagui';
 
 export type ContextOption = {
 	label: string;
 	onPress: () => void;
+	icon?: ReactNode;
+};
+
+type HeaderUser = Partial<UserDto> & {
+	headerColour?: '$primary' | '$primary50';
+	avatar?: string;
 };
 
 type PostCommentHeaderProps = {
 	createdAt: Date;
-	user: UserDto;
+	user: HeaderUser;
 	withNav?: boolean;
 	onBackPress?: () => void;
 	contextOptions: ContextOption[];
+	deleted?: boolean;
 };
 
 const AnonPostBar = ({
 	createdAt,
 	withNav,
 	onBackPress,
-}: Omit<PostCommentHeaderProps, 'user'>) => {
+	user,
+}: PostCommentHeaderProps) => {
 	return (
 		<XStack pb="$md" jc="space-between">
 			{withNav && (
@@ -38,8 +46,8 @@ const AnonPostBar = ({
 			<XStack gap="$md" alignItems="center">
 				<UserAvatar size="sm" />
 				<YStack gap="$sm">
-					<Body variant={BodyType.small} c="$primary">
-						@anon
+					<Body variant={BodyType.small} c={user.headerColour}>
+						{user.username}
 					</Body>
 				</YStack>
 			</XStack>
@@ -58,17 +66,43 @@ export const PostCommentHeader = ({
 	withNav,
 	onBackPress,
 	contextOptions,
+	deleted = false,
 }: PostCommentHeaderProps) => {
 	const { guestMode } = useAuthContext();
 	const [openMenu, setOpenMenu] = useState(false);
 
+	const userInfo = useMemo<HeaderUser>(() => {
+		if (guestMode || !user) {
+			return {
+				username: '@anon',
+				avatar: '',
+				headerColour: '$primary50',
+			};
+		}
+		if (deleted) {
+			return {
+				username: '-Deleted user-',
+				avatar: '',
+				headerColour: '$primary50',
+			};
+		}
+
+		return {
+			username: `@${user.username}`,
+			avatar: user.profilePhoto || '',
+			headerColour: '$primary',
+		};
+	}, [user, deleted, guestMode]);
+
 	if (guestMode || !user)
 		return (
 			<AnonPostBar
+				user={userInfo}
 				withNav={withNav}
 				createdAt={createdAt}
 				onBackPress={onBackPress}
 				contextOptions={contextOptions}
+				deleted={deleted}
 			/>
 		);
 
@@ -80,10 +114,10 @@ export const PostCommentHeader = ({
 				</Pressable>
 			)}
 			<XStack gap="$md" alignItems="center">
-				<UserAvatar size="sm" user={user} />
+				<UserAvatar size="sm" url={userInfo.avatar} />
 				<YStack gap="$sm">
-					<Body variant={BodyType.small} c="$primary">
-						@{user.username}
+					<Body variant={BodyType.small} c={userInfo.headerColour}>
+						{userInfo.username}
 					</Body>
 				</YStack>
 			</XStack>
@@ -92,6 +126,7 @@ export const PostCommentHeader = ({
 					{getTimestamp(createdAt)}
 				</Body>
 				<Popover
+					disabled={deleted}
 					open={openMenu}
 					setOpen={setOpenMenu}
 					icon={<MoreVertical size="$lg" c="$primary" />}
@@ -103,9 +138,21 @@ export const PostCommentHeader = ({
 							<Button
 								key={option.label}
 								variant="ghost"
-								onPress={option.onPress}
+								alignItems="center"
+								onPress={() => {
+									option.onPress();
+									setOpenMenu(false);
+								}}
 							>
-								{option.label}
+								<View
+									fd="row"
+									minWidth={100}
+									jc="space-between"
+									alignItems="center"
+								>
+									<Body variant={BodyType.small}>{option.label}</Body>
+									{option.icon}
+								</View>
 							</Button>
 						);
 					})}

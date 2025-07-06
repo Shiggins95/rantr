@@ -1,10 +1,12 @@
 import { useSupabaseMutation } from '@/src/api/hooks/common/use-supabase-mutation';
 import { onSuccessCommentCreate } from '@/src/api/invalidations/comment-creation';
+import { onSuccessCommentEdit } from '@/src/api/invalidations/comment-edit';
 import { createComment } from '@/src/api/methods/comments/create-comment';
+import { editComment } from '@/src/api/methods/comments/edit-comment';
 import { Colours } from '@/src/constants/colours';
 import { HEADER_HEIGHT, INPUT_HEIGHT, spacing } from '@/src/constants/spacing';
 import { useCurrentUser } from '@/src/context/auth-context';
-import { CommentDto } from '@/src/types/comments.types';
+import { CommentDto, CommentUpdate } from '@/src/types/comments.types';
 import { PostDto } from '@/src/types/posts.types';
 import { useColorScheme } from '@hooks/useColorScheme';
 import { SendHorizontal } from '@tamagui/lucide-icons';
@@ -47,12 +49,20 @@ type AddCommentWidgetProps = {
 	flatListRef: RefObject<FlatList | null>;
 	onCommentAdd: () => void;
 	replyToComment?: CommentDto & { depth: number };
+	focussedCommentToEdit?: CommentDto;
 	clearReplyToComment: () => void;
 };
 
 export const AddCommentWidget = forwardRef<TextInput, AddCommentWidgetProps>(
 	(
-		{ post, flatListRef, onCommentAdd, replyToComment, clearReplyToComment },
+		{
+			post,
+			flatListRef,
+			onCommentAdd,
+			replyToComment,
+			clearReplyToComment,
+			focussedCommentToEdit,
+		},
 		ref,
 	) => {
 		// region state & vars
@@ -175,14 +185,54 @@ export const AddCommentWidget = forwardRef<TextInput, AddCommentWidgetProps>(
 		// endregion
 
 		// region mutations
-		const { mutateAsync } = useSupabaseMutation(createComment, {
-			onSuccess: onSuccessCommentCreate,
-		});
+		const { mutateAsync: createCommentMutation } = useSupabaseMutation(
+			createComment,
+			{
+				onSuccess: onSuccessCommentCreate,
+			},
+		);
+		const { mutateAsync: editCommentMutation } = useSupabaseMutation(
+			editComment,
+			{
+				onSuccess: onSuccessCommentEdit,
+			},
+		);
+
+		const handleCommentEdit = async () => {
+			if (!focussedCommentToEdit || !comment) {
+				return;
+			}
+
+			try {
+				const payload: CommentUpdate = {
+					id: focussedCommentToEdit.id,
+					comment,
+				};
+				if (!focussedCommentToEdit.edited) {
+					payload.original_comment = focussedCommentToEdit.comment;
+				}
+				await editCommentMutation(payload);
+				toast.show('Comment updated', {
+					message: 'Your comment has been updated',
+					type: 'success',
+					viewportName: 'top-toast',
+				});
+				clearInput();
+				onCommentAdd();
+			} catch (e) {
+				console.error('error', e);
+				toast.show('Something went wrong', {
+					message: 'Something went wrong when creating your comment',
+					type: 'error',
+					viewportName: 'top-toast',
+				});
+			}
+		};
 
 		const handleCommentCreate = async () => {
-			if (!currentUser) return;
+			if (!currentUser || !comment) return;
 			try {
-				await mutateAsync({
+				await createCommentMutation({
 					comment,
 					post_id: post.id,
 					user_id: currentUser.id,
@@ -205,10 +255,26 @@ export const AddCommentWidget = forwardRef<TextInput, AddCommentWidgetProps>(
 				});
 			}
 		};
+
+		const handleSubmit = async () => {
+			if (focussedCommentToEdit) {
+				await handleCommentEdit();
+				return;
+			}
+
+			await handleCommentCreate();
+		};
 		// endregion
 
 		// region memos
 		const widgetTitle = useMemo(() => {
+			if (focussedCommentToEdit) {
+				return {
+					label: 'Editing',
+					content: focussedCommentToEdit.comment.truncate(40),
+				};
+			}
+
 			if (replyToComment) {
 				return {
 					label: 'Replying to',
@@ -220,7 +286,7 @@ export const AddCommentWidget = forwardRef<TextInput, AddCommentWidgetProps>(
 				label: 'Commenting on',
 				content: post.title.truncate(40),
 			};
-		}, [post, replyToComment]);
+		}, [post, replyToComment, focussedCommentToEdit]);
 		// endregion
 
 		useEffect(() => {
@@ -230,6 +296,12 @@ export const AddCommentWidget = forwardRef<TextInput, AddCommentWidgetProps>(
 				return;
 			}
 		}, [comment, visible]);
+
+		useEffect(() => {
+			if (focussedCommentToEdit) {
+				setComment(focussedCommentToEdit.comment);
+			}
+		}, [focussedCommentToEdit]);
 
 		return (
 			<GestureDetector gesture={panGesture}>
@@ -281,7 +353,7 @@ export const AddCommentWidget = forwardRef<TextInput, AddCommentWidgetProps>(
 								customPaddingBottom={comment.split('\n').length > 5 ? 500 : 0}
 							/>
 							<View>
-								<Button variant="ghost" onPress={handleCommentCreate}>
+								<Button variant="ghost" onPress={handleSubmit}>
 									<SendHorizontal size="$size.md" c="$primary" />
 								</Button>
 							</View>

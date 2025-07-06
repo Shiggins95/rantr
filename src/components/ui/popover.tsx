@@ -1,7 +1,7 @@
-import { GetThemeValueForKey, Popover } from 'tamagui';
-import { Dispatch, ReactNode, SetStateAction } from 'react';
 import { Button } from '@ui/button';
+import { Dispatch, ReactNode, SetStateAction } from 'react';
 import { Animated } from 'react-native';
+import { GetThemeValueForKey, Popover } from 'tamagui';
 import AnimatedNode = Animated.AnimatedNode;
 
 type PopoverProps = {
@@ -10,6 +10,7 @@ type PopoverProps = {
 	offset?: number;
 	children?: ReactNode;
 	icon?: ReactNode;
+	disabled?: boolean;
 	width?:
 		| number
 		| AnimatedNode
@@ -32,6 +33,7 @@ export default ({
 	icon,
 	width,
 	height,
+	disabled,
 }: PopoverProps) => {
 	return (
 		<Popover
@@ -43,7 +45,12 @@ export default ({
 			offset={offset}
 		>
 			<Popover.Trigger asChild p={0} m={0}>
-				<Button variant="icon" w={width || '$xl'} h={height || '$xl'}>
+				<Button
+					disabled={disabled}
+					variant="icon"
+					w={width || '$xl'}
+					h={height || '$xl'}
+				>
 					{icon}
 				</Button>
 			</Popover.Trigger>

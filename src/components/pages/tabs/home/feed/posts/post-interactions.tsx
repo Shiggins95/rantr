@@ -116,7 +116,7 @@ export const PostInteractions = ({
 
 			await handleEditInteraction(direction);
 		} catch (e) {
-			console.log('error', e);
+			console.error('error', e);
 		}
 	};
 	// endregion
@@ -142,26 +142,43 @@ export const PostInteractions = ({
 	return (
 		<View fd="row" alignItems="center" pt="$sm">
 			<Button
+				disabled={item.deleted}
 				variant="ghost"
 				onPress={() => handleInteraction('up')}
 				paddingLeft={0}
 			>
 				<ChevronUp
 					size="$md"
+					opacity={item.deleted ? 0.9 : 1}
 					c={myInteraction === 'up' ? '$primary' : '$color.textMuted'}
 				/>
 			</Button>
-			<Body variant={BodyType.smallMonospace} c={voteCountColour}>
+			<Body
+				opacity={item.deleted ? 0.5 : 1}
+				variant={BodyType.smallMonospace}
+				c={voteCountColour}
+			>
 				{formatVoteCount(totalVotes)}
 			</Body>
-			<Button variant="ghost" onPress={() => handleInteraction('down')}>
+			<Button
+				disabled={item.deleted}
+				variant="ghost"
+				onPress={() => handleInteraction('down')}
+			>
 				<ChevronDown
 					size="$md"
+					opacity={item.deleted ? 0.9 : 1}
 					c={myInteraction === 'down' ? '$accent' : '$color.textMuted'}
 				/>
 			</Button>
 			{!isFullPage ? (
-				<Button variant="ghost" fd="row" p="$sm" onPress={onCommentButtonPress}>
+				<Button
+					disabled={item.deleted}
+					variant="ghost"
+					fd="row"
+					p="$sm"
+					onPress={onCommentButtonPress}
+				>
 					<MessageSquare size="$md" c="$color.textMuted" />
 					<Body c="$textMuted" variant={BodyType.smallMonospace}>
 						{commentCount < 0 ? 0 : commentCount}
