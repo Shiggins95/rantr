@@ -9,7 +9,7 @@ export const COMMENTS_SCHEMA = `
 		*
 	),
 	my_interaction:comment_interactions!fk_comment_interactions_comment (user_id,direction),
-	interaction_count:comment_interaction_counts (up_votes,down_votes)
+	interaction_count:comment_interaction_counts (up_votes,down_votes,comment_count)
 `;
 
 export const ANON_COMMENTS_SCHEMA = `
@@ -20,5 +20,5 @@ export const ANON_COMMENTS_SCHEMA = `
 	replies:comments (
 		*
 	),
-	interaction_count:comment_interaction_counts (up_votes,down_votes)
+	interaction_count:comment_interaction_counts (up_votes,down_votes,comment_count)
 `;

@@ -17,14 +17,14 @@ import { View } from 'tamagui';
 type PostInteractionsProps = {
 	item: PostDto | CommentDto;
 	isFullPage?: boolean;
-	navigateToComments?: () => void;
+	onCommentButtonPress?: () => void;
 	type: 'post' | 'comment' | 'reply';
 };
 
 export const PostInteractions = ({
 	item,
 	isFullPage,
-	navigateToComments,
+	onCommentButtonPress,
 	type,
 }: PostInteractionsProps) => {
 	// region state variables
@@ -32,7 +32,7 @@ export const PostInteractions = ({
 	const downVotes = Math.abs(item.downVotes) || 0;
 	const myInteractionDirection = item.myInteraction?.direction;
 	const [totalVotes, setTotalVotes] = useState(upVotes - downVotes);
-	const [commentCount, setCommentCount] = useState(item.commentCount);
+	const [commentCount, setCommentCount] = useState(item.commentCount || 0);
 	const [myInteraction, setMyInteraction] = useState(myInteractionDirection);
 
 	const { guestMode, user: currentUser } = useAuthContext();
@@ -133,10 +133,9 @@ export const PostInteractions = ({
 
 	// endregion useEffects
 	useEffect(() => {
-		// this feels super fucking dirty, but it's the best way to handle it when the post changes e.g. if the queries are invalidated
 		setMyInteraction(myInteractionDirection);
 		setTotalVotes(upVotes - downVotes);
-		setCommentCount(item.commentCount);
+		setCommentCount(item.commentCount || 0);
 	}, [item]);
 	// endregion
 
@@ -162,7 +161,7 @@ export const PostInteractions = ({
 				/>
 			</Button>
 			{!isFullPage ? (
-				<Button variant="ghost" fd="row" p="$sm" onPress={navigateToComments}>
+				<Button variant="ghost" fd="row" p="$sm" onPress={onCommentButtonPress}>
 					<MessageSquare size="$md" c="$color.textMuted" />
 					<Body c="$textMuted" variant={BodyType.smallMonospace}>
 						{commentCount}

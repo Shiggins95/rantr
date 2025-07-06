@@ -33,7 +33,7 @@ export class CommentDto {
 	replyId: string | null;
 	isLocal?: boolean = false;
 	myInteraction?: CommentInteractionDto | null;
-	commentCount?: number;
+	commentCount: number = 0;
 
 	constructor(entity: CommentDb) {
 		this.id = entity.id;
@@ -49,6 +49,7 @@ export class CommentDto {
 		if (entity.interaction_count) {
 			this.upVotes = entity.interaction_count.up_votes;
 			this.downVotes = entity.interaction_count.down_votes;
+			this.commentCount = entity.interaction_count.comment_count;
 		}
 
 		if (entity.my_interaction && entity.my_interaction.length > 0) {

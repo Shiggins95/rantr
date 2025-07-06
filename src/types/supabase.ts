@@ -11,16 +11,19 @@ export type Database = {
     Tables: {
       comment_interaction_counts: {
         Row: {
+          comment_count: number
           comment_id: string
           down_votes: number
           up_votes: number
         }
         Insert: {
+          comment_count?: number
           comment_id: string
           down_votes?: number
           up_votes?: number
         }
         Update: {
+          comment_count?: number
           comment_id?: string
           down_votes?: number
           up_votes?: number
