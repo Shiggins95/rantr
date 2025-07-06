@@ -28,6 +28,8 @@ type PostCommentHeaderProps = {
 	onBackPress?: () => void;
 	contextOptions: ContextOption[];
 	deleted?: boolean;
+	type?: 'post' | 'comment';
+	edited?: boolean;
 };
 
 const AnonPostBar = ({
@@ -35,6 +37,8 @@ const AnonPostBar = ({
 	withNav,
 	onBackPress,
 	user,
+	edited,
+	deleted,
 }: PostCommentHeaderProps) => {
 	return (
 		<XStack pb="$md" jc="space-between">
@@ -52,6 +56,11 @@ const AnonPostBar = ({
 				</YStack>
 			</XStack>
 			<XStack gap="$md" alignItems="center">
+				{edited && !deleted && (
+					<Body c="$primary30" variant={BodyType.small}>
+						Edited
+					</Body>
+				)}
 				<Body c="$textMuted" variant={BodyType.small}>
 					{getTimestamp(createdAt)}
 				</Body>
@@ -67,6 +76,7 @@ export const PostCommentHeader = ({
 	onBackPress,
 	contextOptions,
 	deleted = false,
+	edited = false,
 }: PostCommentHeaderProps) => {
 	const { guestMode } = useAuthContext();
 	const [openMenu, setOpenMenu] = useState(false);
@@ -122,6 +132,11 @@ export const PostCommentHeader = ({
 				</YStack>
 			</XStack>
 			<XStack gap="$md" alignItems="center" jc="space-between">
+				{edited && !deleted && (
+					<Body c="$primary30" variant={BodyType.small}>
+						Edited
+					</Body>
+				)}
 				<Body c="$textMuted" variant={BodyType.extraSmallMonospace}>
 					{getTimestamp(createdAt)}
 				</Body>
@@ -146,7 +161,7 @@ export const PostCommentHeader = ({
 							>
 								<View
 									fd="row"
-									minWidth={100}
+									minWidth={150}
 									jc="space-between"
 									alignItems="center"
 								>

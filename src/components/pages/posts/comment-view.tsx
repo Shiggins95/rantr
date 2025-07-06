@@ -14,7 +14,13 @@ import { spacing } from '@/src/constants/spacing';
 import { useCurrentUser } from '@/src/context/auth-context';
 import { CommentDto } from '@/src/types/comments.types';
 import { useColorScheme } from '@hooks/useColorScheme';
-import { ArrowRight, Flag, Pencil, Trash } from '@tamagui/lucide-icons';
+import {
+	ArrowRight,
+	Flag,
+	Glasses,
+	Pencil,
+	Trash,
+} from '@tamagui/lucide-icons';
 import { useToastController } from '@tamagui/toast';
 import { Body, BodyType } from '@ui/body';
 import { useRouter } from 'expo-router';
@@ -54,6 +60,8 @@ export const CommentView = ({
 	const onLongPress = depth === 0 ? () => setOpen(false) : _onLongPress;
 	const toast = useToastController();
 	const currentUser = useCurrentUser();
+
+	const [showOriginal, setShowOriginal] = useState(false);
 
 	const {
 		data: replies,
@@ -150,8 +158,16 @@ export const CommentView = ({
 			});
 		}
 
+		if (comment.edited) {
+			options.push({
+				label: showOriginal ? 'Show current' : 'Show original',
+				icon: <Glasses size="$size.md" c="$primary" />,
+				onPress: () => setShowOriginal(!showOriginal),
+			});
+		}
+
 		return options;
-	}, [comment, currentUser]);
+	}, [comment, currentUser, showOriginal]);
 
 	if (isLoading && depth === 0) {
 		return <CommentSkeleton depth={depth} />;
@@ -188,10 +204,16 @@ export const CommentView = ({
 									user={comment.user}
 									contextOptions={contextMenuOptions}
 									deleted={comment.deleted}
+									type="comment"
+									edited={comment.edited}
 								/>
 							}
 						>
-							{!comment.deleted && <Body>{comment.comment}</Body>}
+							{!comment.deleted && (
+								<Body>
+									{showOriginal ? comment.originalComment : comment.comment}
+								</Body>
+							)}
 							{comment.deleted && <Body c="$textMuted">Comment deleted</Body>}
 							<PostInteractions
 								item={comment}
