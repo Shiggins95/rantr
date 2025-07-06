@@ -2,6 +2,7 @@ import { Page } from '@/src/components/page';
 import { useAuthContext } from '@/src/context/auth-context';
 import { Button } from '@ui/button';
 import React, { type FC } from 'react';
+import { View } from 'tamagui';
 
 const Profile: FC = () => {
 	// region define auth
@@ -28,7 +29,9 @@ const Profile: FC = () => {
 
 	return (
 		<Page isSafeAreaTop>
-			<Button onPress={signOut}>Sign out</Button>
+			<View px="$md">
+				<Button onPress={signOut}>Sign out</Button>
+			</View>
 		</Page>
 	);
 };

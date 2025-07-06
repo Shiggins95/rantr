@@ -2,11 +2,11 @@ import { Page } from '@/src/components/page';
 import { Headline } from '@ui/healine';
 import { View } from 'tamagui';
 
-export default function TabTwoScreen() {
+export default function () {
 	return (
 		<Page isSafeAreaTop>
 			<View px="$md">
-				<Headline>Search</Headline>
+				<Headline>Notifications</Headline>
 			</View>
 		</Page>
 	);

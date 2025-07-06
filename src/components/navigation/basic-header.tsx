@@ -1,18 +1,26 @@
-import { useRouter } from 'expo-router';
-import { View } from 'tamagui';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HEADER_HEIGHT } from '@/src/constants/spacing';
-import { Pressable } from 'react-native';
-import * as Icon from '@tamagui/lucide-icons';
 import { useCurrentUser } from '@/src/context/auth-context';
+import * as Icon from '@tamagui/lucide-icons';
+import { useRouter } from 'expo-router';
+import { Pressable } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View } from 'tamagui';
 
-export const NavigationHeader = () => {
+type NavigationHeaderProps = {
+	onBackPress?: () => void;
+};
+
+export const NavigationHeader = ({ onBackPress }: NavigationHeaderProps) => {
 	const { top } = useSafeAreaInsets();
 	const router = useRouter();
 
 	const currentUser = useCurrentUser();
 
 	const handleBackPress = () => {
+		if (onBackPress) {
+			onBackPress();
+			return;
+		}
 		if (router.canGoBack()) {
 			return router.back();
 		}
