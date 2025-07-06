@@ -1,24 +1,30 @@
-import { PropsWithChildren, ReactNode, useState } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { Dispatch, PropsWithChildren, ReactNode, SetStateAction } from 'react';
+import { Pressable } from 'react-native';
 import { View } from 'tamagui';
 
 type Props = PropsWithChildren & {
 	heading: ReactNode;
-	isOpenDefault?: boolean;
+	open: boolean;
+	setOpen: Dispatch<SetStateAction<boolean>>;
+	onLongPress?: () => void;
 };
 
-export function Collapsible({ children, heading, isOpenDefault }: Props) {
-	const [isOpen, setIsOpen] = useState(isOpenDefault || false);
-
+export function Collapsible({
+	children,
+	heading,
+	open,
+	setOpen,
+	onLongPress,
+}: Props) {
 	return (
 		<View>
-			<TouchableOpacity
-				onPress={() => setIsOpen((value) => !value)}
-				activeOpacity={0.8}
+			<Pressable
+				onLongPress={onLongPress}
+				onPress={() => setOpen((value) => !value)}
 			>
 				{heading}
-			</TouchableOpacity>
-			{isOpen && <View pb="$md">{children}</View>}
+			</Pressable>
+			{open && <View pb="$md">{children}</View>}
 		</View>
 	);
 }

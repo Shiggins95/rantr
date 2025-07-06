@@ -59,6 +59,9 @@ export default function PostFullPage() {
 	const inputRef = useRef<TextInput | null>(null);
 	const { height: screenHeight } = Dimensions.get('window');
 	const commentInsertedRef = useRef(false);
+	const [focussedComment, setFocussedComment] = useState<
+		CommentDto | undefined
+	>();
 	// endregion
 
 	// region queries
@@ -89,8 +92,19 @@ export default function PostFullPage() {
 	// endregion
 
 	// region methods
+	const onCommentReplyPress = (comment: CommentDto) => {
+		setFocussedComment(comment);
+		inputRef.current?.focus();
+	};
+
 	const renderItem = ({ item }: { item: CommentDto }) => {
-		return <CommentView comment={item} depth={0} />;
+		return (
+			<CommentView
+				onCommentReplyPress={onCommentReplyPress}
+				comment={item}
+				depth={0}
+			/>
+		);
 	};
 
 	const onEndReached = async () => {
@@ -159,6 +173,7 @@ export default function PostFullPage() {
 		return () => {
 			if (!commentInsertedRef.current) return;
 			queryClient.removeQueries({ queryKey: ['comments', id] });
+			queryClient.removeQueries({ queryKey: ['replies'] });
 		};
 	}, []);
 	// endregion
@@ -186,9 +201,11 @@ export default function PostFullPage() {
 							</TouchableWithoutFeedback>
 							{currentUser && (
 								<AddCommentWidget
+									clearReplyToComment={() => setFocussedComment(undefined)}
 									flatListRef={flatListRef}
 									ref={inputRef}
 									post={post}
+									replyToComment={focussedComment}
 									onCommentAdd={() => (commentInsertedRef.current = true)}
 								/>
 							)}

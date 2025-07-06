@@ -4,6 +4,7 @@ import { createComment } from '@/src/api/methods/comments/create-comment';
 import { Colours } from '@/src/constants/colours';
 import { HEADER_HEIGHT, INPUT_HEIGHT, spacing } from '@/src/constants/spacing';
 import { useCurrentUser } from '@/src/context/auth-context';
+import { CommentDto } from '@/src/types/comments.types';
 import { PostDto } from '@/src/types/posts.types';
 import { useColorScheme } from '@hooks/useColorScheme';
 import { SendHorizontal } from '@tamagui/lucide-icons';
@@ -11,7 +12,7 @@ import { useToastController } from '@tamagui/toast';
 import { Body, BodyType } from '@ui/body';
 import { Button } from '@ui/button';
 import InputField from '@ui/input-field';
-import { forwardRef, RefObject, useMemo, useState } from 'react';
+import { forwardRef, RefObject, useEffect, useMemo, useState } from 'react';
 import {
 	Dimensions,
 	FlatList,
@@ -45,10 +46,15 @@ type AddCommentWidgetProps = {
 	post: PostDto;
 	flatListRef: RefObject<FlatList | null>;
 	onCommentAdd: () => void;
+	replyToComment?: CommentDto;
+	clearReplyToComment: () => void;
 };
 
 export const AddCommentWidget = forwardRef<TextInput, AddCommentWidgetProps>(
-	({ post, flatListRef, onCommentAdd }, ref) => {
+	(
+		{ post, flatListRef, onCommentAdd, replyToComment, clearReplyToComment },
+		ref,
+	) => {
 		// region state & vars
 		const { height: screenHeight, width: screenWidth } =
 			Dimensions.get('window');
@@ -96,7 +102,6 @@ export const AddCommentWidget = forwardRef<TextInput, AddCommentWidgetProps>(
 		// endregion
 
 		// region methods
-
 		const dismissKeyboard = () => {
 			Keyboard.dismiss();
 		};
@@ -173,6 +178,7 @@ export const AddCommentWidget = forwardRef<TextInput, AddCommentWidgetProps>(
 		const { mutateAsync } = useSupabaseMutation(createComment, {
 			onSuccess: onSuccessCommentCreate,
 		});
+
 		const handleCommentCreate = async () => {
 			if (!currentUser) return;
 			try {
@@ -180,13 +186,17 @@ export const AddCommentWidget = forwardRef<TextInput, AddCommentWidgetProps>(
 					comment,
 					post_id: post.id,
 					user_id: currentUser.id,
+					reply_id: replyToComment ? replyToComment.id : undefined,
 				});
-				flatListRef.current?.scrollToOffset({
-					offset: 0,
-				});
+				if (!replyToComment) {
+					flatListRef.current?.scrollToOffset({
+						offset: 0,
+					});
+				}
 				clearInput();
 				onCommentAdd();
 			} catch (e) {
+				console.error('error', e);
 				toast.show('Something went wrong', {
 					message: 'Something went wrong when creating your comment',
 					type: 'error',
@@ -195,6 +205,30 @@ export const AddCommentWidget = forwardRef<TextInput, AddCommentWidgetProps>(
 			}
 		};
 		// endregion
+
+		// region memos
+		const widgetTitle = useMemo(() => {
+			if (replyToComment) {
+				return {
+					label: 'Replying to',
+					content: replyToComment.comment.truncate(40),
+				};
+			}
+
+			return {
+				label: 'Commenting on',
+				content: post.title.truncate(40),
+			};
+		}, [post, replyToComment]);
+		// endregion
+
+		useEffect(() => {
+			if (visible) return;
+			if (!comment) {
+				clearReplyToComment();
+				return;
+			}
+		}, [comment, visible]);
 
 		return (
 			<GestureDetector gesture={panGesture}>
@@ -218,9 +252,9 @@ export const AddCommentWidget = forwardRef<TextInput, AddCommentWidgetProps>(
 								bg="$primary40"
 							/>
 							<Text>
-								<Body variant={BodyType.extraSmall}>Commenting on</Body>{' '}
+								<Body variant={BodyType.extraSmall}>{widgetTitle.label}</Body>{' '}
 								<Body variant={BodyType.extraSmallBold}>
-									{post.title.truncate(40)}
+									{widgetTitle.content}
 								</Body>
 							</Text>
 						</View>
