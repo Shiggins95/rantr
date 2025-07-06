@@ -9,15 +9,17 @@ type UseGetReplies = {
 	commentId?: string;
 	postId: string;
 	enabled?: boolean;
+	filterByCommentId?: string;
 };
 
 export const useGetReplies = ({
 	commentId,
 	postId,
 	enabled,
+	filterByCommentId,
 }: UseGetReplies) => {
 	const currentUser = useCurrentUser();
-	return useSupabaseInfiniteQuery(
+	const query = useSupabaseInfiniteQuery(
 		['replies', commentId],
 		currentUser ? getReplyComments : getAnonReplyComments,
 		{
@@ -33,4 +35,15 @@ export const useGetReplies = ({
 			},
 		},
 	);
+
+	let data = query.data;
+
+	if (filterByCommentId) {
+		data = data.filter((d) => d.id === filterByCommentId);
+	}
+
+	return {
+		...query,
+		data,
+	};
 };

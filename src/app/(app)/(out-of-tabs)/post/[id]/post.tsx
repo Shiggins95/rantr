@@ -47,9 +47,10 @@ export default function PostFullPage() {
 	// region state
 	const queryClient = useQueryClient();
 	const router = useRouter();
-	const { id, toComments, commentId } = useLocalSearchParams<{
+	const { id, toComments, parentId, commentId } = useLocalSearchParams<{
 		id: string;
 		toComments: 'true' | 'false';
+		parentId: string;
 		commentId: string;
 	}>();
 	const flatListRef = useRef<FlatList | null>(null);
@@ -65,28 +66,35 @@ export default function PostFullPage() {
 	// endregion
 
 	// region queries
+	const postQueryParams = { userId: currentUser?.id, postId: id };
 	const {
 		isLoading: isLoadingPost,
 		data: post,
 		refetch,
-	} = useSupabaseQuery(['post', id], currentUser ? getPost : getPostAnon, {
-		userId: currentUser?.id,
-		postId: id,
-	});
+	} = useSupabaseQuery(
+		['post', id],
+		currentUser ? getPost : getPostAnon,
+		postQueryParams,
+	);
 
 	const {
 		isLoading: isLoadingComments,
 		fetchNextPage,
 		hasNextPage,
 		data: comments,
-	} = useGetComments({ postId: id, enabled: !commentId });
+	} = useGetComments({ postId: id, enabled: !parentId });
 
 	const {
 		isLoading: isLoadingReplyComments,
 		fetchNextPage: fetchNextReplyPage,
 		hasNextPage: hasNextReplyPage,
 		data: replies,
-	} = useGetReplies({ commentId: commentId, postId: id, enabled: !!commentId });
+	} = useGetReplies({
+		commentId: parentId,
+		postId: id,
+		enabled: !!parentId,
+		filterByCommentId: commentId,
+	});
 
 	const isLoading = isLoadingPost || isLoadingComments;
 	// endregion
@@ -108,7 +116,7 @@ export default function PostFullPage() {
 	};
 
 	const onEndReached = async () => {
-		if (commentId) {
+		if (parentId) {
 			if (!hasNextReplyPage) return;
 			await fetchNextReplyPage();
 			return;
@@ -132,6 +140,10 @@ export default function PostFullPage() {
 	};
 	// endregion
 
+	if (parentId) {
+		console.log('commentId', parentId);
+	}
+
 	// region memos
 	const postHeader = useMemo(() => {
 		if (!post || isLoading) return null;
@@ -141,8 +153,8 @@ export default function PostFullPage() {
 
 	// region useEffect
 	useEffect(() => {
-		const commentsToUse = commentId ? replies : comments;
-		const isLoadingToUse = commentId
+		const commentsToUse = parentId ? replies : comments;
+		const isLoadingToUse = parentId
 			? isLoadingReplyComments
 			: isLoadingComments;
 		if (!post || !commentsToUse || isLoadingToUse) return;
@@ -152,9 +164,10 @@ export default function PostFullPage() {
 				animated: true,
 			});
 		}
-	}, [post, comments, toComments, commentId]);
+	}, [post, comments, toComments, parentId, replies]);
 
 	useEffect(() => {
+		console.log('post', post);
 		if (!post) return;
 		router.setParams({
 			user: JSON.stringify(post.user || {}),
@@ -163,7 +176,7 @@ export default function PostFullPage() {
 	}, [post]);
 
 	useEffect(() => {
-		const commentsToUse = commentId ? replies : comments;
+		const commentsToUse = parentId ? replies : comments;
 		if (refreshing && !!commentsToUse && !!post) {
 			setRefreshing(false);
 		}
@@ -189,7 +202,7 @@ export default function PostFullPage() {
 								<FlatList
 									ref={flatListRef}
 									showsVerticalScrollIndicator={false}
-									data={commentId ? replies : comments}
+									data={parentId ? replies : comments}
 									contentContainerStyle={styles.contentContainer}
 									renderItem={renderItem}
 									ListHeaderComponent={postHeader}

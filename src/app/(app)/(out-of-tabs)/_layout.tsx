@@ -18,7 +18,7 @@ export default function OuterTabsStack() {
 				}}
 			/>
 			<Stack.Screen
-				name="post/[id]/[commentId]/post"
+				name="post/[id]/[parentId]/post"
 				options={{
 					headerShown: true,
 					gestureEnabled: true,

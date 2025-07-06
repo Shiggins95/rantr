@@ -41,7 +41,7 @@ export const CommentView = ({
 	const initialAddedColour = Colours[theme].primary40;
 	const bgColour = Colours[theme].background;
 	const colourProgress = useSharedValue(0);
-	const [open, setOpen] = useState(depth === 0 || comment.isLocal || false);
+	const [open, setOpen] = useState(depth <= 1 || comment.isLocal || false);
 	const onLongPress = depth === 0 ? () => setOpen(false) : _onLongPress;
 
 	const {
@@ -56,12 +56,13 @@ export const CommentView = ({
 
 	const navigateToPostWithComments = () => {
 		router.push({
-			pathname: '/(app)/(out-of-tabs)/post/[id]/[commentId]/post',
+			pathname: '/(app)/(out-of-tabs)/post/[id]/[parentId]/post',
 			params: {
 				id: comment.postId,
 				// use the parent id so that this comment is returned in the response
-				commentId: comment.replyId || '',
+				parentId: comment.replyId || '',
 				toComments: 'true',
+				commentId: comment.id,
 			},
 		});
 	};
