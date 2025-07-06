@@ -1,6 +1,6 @@
 {
   "name": "rantr",
-  "main": "expo-router/entry",
+  "main": "expo-entry.js",
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
