@@ -1,3 +1,4 @@
+import { NavigationHeader } from '@/src/components/navigation/basic-header';
 import { PostPageHeader } from '@/src/components/navigation/post-header';
 import { Stack } from 'expo-router';
 import React from 'react';
@@ -23,6 +24,14 @@ export default function OuterTabsStack() {
 					headerShown: true,
 					gestureEnabled: true,
 					header: PostPageHeader,
+				}}
+			/>
+			<Stack.Screen
+				name="create-post/index"
+				options={{
+					headerShown: true,
+					gestureEnabled: true,
+					header: () => <NavigationHeader />,
 				}}
 			/>
 		</Stack>

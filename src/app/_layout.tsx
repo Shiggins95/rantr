@@ -1,5 +1,4 @@
 import { AuthProvider, useAuthContext } from '@/src/context/auth-context';
-import { NavbarProvider } from '@/src/context/navbar-context';
 import { queryClient } from '@/src/utils/query-client';
 import tamaguiConfig from '@/tamagui.config';
 import { useColorScheme } from '@hooks/useColorScheme';
@@ -77,26 +76,24 @@ export default function RootLayout() {
 					<PortalProvider>
 						<ToastProvider>
 							<AuthProvider>
-								<NavbarProvider>
-									<TamaguiProvider
-										config={tamaguiConfig}
-										defaultTheme={colorScheme || 'light'}
+								<TamaguiProvider
+									config={tamaguiConfig}
+									defaultTheme={colorScheme || 'light'}
+								>
+									<ThemeProvider
+										value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
 									>
-										<ThemeProvider
-											value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-										>
-											<Slot />
-											<ToastViewport bottom={0} left={0} right={0} />
-											<ToastViewport
-												name="top-toast"
-												top={0}
-												left={0}
-												right={0}
-											/>
-											<CurrentToast />
-										</ThemeProvider>
-									</TamaguiProvider>
-								</NavbarProvider>
+										<Slot />
+										<ToastViewport bottom={0} left={0} right={0} />
+										<ToastViewport
+											name="top-toast"
+											top={0}
+											left={0}
+											right={0}
+										/>
+										<CurrentToast />
+									</ThemeProvider>
+								</TamaguiProvider>
 							</AuthProvider>
 						</ToastProvider>
 					</PortalProvider>

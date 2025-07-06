@@ -1,145 +1,134 @@
-import { Tabs } from 'expo-router';
-import React, { useEffect } from 'react';
-import { Platform } from 'react-native';
+import React, { JSX } from 'react';
 
-import { HapticTab } from '@/src/components/HapticTab';
 import { Colours } from '@/src/constants/colours';
-import { useNavbarContext } from '@/src/context/navbar-context';
+import { spacing } from '@/src/constants/spacing';
 import { useColorScheme } from '@hooks/useColorScheme';
-import { useNavigationState } from '@react-navigation/core';
-import * as Icon from '@tamagui/lucide-icons';
-import TabBarBackground from '@ui/TabBarBackground';
-import { View } from 'tamagui';
+import { IconProps } from '@tamagui/helpers-icon';
+import { Bell, Home, Plus, Search, User2 } from '@tamagui/lucide-icons';
+import { useRouter } from 'expo-router';
+import {
+	TabList,
+	Tabs,
+	TabSlot,
+	TabTrigger,
+	TabTriggerSlotProps,
+} from 'expo-router/ui';
+import { Dimensions, Pressable, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-export default function TabLayout() {
-	const colorScheme = useColorScheme();
-	const { show, currentTab, setCurrentTab } = useNavbarContext();
+interface CustomTabButtonProps
+	extends React.PropsWithChildren,
+		TabTriggerSlotProps {
+	Icon: (props: IconProps) => JSX.Element;
+}
 
-	const state = useNavigationState((state) => state);
+const CustomTabButton = React.forwardRef<View, CustomTabButtonProps>(
+	({ Icon, ...rest }, ref) => {
+		return (
+			<Pressable
+				hitSlop={{ top: 10, left: 20, right: 20, bottom: 100 }}
+				ref={ref}
+				{...rest}
+			>
+				<Icon c={rest.isFocused ? '$primary' : '$text'} />
+			</Pressable>
+		);
+	},
+);
 
-	useEffect(() => {
-		const tabState = state?.routes[state.index]?.state;
+const CreatePostButton = () => {
+	const router = useRouter();
+	const styles = useStyles();
+	return (
+		<Pressable
+			style={styles.createPostButton}
+			onPress={() => router.navigate('/(app)/(out-of-tabs)/create-post')}
+		>
+			<View style={styles.createPostButtonInner}>
+				<Plus c="$background" />
+			</View>
+		</Pressable>
+	);
+};
 
-		const newTabRouteName =
-			tabState?.routes && tabState.index !== undefined
-				? tabState.routes[tabState.index].name
-				: undefined;
-
-		if (
-			newTabRouteName &&
-			newTabRouteName !== currentTab &&
-			newTabRouteName !== '(create-post)'
-		) {
-			setCurrentTab(newTabRouteName);
-		}
-
-		// console.log('currentTabRouteName', currentTabRouteName);
-	}, [state]);
-
-	// useEffect(() => {
-	// 	const neValue = show ? 0 : 100;
-	// 	translateY.value = withTiming(neValue);
-	// }, [show])
+export default function Layout() {
+	const styles = useStyles();
 
 	return (
-		<Tabs
-			screenOptions={{
-				tabBarHideOnKeyboard: true,
-				tabBarActiveTintColor: Colours[colorScheme ?? 'light'].tint,
-				headerShown: false,
-				tabBarButton: HapticTab,
-				tabBarBackground: TabBarBackground,
-				tabBarStyle: Platform.select({
-					ios: {
-						bottom: !show ? 1000 : 0,
-						position: 'absolute',
-						backgroundColor: 'rgb(0,0,0)',
-						paddingTop: 10,
-						justifyContent: 'space-between',
-						flexDirection: 'row',
-						flex: 1,
-					},
-					default: {
-						justifyContent: 'center',
-						flexDirection: 'row',
-						flex: 1,
-						backgroundColor: 'rgba(0,0,0,1)',
-					},
-				}),
-			}}
-		>
-			<Tabs.Screen
-				name="(home)"
-				options={{
-					title: 'Home',
-					tabBarShowLabel: false,
-					tabBarIcon: ({ focused }) => (
-						<Icon.Home size="$lg" c={focused ? '$primary' : '$text'} />
-					),
-				}}
-			/>
+		<View style={styles.flex}>
+			<Tabs>
+				<TabSlot />
+				<TabList style={styles.tabList}>
+					<TabTrigger name="(home)" href="/(app)/(tabs)/(home)" asChild>
+						<CustomTabButton Icon={Home} />
+					</TabTrigger>
+					<TabTrigger
+						name="(search)"
+						href="/(app)/(tabs)/(search)/search"
+						asChild
+						style={styles.mr50}
+					>
+						<CustomTabButton Icon={Search} />
+					</TabTrigger>
 
-			<Tabs.Screen
-				name="(search)"
-				options={{
-					title: 'Search',
-					tabBarShowLabel: false,
-					tabBarIcon: ({ focused }) => (
-						<Icon.Search size="$lg" c={focused ? '$primary' : '$text'} />
-					),
-				}}
-			/>
+					<CreatePostButton />
 
-			<Tabs.Screen
-				name="(create-post)"
-				options={{
-					title: 'Home',
-					tabBarShowLabel: false,
-					tabBarIcon: () => (
-						<View
-							bg="$background"
-							borderRadius={75}
-							w={75}
-							h={75}
-							jc="center"
-							alignItems="center"
-							mb={45}
-						>
-							<View
-								w={50}
-								h={50}
-								jc="center"
-								alignItems="center"
-								borderRadius="$size.xl"
-								borderColor="$primary"
-								bg="$primary"
-							>
-								<Icon.Plus size="$xl" c="$background" />
-							</View>
-						</View>
-					),
-				}}
-			/>
-			<Tabs.Screen
-				name="(notifications)"
-				options={{
-					title: 'Notifications',
-					tabBarShowLabel: false,
-					tabBarIcon: ({ focused }) => (
-						<Icon.Bell size="$lg" c={focused ? '$primary' : '$text'} />
-					),
-				}}
-			/>
-			<Tabs.Screen
-				name="(profile)"
-				options={{
-					title: 'Profile',
-					tabBarShowLabel: false,
-					tabBarIcon: ({ focused }) => (
-						<Icon.User2 size="$lg" c={focused ? '$primary' : '$text'} />
-					),
-				}}
-			/>
-		</Tabs>
+					<TabTrigger
+						name="(notifications)"
+						href="/(app)/(tabs)/(notifications)"
+						asChild
+						style={styles.ml50}
+					>
+						<CustomTabButton Icon={Bell} />
+					</TabTrigger>
+					<TabTrigger
+						name="(profile)"
+						href="/(app)/(tabs)/(profile)/profile"
+						asChild
+					>
+						<CustomTabButton Icon={User2} />
+					</TabTrigger>
+				</TabList>
+			</Tabs>
+		</View>
 	);
 }
+
+const useStyles = () => {
+	const { bottom } = useSafeAreaInsets();
+	const { width } = Dimensions.get('window');
+	const theme = useColorScheme() ?? 'dark';
+	return StyleSheet.create({
+		flex: { flex: 1 },
+		mr50: { marginRight: 50 },
+		ml50: { marginLeft: 50 },
+		tabList: {
+			flexDirection: 'row',
+			justifyContent: 'space-between',
+			alignItems: 'center',
+			paddingHorizontal: spacing.xl,
+			paddingTop: spacing.md,
+			paddingBottom: bottom + spacing.md,
+			backgroundColor: Colours[theme].background,
+		},
+		createPostButton: {
+			width: 70,
+			height: 70,
+			position: 'absolute',
+			top: -25,
+			left: width / 2 - 35,
+			justifyContent: 'center',
+			alignItems: 'center',
+			backgroundColor: Colours[theme].background,
+			borderRadius: 40,
+		},
+		createPostButtonInner: {
+			width: 50,
+			height: 50,
+			backgroundColor: Colours[theme].primary,
+			borderRadius: 25,
+			justifyContent: 'center',
+			alignItems: 'center',
+		},
+	});
+};
