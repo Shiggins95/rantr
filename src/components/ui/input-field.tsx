@@ -8,10 +8,11 @@ import {
 } from 'react-hook-form';
 import { TextInputProps } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { YStack } from 'tamagui';
+import { XStack, YStack } from 'tamagui';
 import { Input } from './input';
 
 type LocalProps = {
+	error?: boolean;
 	label?: string;
 	marginBottom?: boolean;
 	marginTop?: boolean;
@@ -20,6 +21,7 @@ type LocalProps = {
 	maxWidth?: number;
 	height?: number;
 	customPaddingBottom?: number;
+	suppressMaxLengthIndicator?: boolean;
 };
 
 export type InputErrorTypes = {
@@ -39,7 +41,7 @@ export type InputFieldProps = TextInputProps & LocalProps;
 
 export const ControlledInputField = (props: ControlledInputFieldProps) => {
 	const { rules, defaultValue, name } = props;
-	const { field } = useController({
+	const { field, fieldState } = useController({
 		name,
 		rules,
 		defaultValue: defaultValue || '',
@@ -48,6 +50,7 @@ export const ControlledInputField = (props: ControlledInputFieldProps) => {
 	return (
 		<InputField
 			{...props}
+			error={!!fieldState.error}
 			onChangeText={(value: string) => {
 				field.onChange(value);
 				props.onChangeText?.(value);
@@ -68,6 +71,8 @@ const InputField = forwardRef<TextInput, InputFieldProps>(
 			maxWidth,
 			customPaddingBottom,
 			height,
+			error,
+			suppressMaxLengthIndicator,
 			...rest
 		},
 		ref,
@@ -80,11 +85,25 @@ const InputField = forwardRef<TextInput, InputFieldProps>(
 				maxWidth={maxWidth}
 				f={variant === 'invisible' ? 1 : undefined}
 			>
-				{!!label && (
-					<Body variant={BodyType.small} mb="$sm">
-						{label}
-					</Body>
-				)}
+				<XStack alignItems="center" jc="space-between">
+					{!!label && (
+						<Body variant={BodyType.small} mb="$sm">
+							{label}
+						</Body>
+					)}
+					{error && (
+						<Body c="$danger" variant={BodyType.extraSmall}>
+							Required
+						</Body>
+					)}
+					{rest.maxLength !== undefined &&
+						!!rest.value &&
+						!suppressMaxLengthIndicator && (
+							<Body variant={BodyType.extraSmall}>
+								{rest.value.length} / {rest.maxLength}
+							</Body>
+						)}
+				</XStack>
 				<Input
 					{...rest}
 					ref={ref}

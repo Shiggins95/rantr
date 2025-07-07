@@ -1,11 +1,11 @@
-import { PostDto } from '@/src/types/posts.types';
-import { Pressable } from 'react-native';
-import { ImageCarousel } from '@ui/image-carousel';
-import { View } from 'tamagui';
-import { useMemo, useRef, useState } from 'react';
-import { PostImageDto } from '@/src/types/post-images.types';
 import { FullScreenImageCarousel } from '@/src/components/pages/shared/full-screen-image-carousel';
+import { PostImageDto } from '@/src/types/post-images.types';
+import { PostDto } from '@/src/types/posts.types';
+import { ImageCarousel } from '@ui/image-carousel';
+import { useMemo, useRef, useState } from 'react';
+import { Pressable } from 'react-native';
 import { ICarouselInstance } from 'react-native-reanimated-carousel';
+import { View } from 'tamagui';
 
 type ExpandableImageCarouselProps = {
 	post: PostDto;
@@ -70,6 +70,8 @@ export const ExpandableImageCarousel = ({
 		<>
 			<Pressable onPress={handlePress}>{carousel}</Pressable>
 			<FullScreenImageCarousel
+				resizeMode="contain"
+				parallax={false}
 				onOpenChange={handleClose}
 				postId={post.id}
 				images={fullScreenPostImageProps.images}

@@ -145,7 +145,7 @@ export const CommentView = ({
 			{
 				label: 'Report',
 				icon: <Flag size="$size.md" c="$primary" />,
-				onPress: () => console.log('report'),
+				onPress: () => console.info('report'),
 			},
 		];
 

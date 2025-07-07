@@ -16,7 +16,7 @@ import {
 	Pressable,
 	StyleSheet,
 } from 'react-native';
-import { Popover, TamaguiElement, View } from 'tamagui';
+import { GetThemeValueForKey, Popover, TamaguiElement, View } from 'tamagui';
 
 type SelectItem = {
 	label: string;
@@ -40,6 +40,7 @@ type SelectProps = LocalProps &
 export type InputErrorTypes = {
 	error?: boolean;
 	errorType?: LiteralUnion<keyof RegisterOptions, string>;
+	labelColourMap?: Record<string, GetThemeValueForKey<'color'>>;
 	errorMessages?: Partial<
 		Record<LiteralUnion<keyof RegisterOptions, string>, string>
 	>;
@@ -66,6 +67,7 @@ export const Select = ({
 	options,
 	onChange,
 	value,
+	labelColourMap,
 }: SelectProps) => {
 	const [open, setOpen] = useState(false);
 	const styles = useStyles();
@@ -87,6 +89,11 @@ export const Select = ({
 
 	const measureRef = useRef<TamaguiElement | null>(null);
 
+	const labelColour = useMemo(() => {
+		if (!labelColourMap || !value) return '$textMuted';
+		return labelColourMap[value] || '$textMuted';
+	}, [labelColourMap, value]);
+
 	return (
 		<Popover
 			open={open}
@@ -105,7 +112,7 @@ export const Select = ({
 						style={styles.trigger}
 						ref={measureRef}
 					>
-						{currentLabel}
+						<Body c={labelColour}>{currentLabel}</Body>
 					</Button>
 				</Popover.Trigger>
 			</View>

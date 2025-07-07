@@ -3,7 +3,7 @@ import {
 	MULTI_POSTS_SCHEMA,
 } from '@/src/api/schemas/posts.schema';
 import { POSTS_PER_PAGE } from '@/src/constants/query';
-import { PostDto } from '@/src/types/posts.types';
+import { mapToDtos } from '@/src/types/posts.types';
 import { SupabaseClient } from '@supabase/supabase-js';
 
 export const getPosts = async (
@@ -21,7 +21,7 @@ export const getPosts = async (
 
 	if (error) throw error;
 
-	return data.map((post) => new PostDto(post));
+	return mapToDtos(data, supabase);
 };
 
 export const getAnonPosts = async (
@@ -38,5 +38,5 @@ export const getAnonPosts = async (
 
 	if (error) throw error;
 
-	return data.map((post) => new PostDto(post));
+	return mapToDtos(data, supabase);
 };

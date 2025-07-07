@@ -1,6 +1,8 @@
 import { Database } from '@/src/types/supabase';
 
 export type PostImageDb = Database['public']['Tables']['post_images']['Row'];
+export type PostImageCreate =
+	Database['public']['Tables']['post_images']['Insert'];
 
 export class PostImageDto {
 	id!: string;

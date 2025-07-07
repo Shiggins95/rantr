@@ -1,10 +1,10 @@
 import { Check as CheckIcon } from '@tamagui/lucide-icons';
-import { FC } from 'react';
-import { Checkbox as TamaguiCheckbox, CheckboxProps, XStack } from 'tamagui';
-import { Label } from '@ui/label';
 import { Body, BodyType } from '@ui/body';
-import { useController, UseControllerProps } from 'react-hook-form';
 import { InputErrorTypes } from '@ui/input-field';
+import { Label } from '@ui/label';
+import { FC } from 'react';
+import { useController, UseControllerProps } from 'react-hook-form';
+import { CheckboxProps, Checkbox as TamaguiCheckbox, XStack } from 'tamagui';
 
 export type TermsCheckboxProps = CheckboxProps &
 	UseControllerProps &
@@ -23,11 +23,11 @@ export const TermsCheckbox: FC<TermsCheckboxProps> = ({
 	});
 
 	const openTerms = () => {
-		console.log('openTerms');
+		console.info('openTerms');
 	};
 
 	const openPrivacyPolicy = () => {
-		console.log('privacy');
+		console.info('privacy');
 	};
 
 	return (

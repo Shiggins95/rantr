@@ -1,5 +1,8 @@
-import { RantrImage } from '@ui/image';
 import { Zoomable, ZoomableRef } from '@likashefqet/react-native-image-zoom';
+import { RantrImage } from '@ui/image';
+import { ImageContentFit } from 'expo-image';
+import { useRef } from 'react';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
 	runOnJS,
 	useAnimatedStyle,
@@ -7,19 +10,19 @@ import Animated, {
 	withSpring,
 	withTiming,
 } from 'react-native-reanimated';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import { useRef } from 'react';
 
 type ZoomableImageProps = {
 	src: string;
 	onClose?: () => void;
 	onSingleTap?: () => void;
+	resizeMode?: ImageContentFit;
 };
 
 export const RantrZoomableImage = ({
 	src,
 	onClose,
 	onSingleTap,
+	resizeMode,
 }: ZoomableImageProps) => {
 	const translateY = useSharedValue(0);
 	const translateX = useSharedValue(0);
@@ -65,7 +68,7 @@ export const RantrZoomableImage = ({
 					isDoubleTapEnabled
 					onSingleTap={onSingleTap}
 				>
-					<RantrImage src={src} />
+					<RantrImage resizeMode={resizeMode} src={src} />
 				</Zoomable>
 			</Animated.View>
 		</GestureDetector>

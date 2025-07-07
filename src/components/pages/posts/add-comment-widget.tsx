@@ -351,6 +351,7 @@ export const AddCommentWidget = forwardRef<TextInput, AddCommentWidgetProps>(
 								ref={ref}
 								maxLength={500}
 								customPaddingBottom={comment.split('\n').length > 5 ? 500 : 0}
+								suppressMaxLengthIndicator
 							/>
 							<View>
 								<Button variant="ghost" onPress={handleSubmit}>

@@ -2,8 +2,9 @@ import { Colours } from '@/src/constants/colours';
 import { HEADER_HEIGHT, spacing } from '@/src/constants/spacing';
 import { PostImageDto } from '@/src/types/post-images.types';
 import { useColorScheme } from '@hooks/useColorScheme';
-import { X } from '@tamagui/lucide-icons';
+import { Trash, X } from '@tamagui/lucide-icons';
 import { ImageCarousel } from '@ui/image-carousel';
+import { ImageContentFit } from 'expo-image';
 import { useMemo, useRef } from 'react';
 import { Dimensions, Pressable, StyleSheet } from 'react-native';
 import Animated, {
@@ -21,6 +22,10 @@ type FullScreenImageCarouselProps = {
 	open: boolean;
 	onOpenChange: (endingIndex: number) => void;
 	startingIndex?: number;
+	parallax?: boolean;
+	showRemoveButton?: boolean;
+	onRemove?: (index: number) => void;
+	resizeMode?: ImageContentFit;
 };
 
 export const FullScreenImageCarousel = ({
@@ -29,6 +34,10 @@ export const FullScreenImageCarousel = ({
 	open,
 	onOpenChange,
 	startingIndex,
+	parallax = true,
+	showRemoveButton = false,
+	onRemove,
+	resizeMode,
 }: FullScreenImageCarouselProps) => {
 	const ref = useRef<ICarouselInstance | null>(null);
 	const { width, height } = Dimensions.get('window');
@@ -41,7 +50,6 @@ export const FullScreenImageCarousel = ({
 			opacity: opacity.value,
 			height: top + HEADER_HEIGHT,
 			width,
-			paddingLeft: spacing.md,
 			paddingTop: top,
 			position: 'absolute',
 			top: 0,
@@ -64,10 +72,15 @@ export const FullScreenImageCarousel = ({
 		onOpenChange(currentIndex || 0);
 	};
 
+	const handleRemove = () => {
+		const currentImageIndex = ref.current?.getCurrentIndex() || 0;
+		onRemove?.(currentImageIndex);
+	};
+
 	const carousel = useMemo(() => {
 		return (
 			<ImageCarousel
-				mode={images.length > 1 ? 'parallax' : undefined}
+				mode={images.length > 1 && parallax ? 'parallax' : undefined}
 				height={height - spacing.md * 2}
 				width={width}
 				renderType="image-full"
@@ -77,9 +90,10 @@ export const FullScreenImageCarousel = ({
 				dotContainerStyle={styles.dotContainer}
 				startingIndex={startingIndex}
 				ref={ref}
+				resizeMode={resizeMode}
 			/>
 		);
-	}, [images]);
+	}, [images, resizeMode, parallax, startingIndex]);
 
 	return (
 		<Dialog open={open} onOpenChange={onClose}>
@@ -87,10 +101,15 @@ export const FullScreenImageCarousel = ({
 				<Dialog.Overlay key={postId} />
 				<Dialog.Content>
 					<Animated.View style={animatedStyle}>
-						<XStack>
+						<XStack jc="space-between" px="$md">
 							<Pressable onPress={onClose}>
 								<X size="$xl" c="$primary" />
 							</Pressable>
+							{showRemoveButton && (
+								<Pressable onPress={handleRemove}>
+									<Trash size="$xl" c="$danger" />
+								</Pressable>
+							)}
 						</XStack>
 					</Animated.View>
 					<View>{carousel}</View>

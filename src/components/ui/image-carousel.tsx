@@ -4,6 +4,7 @@ import { PostImageDto } from '@/src/types/post-images.types';
 import { useColorScheme } from '@hooks/useColorScheme';
 import { RantrImage } from '@ui/image';
 import { RantrZoomableImage } from '@ui/zoomable-image';
+import { ImageContentFit } from 'expo-image';
 import { forwardRef, useCallback, useMemo } from 'react';
 import { Dimensions, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
@@ -24,6 +25,7 @@ type ImageCarouselProps = {
 	onSingleTap?: () => void;
 	startingIndex?: number;
 	mode?: 'parallax';
+	resizeMode?: ImageContentFit;
 };
 
 const { width: windowWidth } = Dimensions.get('window');
@@ -39,6 +41,7 @@ export const ImageCarousel = forwardRef<ICarouselInstance, ImageCarouselProps>(
 			onClose,
 			onSingleTap,
 			startingIndex,
+			resizeMode,
 			mode,
 		},
 		ref,
@@ -90,14 +93,15 @@ export const ImageCarousel = forwardRef<ICarouselInstance, ImageCarouselProps>(
 								onSingleTap={onSingleTap}
 								onClose={onClose}
 								src={item.imageUrl}
+								resizeMode={resizeMode}
 							/>
 						) : (
-							<RantrImage src={item.imageUrl} />
+							<RantrImage resizeMode={resizeMode} src={item.imageUrl} />
 						)}
 					</View>
 				);
 			},
-			[],
+			[resizeMode],
 		);
 
 		return (

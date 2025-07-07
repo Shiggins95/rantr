@@ -6,7 +6,7 @@ CREATE TABLE posts (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     title TEXT NOT NULL,
     content TEXT NOT NULL, -- markdown-compatible
-    user_id UUID NOT NULL REFERENCES rantr_users(id),
+    user_id UUID NOT NULL REFERENCES rantr_users(id) ON DELETE CASCADE,
     deleted BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -22,7 +22,7 @@ CREATE TABLE post_images (
 CREATE TABLE comments (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     comment TEXT NOT NULL,
-    user_id UUID NOT NULL REFERENCES rantr_users(id),
+    user_id UUID NOT NULL REFERENCES rantr_users(id) ON DELETE CASCADE,
     original_comment TEXT,
     deleted BOOLEAN DEFAULT FALSE,
     edited BOOLEAN DEFAULT FALSE,

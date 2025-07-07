@@ -1,21 +1,17 @@
-import { ProfilePhoto } from '@ui/profile-photo';
-import { Alert, Pressable } from 'react-native';
-import { Dispatch, FC, SetStateAction } from 'react';
-import { View } from 'tamagui';
 import { Pencil } from '@tamagui/lucide-icons';
-import * as ImagePicker from 'expo-image-picker';
-import { ImageManipulator, SaveFormat } from 'expo-image-manipulator';
+import { ProfilePhoto } from '@ui/profile-photo';
+import { FC } from 'react';
 import { useController } from 'react-hook-form';
+import { Pressable } from 'react-native';
+import { View } from 'tamagui';
 
 type ProfilePhotoPickerProps = {
-	onChange: (photoUrl: string) => void;
-	setIsImageCompressing: Dispatch<SetStateAction<boolean>>;
 	isImageCompressing: boolean;
+	pickImage: () => void;
 };
 
 export const ProfilePhotoPicker: FC<ProfilePhotoPickerProps> = ({
-	onChange,
-	setIsImageCompressing,
+	pickImage,
 	isImageCompressing,
 }) => {
 	const size = 75;
@@ -23,36 +19,6 @@ export const ProfilePhotoPicker: FC<ProfilePhotoPickerProps> = ({
 	const { field } = useController({
 		name: 'profilePhotoUrl',
 	});
-
-	const pickImage = async () => {
-		// No permissions request is necessary for launching the image library
-		let result = await ImagePicker.launchImageLibraryAsync({
-			mediaTypes: ['images', 'videos'],
-			allowsEditing: true,
-			aspect: [4, 3],
-			quality: 1,
-		});
-
-		if (!result.canceled) {
-			const selectedUri = result.assets[0].uri;
-			setIsImageCompressing(true);
-
-			try {
-				const context = ImageManipulator.manipulate(selectedUri);
-				context.resize({ width: 200, height: 200 });
-				const imageResult = await context.renderAsync();
-				const result = await imageResult.saveAsync({
-					format: SaveFormat.JPEG,
-					compress: 0.5,
-				});
-				onChange(result.uri);
-			} catch {
-				Alert.alert('Error', 'Failed to process image.');
-			} finally {
-				setIsImageCompressing(false);
-			}
-		}
-	};
 
 	return (
 		<View w={size} h={size}>

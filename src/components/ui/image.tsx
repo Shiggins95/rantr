@@ -1,12 +1,12 @@
-import { Image, ImageStyle } from 'expo-image';
-import { StyleProp, StyleSheet } from 'react-native';
+import { Image, ImageContentFit, ImageStyle } from 'expo-image';
 import { useMemo } from 'react';
+import { StyleProp, StyleSheet } from 'react-native';
 
 type ImageProps = {
 	src?: string;
 	width?: number;
 	height?: number;
-	resizeMode?: 'cover' | 'contain' | 'stretch' | 'repeat' | 'center';
+	resizeMode?: ImageContentFit;
 };
 
 export const RantrImage = ({ src, width, height, resizeMode }: ImageProps) => {
@@ -28,7 +28,7 @@ export const RantrImage = ({ src, width, height, resizeMode }: ImageProps) => {
 			source={{ uri: src }}
 			cachePolicy="memory-disk"
 			placeholder={{ blurhash }}
-			contentFit="cover"
+			contentFit={resizeMode}
 			transition={1000}
 		/>
 	);

@@ -7,9 +7,11 @@ import {
 import { PostImageDb, PostImageDto } from '@/src/types/post-images.types';
 import { Database } from '@/src/types/supabase';
 import { UserDbBase, UserDto } from '@/src/types/user.types';
+import { SupabaseClient } from '@supabase/supabase-js';
 
 export type PostType = Database['public']['Enums']['post_type_enum'];
 export type PostDbBase = Database['public']['Tables']['posts']['Row'];
+export type PostCreate = Database['public']['Tables']['posts']['Insert'];
 export type PostDb = PostDbBase & {
 	user?: UserDbBase;
 	comments?: CommentDb[];
@@ -17,6 +19,34 @@ export type PostDb = PostDbBase & {
 	images?: PostImageDb[];
 	my_interaction?: PostInteractionDb[] | null;
 	interaction_count?: PostInteractionCountDb | null;
+};
+
+export const mapToDto = async (entity: PostDb, supabase: SupabaseClient) => {
+	const dto = new PostDto(entity);
+	if (entity.images) {
+		dto.images = await Promise.all(
+			entity.images.map(async (image) => {
+				const { data } = await supabase.storage
+					.from('post-photos')
+					.createSignedUrl(image.image_url, 60 * 60);
+
+				return new PostImageDto({
+					image_url: data?.signedUrl || '',
+					id: image.id,
+					post_id: entity.id,
+				});
+			}),
+		);
+	}
+	return dto;
+};
+
+export const mapToDtos = async (data: PostDb[], supabase: SupabaseClient) => {
+	return await Promise.all(
+		data.map(async (post) => {
+			return await mapToDto(post, supabase);
+		}),
+	);
 };
 
 export class PostDto {

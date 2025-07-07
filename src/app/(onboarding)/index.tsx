@@ -6,6 +6,7 @@ import { TermsCheckbox } from '@/src/components/pages/onboarding/terms-checkbox'
 import { useAuthContext } from '@/src/context/auth-context';
 import { UserDto } from '@/src/types/user.types';
 import { supabase } from '@/src/utils/supabase';
+import { useImagePicker } from '@hooks/use-image-picker';
 import { useToastController } from '@tamagui/toast';
 import { Body, BodyType } from '@ui/body';
 import { Button } from '@ui/button';
@@ -30,7 +31,6 @@ type PersonalDetailsForm = {
 export default function PersonalDetails() {
 	const router = useRouter();
 	const [isLoading, setIsLoading] = useState(false);
-	const [isImageCompressing, setIsImageCompressing] = useState(false);
 	const { user, setUser } = useAuthContext();
 	const toast = useToastController();
 
@@ -42,6 +42,10 @@ export default function PersonalDetails() {
 			firstName: user?.firstName || '',
 			lastName: user?.lastName || '',
 		},
+	});
+
+	const { pickImage, isImageCompressing } = useImagePicker({
+		onChange: (value) => formMethods.setValue('profilePhotoUrl', value),
 	});
 
 	const onSuccessfulUpdate = (data: UserDto) => {
@@ -128,10 +132,7 @@ export default function PersonalDetails() {
 					<YStack f={1} gap="$md" my="$md">
 						<YStack px="$md" alignItems="center">
 							<ProfilePhotoPicker
-								onChange={(value) =>
-									formMethods.setValue('profilePhotoUrl', value)
-								}
-								setIsImageCompressing={setIsImageCompressing}
+								pickImage={pickImage}
 								isImageCompressing={isImageCompressing}
 							/>
 						</YStack>

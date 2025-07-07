@@ -41,7 +41,7 @@ export const Post = ({ post }: PostProps) => {
 						user={post.user!}
 						createdAt={post.createdAt}
 						contextOptions={[
-							{ label: 'Report', onPress: () => console.log('report') },
+							{ label: 'Report', onPress: () => console.info('report') },
 						]}
 					/>
 					<PostTag post={post} />

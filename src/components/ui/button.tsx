@@ -1,5 +1,4 @@
-import { styled } from 'tamagui';
-import { Button as BaseButton } from 'tamagui';
+import { Button as BaseButton, styled } from 'tamagui';
 
 export const Button = styled(BaseButton, {
 	fontWeight: 700,
@@ -25,8 +24,7 @@ export const Button = styled(BaseButton, {
 			primary: {
 				bg: '$primary',
 				pressStyle: {
-					bg: '$primaryHover',
-					opacity: 0.6,
+					bg: '$primary',
 				},
 			},
 			secondary: {

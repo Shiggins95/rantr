@@ -1,9 +1,9 @@
-import { SupabaseClient } from '@supabase/supabase-js';
-import { PostDto } from '@/src/types/posts.types';
 import {
 	ANON_SINGLE_POST_SCHEMA,
 	SINGLE_POST_SCHEMA,
 } from '@/src/api/schemas/posts.schema';
+import { mapToDto } from '@/src/types/posts.types';
+import { SupabaseClient } from '@supabase/supabase-js';
 
 export const getPost = async (
 	{ userId, postId }: { userId?: string; postId: string },
@@ -18,7 +18,7 @@ export const getPost = async (
 
 	if (error) throw error;
 
-	return new PostDto(data);
+	return mapToDto(data, supabase);
 };
 
 export const getPostAnon = async (
@@ -33,5 +33,5 @@ export const getPostAnon = async (
 
 	if (error) throw error;
 
-	return new PostDto(data);
+	return mapToDto(data, supabase);
 };
