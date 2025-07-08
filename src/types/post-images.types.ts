@@ -12,7 +12,7 @@ export class PostImageDto {
 	id!: string;
 	postId!: string;
 	imageUrl!: string;
-	storageUrl!: string;
+	storageUrl?: string;
 
 	constructor(entity: PostImageDb) {
 		this.id = entity.id;

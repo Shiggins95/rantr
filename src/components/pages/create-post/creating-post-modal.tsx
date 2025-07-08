@@ -14,12 +14,14 @@ import { Dialog, View } from 'tamagui';
 
 type CreatingPostModalProps = {
 	open: boolean;
+	isEdit: boolean;
 	setOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 export const CreatingPostModal = ({
 	open,
 	setOpen,
+	isEdit,
 }: CreatingPostModalProps) => {
 	const { width: screenWidth } = Dimensions.get('window');
 	const translateX = useSharedValue(0);
@@ -62,7 +64,7 @@ export const CreatingPostModal = ({
 						alignItems="center"
 						gap="$md"
 					>
-						<Body>Creating post</Body>
+						<Body>{isEdit ? 'Editing' : 'Creating'} post</Body>
 						<View w="100%" bg="$primary40" overflow="hidden">
 							<Animated.View style={aniamtedStyle} />
 						</View>

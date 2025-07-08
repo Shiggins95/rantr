@@ -34,6 +34,14 @@ export default function OuterTabsStack() {
 					header: () => <NavigationHeader />,
 				}}
 			/>
+			<Stack.Screen
+				name="edit-post/[id]/index"
+				options={{
+					headerShown: true,
+					gestureEnabled: true,
+					header: () => <NavigationHeader />,
+				}}
+			/>
 		</Stack>
 	);
 }

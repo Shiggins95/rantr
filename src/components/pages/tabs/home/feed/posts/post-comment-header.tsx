@@ -122,8 +122,8 @@ export const PostCommentHeader = ({
 	const handleDeletePost = async () => {
 		try {
 			await deletePostMutation(entityId);
-			toast.show('Comment deleted', {
-				message: 'Comment deleted successfully',
+			toast.show('Post deleted', {
+				message: 'Post deleted successfully',
 				type: 'success',
 			});
 		} catch (e) {

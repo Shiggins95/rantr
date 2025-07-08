@@ -6,6 +6,7 @@ import { setStorageItem, StorageKey } from '@/src/utils/storage';
 import { getSupabaseAuthenticatedClient, supabase } from '@/src/utils/supabase';
 import { AuthChangeEvent, Session } from '@supabase/supabase-js';
 import { useToastController } from '@tamagui/toast';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import {
 	createContext,
@@ -64,6 +65,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 	const [guestMode, setGuestMode] = useState(false);
 	const router = useRouter();
 	const toast = useToastController();
+	const queryClient = useQueryClient();
 
 	const handleUserRetrieved = (user: UserDto, _session: Session) => {
 		setUser(user);
@@ -168,6 +170,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 		setUser(undefined);
 		await supabase.auth.signOut();
 		router.navigate('/(auth)');
+		queryClient.removeQueries();
 	};
 
 	return (

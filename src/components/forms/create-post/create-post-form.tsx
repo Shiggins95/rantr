@@ -1,13 +1,16 @@
 import { useSupabaseMutation } from '@/src/api/hooks/common/use-supabase-mutation';
 import { onPostCreateSuccess } from '@/src/api/invalidations/post-creation';
+import { onPostEditSuccess } from '@/src/api/invalidations/post-update';
 import { createPost } from '@/src/api/methods/posts/create-post';
+import { editPost } from '@/src/api/methods/posts/edit-post';
 import {
 	createPostForm,
 	CreatePostFormValues,
 } from '@/src/components/forms/create-post/create-post-schema';
 import { CreatingPostModal } from '@/src/components/pages/create-post/creating-post-modal';
 import { useCurrentUser } from '@/src/context/auth-context';
-import { PostImageCreate } from '@/src/types/post-images.types';
+import { PostImageDto } from '@/src/types/post-images.types';
+import { PostDto } from '@/src/types/posts.types';
 import { getSupabaseAuthenticatedClient } from '@/src/utils/supabase';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@ui/button';
@@ -24,106 +27,99 @@ import { View } from 'tamagui';
 type CreatePostFormProps = {
 	onSuccess: () => void;
 	onError: () => void;
+	defaultPost?: PostDto;
 };
 
-export const CreatePostForm = ({ onSuccess, onError }: CreatePostFormProps) => {
-	const supabase = useMemo(() => {
-		return getSupabaseAuthenticatedClient();
-	}, []);
+export const CreatePostForm = ({
+	onSuccess,
+	onError,
+	defaultPost,
+}: CreatePostFormProps) => {
+	const supabase = getSupabaseAuthenticatedClient();
 	const currentUser = useCurrentUser();
 	const [openDialog, setOpenDialog] = useState(false);
+	const [areImagesLoading, setAreImagesLoading] = useState(false);
+
+	const defaultValues = useMemo<CreatePostFormValues>(() => {
+		if (!defaultPost) {
+			return {
+				title: '',
+				content: '',
+				tag: 'RANT',
+				photos: [],
+				disableComments: false,
+			};
+		}
+
+		return {
+			title: defaultPost.title,
+			content: defaultPost.content,
+			tag: defaultPost.type,
+			photos: defaultPost.images.map((img) => img.imageUrl),
+			disableComments: false,
+		};
+	}, [defaultPost]);
+
 	const formMethods = useForm<CreatePostFormValues>({
 		resolver: zodResolver(createPostForm),
-		defaultValues: {
-			title: '',
-			content: '',
-			tag: 'RANT',
-			photos: [],
-			disableComments: false,
-		},
+		defaultValues,
 	});
+
+	const { isDirty, dirtyFields, isValid } = formMethods.formState;
 
 	const { mutateAsync: createPostMutation } = useSupabaseMutation(createPost, {
 		onSuccess: onPostCreateSuccess,
 	});
+	const { mutateAsync: editPostMutation } = useSupabaseMutation(editPost, {
+		onSuccess: onPostEditSuccess,
+	});
 
-	const uploadImagesToSupabase = async (
-		imageUris: string[],
-		postId: string,
-	) => {
-		let didError = false;
-
-		const results = await Promise.all(
-			imageUris.map(async (uri, index) => {
-				try {
+	const uploadImages = async (uris: string[], postId: string) => {
+		try {
+			return await Promise.all(
+				uris.map(async (uri) => {
+					const id = uuid.v4();
 					const base64 = await FileSystem.readAsStringAsync(uri, {
 						encoding: FileSystem.EncodingType.Base64,
 					});
-
 					const arrayBuffer = decode(base64);
 
 					const { data, error } = await supabase.storage
 						.from('post-photos')
-						.upload(`${postId}/${index}.jpg`, arrayBuffer, {
+						.upload(`${postId}/${id}.jpg`, arrayBuffer, {
 							cacheControl: '3600',
 							upsert: true,
 							contentType: 'image/jpeg',
 						});
 
-					if (error) {
-						didError = true;
-						return '';
-					}
-
+					if (error) throw new Error(error.message);
 					return data?.path || '';
-				} catch (e) {
-					console.error(`Failed to upload image ${uri}`, e);
-					didError = true;
-					return '';
-				}
-			}),
-		);
-
-		if (didError) {
-			const imageUris = results.filter((r) => !!r);
-			await cleanupFailedImages(imageUris);
-			return { error: true, data: [] };
+				}),
+			);
+		} catch (error) {
+			console.error('Image upload error', error);
+			onError();
+			return [];
 		}
-
-		return { error: false, data: results };
 	};
 
-	const cleanupFailedImages = async (imagePaths: string[]) => {
+	const removeImages = async (paths: string[]) => {
 		try {
-			await supabase.storage.from('post-photos').remove(imagePaths);
+			await supabase.storage.from('post-photos').remove(paths);
 		} catch (e) {
-			console.error('error cleaning up', e);
+			console.error('Image removal error', e);
 		}
-
-		onError();
 		setOpenDialog(false);
 	};
 
-	const handleSubmit = async (values: CreatePostFormValues) => {
-		setOpenDialog(true);
+	const prepareImageDbEntries = (postId: string, paths: string[]) =>
+		paths.map((path) => ({ image_url: path, post_id: postId }));
+
+	const handleCreate = async (values: CreatePostFormValues) => {
 		const postId = uuid.v4();
 
-		let imagePaths: string[] = [];
-		if (values.photos.length > 0) {
-			const { error, data } = await uploadImagesToSupabase(
-				values.photos,
-				postId,
-			);
-			imagePaths = data;
-			if (error) return;
-		}
-
-		const formattedPhotos: PostImageCreate[] = imagePaths.map((p) => {
-			return {
-				image_url: p,
-				post_id: postId,
-			};
-		});
+		const imagePaths = await uploadImages(values.photos, postId);
+		if (imagePaths.length !== values.photos.length) return onError();
 
 		try {
 			await createPostMutation({
@@ -135,24 +131,75 @@ export const CreatePostForm = ({ onSuccess, onError }: CreatePostFormProps) => {
 					user_id: currentUser?.id as string,
 					type: (values.tag || 'OTHER') as 'RANT' | 'ADVICE' | 'OTHER',
 				},
-				images: formattedPhotos,
+				images: prepareImageDbEntries(postId, imagePaths),
 			});
 			onSuccess();
-			setOpenDialog(false);
 		} catch (e) {
-			console.error('error', e);
+			console.error('Create post error', e);
+			onError();
 		}
 	};
 
-	const isValid = formMethods.formState.isValid;
+	const handleEdit = async (values: CreatePostFormValues) => {
+		if (!defaultPost || !isDirty) return setOpenDialog(false);
 
-	const tag = formMethods.control._getWatch('tag');
-	// const tag = watch('tag') as string;
-	console.log('tag', tag);
+		const postId = defaultPost.id;
+		let removed: PostImageDto[] = [];
+		let newPaths: string[] = [];
+
+		try {
+			if (dirtyFields.photos) {
+				removed = defaultPost.images.filter(
+					(img) => !values.photos.includes(img.imageUrl),
+				);
+				if (removed.length) {
+					await removeImages(removed.map((img) => img.storageUrl as string));
+				}
+
+				const newImages = values.photos.filter(
+					(uri) => !defaultPost.images.some((img) => img.imageUrl === uri),
+				);
+				newPaths = await uploadImages(newImages, postId);
+				if (newPaths.length !== newImages.length) return onError();
+			}
+
+			await editPostMutation({
+				post: {
+					id: postId,
+					title: values.title,
+					content: values.content,
+					disable_comments: values.disableComments,
+					user_id: currentUser?.id as string,
+					type: (values.tag || 'OTHER') as 'RANT' | 'ADVICE' | 'OTHER',
+				},
+				images: prepareImageDbEntries(postId, newPaths),
+				removedImages: removed,
+			});
+
+			onSuccess();
+		} catch (e) {
+			console.error('Edit post error', e);
+			onError();
+		}
+	};
+
+	const handleSubmit = async (values: CreatePostFormValues) => {
+		setOpenDialog(true);
+		if (!defaultPost) {
+			await handleCreate(values);
+		} else {
+			await handleEdit(values);
+		}
+		setOpenDialog(false);
+	};
 
 	return (
 		<>
-			<CreatingPostModal open={openDialog} setOpen={setOpenDialog} />
+			<CreatingPostModal
+				open={openDialog}
+				setOpen={setOpenDialog}
+				isEdit={!!defaultPost}
+			/>
 			<FormProvider {...formMethods}>
 				<View f={1} gap="$md">
 					<ControlledInputField
@@ -182,12 +229,14 @@ export const CreatePostForm = ({ onSuccess, onError }: CreatePostFormProps) => {
 							{ label: 'Other', value: 'OTHER' },
 						]}
 					/>
-
-					<ImageUpload name="photos" multiple />
-
+					<ImageUpload
+						name="photos"
+						multiple
+						syncIsImageCompressing={setAreImagesLoading}
+					/>
 					<Button
 						variant="primary"
-						disabled={!isValid}
+						disabled={!isValid || !isDirty || areImagesLoading}
 						onPress={formMethods.handleSubmit(handleSubmit)}
 					>
 						Submit

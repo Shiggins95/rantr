@@ -12,6 +12,7 @@ import { SupabaseClient } from '@supabase/supabase-js';
 export type PostType = Database['public']['Enums']['post_type_enum'];
 export type PostDbBase = Database['public']['Tables']['posts']['Row'];
 export type PostCreate = Database['public']['Tables']['posts']['Insert'];
+export type PostUpdate = Database['public']['Tables']['posts']['Update'];
 export type PostDb = PostDbBase & {
 	user?: UserDbBase;
 	comments?: CommentDb[];

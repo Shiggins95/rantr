@@ -36,7 +36,8 @@ export const Post = ({ post }: PostProps) => {
 			baseOptions.push({
 				label: 'Edit',
 				icon: <Pencil size="$size.md" c="$primary" />,
-				onPress: () => console.info('edit'),
+				onPress: () =>
+					router.navigate(`/(app)/(out-of-tabs)/edit-post/${post.id}`),
 			});
 		} else {
 			baseOptions.push({

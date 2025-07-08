@@ -8,7 +8,7 @@ import { FileImage, Trash } from '@tamagui/lucide-icons';
 import { Body, BodyType } from '@ui/body';
 import { RantrImage } from '@ui/image';
 import { InputErrorTypes } from '@ui/select';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useController, UseControllerProps, useWatch } from 'react-hook-form';
 import { Dimensions, Pressable, StyleSheet } from 'react-native';
 import { Spinner, View } from 'tamagui';
@@ -18,6 +18,7 @@ type ImageUploadProps = UseControllerProps &
 		multiple?: boolean;
 		disabled?: boolean;
 		maxLength?: number;
+		syncIsImageCompressing: Dispatch<SetStateAction<boolean>>;
 	};
 
 export const ImageUpload = (props: ImageUploadProps) => {
@@ -85,6 +86,10 @@ export const ImageUpload = (props: ImageUploadProps) => {
 
 	const isDisabled =
 		props.disabled || photos.length >= maxLength || isImageCompressing;
+
+	useEffect(() => {
+		props.syncIsImageCompressing(isImageCompressing);
+	}, [isImageCompressing]);
 
 	return (
 		<>

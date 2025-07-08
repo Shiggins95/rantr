@@ -2,6 +2,7 @@ import React, { JSX } from 'react';
 
 import { Colours } from '@/src/constants/colours';
 import { spacing } from '@/src/constants/spacing';
+import { useAuthContext } from '@/src/context/auth-context';
 import { useColorScheme } from '@hooks/useColorScheme';
 import { IconProps } from '@tamagui/helpers-icon';
 import { Bell, Home, Plus, Search, User2 } from '@tamagui/lucide-icons';
@@ -53,7 +54,7 @@ const CreatePostButton = () => {
 
 export default function Layout() {
 	const styles = useStyles();
-
+	const { guestMode } = useAuthContext();
 	return (
 		<View style={styles.flex}>
 			<Tabs>
@@ -66,18 +67,18 @@ export default function Layout() {
 						name="(search)"
 						href="/(app)/(tabs)/(search)/search"
 						asChild
-						style={styles.mr50}
+						style={!guestMode ? styles.mr50 : undefined}
 					>
 						<CustomTabButton Icon={Search} />
 					</TabTrigger>
 
-					<CreatePostButton />
+					{!guestMode && <CreatePostButton />}
 
 					<TabTrigger
 						name="(notifications)"
 						href="/(app)/(tabs)/(notifications)"
 						asChild
-						style={styles.ml50}
+						style={!guestMode ? styles.ml50 : undefined}
 					>
 						<CustomTabButton Icon={Bell} />
 					</TabTrigger>

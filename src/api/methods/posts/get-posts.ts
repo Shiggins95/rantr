@@ -35,6 +35,7 @@ export const getAnonPosts = async (
 		.select(ANON_MULTI_POSTS_SCHEMA)
 		.lt('created_at', lastCursor)
 		.order('created_at', { ascending: false })
+		.eq('deleted', false)
 		.limit(POSTS_PER_PAGE);
 
 	if (error) throw error;
