@@ -1,8 +1,8 @@
-import { createTamagui } from 'tamagui';
-import { defaultConfig } from '@tamagui/config/v4';
-import { darkColours, lightColours } from '@/themes/themes';
 import { bodyFont, headingFont, monospaceFont } from '@/themes/fonts';
+import { darkColours, lightColours } from '@/themes/themes';
 import { tokens } from '@/themes/tokens';
+import { defaultConfig } from '@tamagui/config/v4';
+import { createTamagui } from 'tamagui';
 
 const config = createTamagui({
 	...defaultConfig,
@@ -31,6 +31,7 @@ const config = createTamagui({
 		m: 'margin',
 		mb: 'marginBottom',
 		my: 'marginVertical',
+		mx: 'marginHorizontal',
 		mt: 'marginTop',
 		w: 'width',
 		bg: 'backgroundColor',

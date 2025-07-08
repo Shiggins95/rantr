@@ -60,7 +60,7 @@ export const Post = ({ post }: PostProps) => {
 					bw={1}
 					bg="$background"
 					borderColor="$primary30"
-					marginHorizontal="$md"
+					mx="$md"
 				>
 					<PostCommentHeader
 						user={post.user!}
