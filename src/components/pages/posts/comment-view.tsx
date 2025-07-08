@@ -1,7 +1,4 @@
 import { useGetReplies } from '@/src/api/hooks/comments/use-get-replies';
-import { useSupabaseMutation } from '@/src/api/hooks/common/use-supabase-mutation';
-import { onSuccessDeleteComment } from '@/src/api/invalidations/comment-deletion';
-import { deleteComment } from '@/src/api/methods/comments/delete-comment';
 import { MAX_COMMENT_DEPTH } from '@/src/api/schemas/comments.schema';
 import { CommentSkeleton } from '@/src/components/pages/posts/comment.skeleton';
 import {
@@ -14,14 +11,7 @@ import { spacing } from '@/src/constants/spacing';
 import { useCurrentUser } from '@/src/context/auth-context';
 import { CommentDto } from '@/src/types/comments.types';
 import { useColorScheme } from '@hooks/useColorScheme';
-import {
-	ArrowRight,
-	Flag,
-	Glasses,
-	Pencil,
-	Trash,
-} from '@tamagui/lucide-icons';
-import { useToastController } from '@tamagui/toast';
+import { ArrowRight, Flag, Glasses, Pencil } from '@tamagui/lucide-icons';
 import { useQueryClient } from '@tanstack/react-query';
 import { Body, BodyType } from '@ui/body';
 import { useRouter } from 'expo-router';
@@ -58,9 +48,10 @@ export const CommentView = ({
 	const initialAddedColour = Colours[theme].primary40;
 	const bgColour = Colours[theme].background;
 	const colourProgress = useSharedValue(0);
-	const [open, setOpen] = useState(depth <= 1 || comment.isLocal || false);
+	const [open, setOpen] = useState(
+		(depth <= 1 && !comment.deleted) || comment.isLocal || false,
+	);
 	const onLongPress = depth === 0 ? () => setOpen(false) : _onLongPress;
-	const toast = useToastController();
 	const currentUser = useCurrentUser();
 
 	const [showOriginal, setShowOriginal] = useState(false);
@@ -72,13 +63,8 @@ export const CommentView = ({
 	} = useGetReplies({
 		commentId: comment.id,
 		postId: comment.postId,
-		enabled: !comment.isLocal,
+		enabled: !comment.isLocal && !comment.deleted,
 	});
-
-	const { mutateAsync: deleteCommentMutation } = useSupabaseMutation(
-		deleteComment,
-		{ onSuccess: onSuccessDeleteComment },
-	);
 
 	const navigateToPostWithComments = () => {
 		queryClient.removeQueries({ queryKey: ['replies', comment.replyId] });
@@ -95,21 +81,6 @@ export const CommentView = ({
 	};
 
 	const isLoading = loadingReplies || fetchingReplies;
-
-	const handleDeleteComment = async () => {
-		try {
-			await deleteCommentMutation(comment);
-			toast.show('Comment deleted', {
-				message: 'Comment deleted successfully',
-				type: 'success',
-			});
-		} catch (e) {
-			toast.show('Something went wrong', {
-				message: 'Failed to delete comment',
-				type: 'error',
-			});
-		}
-	};
 
 	const animatedStyle = useAnimatedStyle(() => {
 		const backgroundColor = interpolateColor(
@@ -151,14 +122,11 @@ export const CommentView = ({
 
 		if (comment.userId === currentUser?.id) {
 			options.push({
-				label: 'Delete',
-				icon: <Trash size="$size.md" c="$primary" />,
-				onPress: handleDeleteComment,
-			});
-			options.push({
 				label: 'Edit',
 				icon: <Pencil size="$size.md" c="$primary" />,
-				onPress: () => onEditCommentPress(comment),
+				onPress: () => {
+					onEditCommentPress(comment);
+				},
 			});
 		}
 
@@ -204,6 +172,8 @@ export const CommentView = ({
 							onLongPress={onLongPress}
 							heading={
 								<PostCommentHeader
+									entityId={comment.id}
+									showDelete
 									createdAt={comment.createdAt}
 									user={comment.user}
 									contextOptions={contextMenuOptions}

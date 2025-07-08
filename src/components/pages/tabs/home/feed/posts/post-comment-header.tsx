@@ -1,7 +1,13 @@
+import { useSupabaseMutation } from '@/src/api/hooks/common/use-supabase-mutation';
+import { onSuccessDeleteComment } from '@/src/api/invalidations/comment-deletion';
+import { onSuccessPostDeletion } from '@/src/api/invalidations/post-deletion';
+import { deleteComment } from '@/src/api/methods/comments/delete-comment';
+import { deletePost } from '@/src/api/methods/posts/delete-post';
 import { useAuthContext } from '@/src/context/auth-context';
 import { UserDto } from '@/src/types/user.types';
 import { getTimestamp } from '@/src/utils/date';
-import { ChevronLeft, MoreVertical } from '@tamagui/lucide-icons';
+import { ChevronLeft, MoreVertical, Trash } from '@tamagui/lucide-icons';
+import { useToastController } from '@tamagui/toast';
 import { Body, BodyType } from '@ui/body';
 import { Button } from '@ui/button';
 import Popover from '@ui/popover';
@@ -28,8 +34,10 @@ type PostCommentHeaderProps = {
 	onBackPress?: () => void;
 	contextOptions: ContextOption[];
 	deleted?: boolean;
-	type?: 'post' | 'comment';
+	type: 'post' | 'comment';
 	edited?: boolean;
+	showDelete?: boolean;
+	entityId: string;
 };
 
 const AnonPostBar = ({
@@ -74,12 +82,58 @@ export const PostCommentHeader = ({
 	user,
 	withNav,
 	onBackPress,
-	contextOptions,
+	contextOptions: _contextOptions,
 	deleted = false,
 	edited = false,
+	showDelete,
+	type,
+	entityId,
 }: PostCommentHeaderProps) => {
-	const { guestMode } = useAuthContext();
+	const { guestMode, user: currentUser } = useAuthContext();
 	const [openMenu, setOpenMenu] = useState(false);
+
+	const toast = useToastController();
+
+	const { mutateAsync: deleteCommentMutation } = useSupabaseMutation(
+		deleteComment,
+		{ onSuccess: onSuccessDeleteComment },
+	);
+
+	const { mutateAsync: deletePostMutation } = useSupabaseMutation(deletePost, {
+		onSuccess: onSuccessPostDeletion,
+	});
+
+	const handleDeleteComment = async () => {
+		try {
+			await deleteCommentMutation(entityId);
+			toast.show('Comment deleted', {
+				message: 'Comment deleted successfully',
+				type: 'success',
+			});
+		} catch (e) {
+			console.error('error deleting comment', e);
+			toast.show('Something went wrong', {
+				message: 'Failed to delete comment',
+				type: 'error',
+			});
+		}
+	};
+
+	const handleDeletePost = async () => {
+		try {
+			await deletePostMutation(entityId);
+			toast.show('Comment deleted', {
+				message: 'Comment deleted successfully',
+				type: 'success',
+			});
+		} catch (e) {
+			console.error('error deleting post', e);
+			toast.show('Something went wrong', {
+				message: 'Failed to delete comment',
+				type: 'error',
+			});
+		}
+	};
 
 	const userInfo = useMemo<HeaderUser>(() => {
 		if (guestMode || !user) {
@@ -104,15 +158,42 @@ export const PostCommentHeader = ({
 		};
 	}, [user, deleted, guestMode]);
 
+	const contextOptions = useMemo(() => {
+		const options = [..._contextOptions];
+		if (!currentUser) return options;
+		if (currentUser.id !== user.id) return options;
+
+		if (showDelete) {
+			if (type === 'comment') {
+				options.push({
+					label: 'Delete',
+					icon: <Trash size="$size.md" c="$primary" />,
+					onPress: handleDeleteComment,
+				});
+				return options;
+			}
+
+			options.push({
+				label: 'Delete',
+				icon: <Trash size="$size.md" c="$primary" />,
+				onPress: handleDeletePost,
+			});
+		}
+
+		return options;
+	}, [_contextOptions, currentUser, showDelete, type]);
+
 	if (guestMode || !user)
 		return (
 			<AnonPostBar
+				type={type}
 				user={userInfo}
 				withNav={withNav}
 				createdAt={createdAt}
 				onBackPress={onBackPress}
-				contextOptions={contextOptions}
+				contextOptions={[]}
 				deleted={deleted}
+				entityId={entityId}
 			/>
 		);
 

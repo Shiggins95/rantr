@@ -75,27 +75,30 @@ export const CreatePostForm = ({ onSuccess, onError }: CreatePostFormProps) => {
 
 	const handleSubmit = async (values: CreatePostFormValues) => {
 		setOpenDialog(true);
-		const postId = uuid.v4();
-		let imagePaths: { error: boolean; path: string; errorMessage: unknown }[] =
-			[];
-		if (values.photos.length > 0) {
-			imagePaths = await uploadImagesToSupabase(values.photos, postId);
-		}
-		const hasErrors = imagePaths.some((p) => p.error);
-		if (hasErrors) {
-			// TODO delete uploaded photos and throw error toast
-			console.error('error', imagePaths);
-			return;
-		}
-
-		const formattedPhotos: PostImageCreate[] = imagePaths.map((p) => {
-			return {
-				image_url: p.path,
-				post_id: postId,
-			};
-		});
-
 		try {
+			const postId = uuid.v4();
+			let imagePaths: {
+				error: boolean;
+				path: string;
+				errorMessage: unknown;
+			}[] = [];
+			if (values.photos.length > 0) {
+				imagePaths = await uploadImagesToSupabase(values.photos, postId);
+			}
+			const hasErrors = imagePaths.some((p) => p.error);
+			if (hasErrors) {
+				// TODO delete uploaded photos and throw error toast
+				console.error('error', imagePaths);
+				return;
+			}
+
+			const formattedPhotos: PostImageCreate[] = imagePaths.map((p) => {
+				return {
+					image_url: p.path,
+					post_id: postId,
+				};
+			});
+
 			await createPostMutation({
 				post: {
 					id: postId,
@@ -111,6 +114,7 @@ export const CreatePostForm = ({ onSuccess, onError }: CreatePostFormProps) => {
 		} catch (e) {
 			console.error('error', e);
 			onError();
+			setOpenDialog(false);
 		} finally {
 			setOpenDialog(false);
 		}

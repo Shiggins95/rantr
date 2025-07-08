@@ -189,7 +189,7 @@ export const PostInteractions = ({
 			)}
 
 			{isFullPage && !areCommentsDisabled && (
-				<View fd="row" p="$sm" gap="$sm">
+				<View fd="row" p="$sm" gap="$sm" opacity={item.deleted ? 0.5 : 1}>
 					<MessageSquare size="$md" c="$color.textMuted" />
 					<Body c="$textMuted" variant={BodyType.smallMonospace}>
 						{commentCount < 0 ? 0 : commentCount}

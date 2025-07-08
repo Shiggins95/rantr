@@ -50,6 +50,9 @@ export const PostPageHeader = () => {
 					createdAt={createdAt}
 					user={user}
 					contextOptions={[]}
+					type="post"
+					showDelete
+					entityId={params.postId as string}
 				/>
 			)}
 		</View>

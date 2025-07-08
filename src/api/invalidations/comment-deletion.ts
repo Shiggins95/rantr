@@ -39,9 +39,9 @@ const invalidateRest = (comment: CommentDto) => {
 	);
 };
 
-export const onSuccessDeleteReply = (comment: CommentDto) => {
+export const onSuccessDeleteReply = (deletedComment: CommentDto) => {
 	queryClient.setQueryData(
-		['replies', comment.replyId],
+		['replies', deletedComment.replyId],
 		(
 			oldData: { pages: CommentDto[][] } | undefined,
 		): { pages: CommentDto[][] } => {
@@ -50,36 +50,42 @@ export const onSuccessDeleteReply = (comment: CommentDto) => {
 			return {
 				...oldData,
 				pages: oldData.pages.map((page) => {
-					return page.filter((item) => item.id !== comment.id);
+					return page.map((c) =>
+						c.id === deletedComment.id ? deletedComment : c,
+					);
 				}),
 			};
 		},
 	);
-	invalidateRest(comment);
+	invalidateRest(deletedComment);
 };
 
-export const onSuccessDeleteComment = (comment: CommentDto) => {
-	if (comment.replyId) {
-		return onSuccessDeleteReply(comment);
+export const onSuccessDeleteComment = (deletedComment: CommentDto) => {
+	if (deletedComment.replyId) {
+		return onSuccessDeleteReply(deletedComment);
 	}
 
 	queryClient.setQueryData(
-		['comments', comment.postId],
+		['comments', deletedComment.postId],
 		(
 			oldData: { pages: CommentDto[][] } | undefined,
 		): { pages: CommentDto[][]; pageParams?: unknown[] } => {
-			const newItem = { ...comment, isLocal: true } as CommentDto;
 			if (!oldData)
-				return { pages: [[newItem]], pageParams: [new Date().toISOString()] };
+				return {
+					pages: [[deletedComment]],
+					pageParams: [new Date().toISOString()],
+				};
 
 			return {
 				...oldData,
 				pages: oldData.pages.map((page) => {
-					return page.filter((item) => item.id !== comment.id);
+					return page.map((c) =>
+						c.id === deletedComment.id ? deletedComment : c,
+					);
 				}),
 			};
 		},
 	);
 
-	invalidateRest(comment);
+	invalidateRest(deletedComment);
 };

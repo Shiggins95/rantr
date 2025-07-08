@@ -25,15 +25,17 @@ export const mapToDto = async (entity: PostDb, supabase: SupabaseClient) => {
 	const dto = new PostDto(entity);
 	if (entity.images) {
 		dto.images = await Promise.all(
-			entity.images.map(async (image) => {
+			entity.images.map(async ({ image_url, ...rest }) => {
 				const { data } = await supabase.storage
 					.from('post-photos')
-					.createSignedUrl(image.image_url, 60 * 60);
+					.createSignedUrl(image_url, 60 * 60);
 
 				return new PostImageDto({
-					image_url: data?.signedUrl || '',
-					id: image.id,
-					post_id: entity.id,
+					...rest,
+					image_url: image_url.startsWith('https://')
+						? image_url
+						: data?.signedUrl || '',
+					storage_url: image_url,
 				});
 			}),
 		);
@@ -91,10 +93,6 @@ export class PostDto {
 
 		if (entity.user) {
 			this.user = new UserDto(entity.user);
-		}
-
-		if (entity.images) {
-			this.images = entity.images.map((i) => new PostImageDto(i));
 		}
 
 		if (entity.my_interaction && entity.my_interaction.length > 0) {

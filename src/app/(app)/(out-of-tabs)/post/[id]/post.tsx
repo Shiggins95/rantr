@@ -142,13 +142,8 @@ export default function PostFullPage() {
 		queryClient.removeQueries({ queryKey: ['post', id] });
 		queryClient.removeQueries({ queryKey: ['comments', id] });
 		queryClient.removeQueries({ queryKey: ['replies'] });
+		inputRef.current?.clear();
 		await refetch();
-	};
-
-	const clearInput = () => {
-		// inputRef.current?.blur();
-		// inputRef.current?.clear();
-		Keyboard.dismiss();
 	};
 
 	const clearFocussedComments = () => {
@@ -170,6 +165,7 @@ export default function PostFullPage() {
 		router.setParams({
 			user: JSON.stringify(post.user || {}),
 			createdAt: post.createdAt.toISOString(),
+			postId: post.id,
 		});
 	}, [post]);
 
@@ -196,7 +192,7 @@ export default function PostFullPage() {
 				{!isLoading && post && (
 					<>
 						<View h={screenHeight - 50 - insets.top}>
-							<TouchableWithoutFeedback onPress={clearInput}>
+							<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 								<FlatList
 									ref={flatListRef}
 									showsVerticalScrollIndicator={false}
@@ -210,7 +206,7 @@ export default function PostFullPage() {
 									onRefresh={onRefresh}
 								/>
 							</TouchableWithoutFeedback>
-							{currentUser && !post.disableComments && (
+							{currentUser && !post.disableComments && !post.deleted && (
 								<AddCommentWidget
 									clearReplyToComment={clearFocussedComments}
 									flatListRef={flatListRef}

@@ -80,6 +80,8 @@ export const AddCommentWidget = forwardRef<TextInput, AddCommentWidgetProps>(
 		const toast = useToastController();
 		// endregion
 
+		console.log('focussedCommentToEdit', focussedCommentToEdit);
+
 		// region styles
 		const styles = useStyles();
 		const borderStyle = useMemo(() => {
@@ -122,6 +124,7 @@ export const AddCommentWidget = forwardRef<TextInput, AddCommentWidgetProps>(
 				ref.current.blur();
 				Keyboard.dismiss();
 			}
+			clearReplyToComment();
 		};
 		// endregion
 

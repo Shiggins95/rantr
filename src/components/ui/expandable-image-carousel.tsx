@@ -32,15 +32,15 @@ export const ExpandableImageCarousel = ({
 
 	const carousel = useMemo(() => {
 		return (
-			<View my="$md">
-				{post.images.length > 0 && (
+			post.images.length > 0 && (
+				<View my="$md">
 					<ImageCarousel
 						ref={ref}
 						renderType={renderType}
 						images={post.images}
 					/>
-				)}
-			</View>
+				</View>
+			)
 		);
 	}, [post.images]);
 

@@ -16,6 +16,7 @@ export const getPosts = async (
 		.select(MULTI_POSTS_SCHEMA)
 		.lt('created_at', lastCursor)
 		.eq('my_interaction.user_id', userId)
+		.eq('deleted', false)
 		.order('created_at', { ascending: false })
 		.limit(POSTS_PER_PAGE);
 
