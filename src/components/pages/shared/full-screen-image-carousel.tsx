@@ -7,6 +7,7 @@ import { ImageCarousel } from '@ui/image-carousel';
 import { ImageContentFit } from 'expo-image';
 import { useMemo, useRef } from 'react';
 import { Dimensions, Pressable, StyleSheet } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, {
 	useAnimatedStyle,
 	useSharedValue,
@@ -96,26 +97,28 @@ export const FullScreenImageCarousel = ({
 	}, [images, resizeMode, parallax, startingIndex]);
 
 	return (
-		<Dialog open={open} onOpenChange={onClose}>
-			<Dialog.Portal>
-				<Dialog.Overlay key={postId} />
-				<Dialog.Content>
-					<Animated.View style={animatedStyle}>
-						<XStack jc="space-between" px="$md">
-							<Pressable onPress={onClose}>
-								<X size="$xl" c="$primary" />
-							</Pressable>
-							{showRemoveButton && (
-								<Pressable onPress={handleRemove}>
-									<Trash size="$xl" c="$danger" />
+		<GestureHandlerRootView>
+			<Dialog open={open} onOpenChange={onClose}>
+				<Dialog.Portal>
+					<Dialog.Overlay key={postId} />
+					<Dialog.Content>
+						<Animated.View style={animatedStyle}>
+							<XStack jc="space-between" px="$md">
+								<Pressable onPress={onClose}>
+									<X size="$xl" c="$primary" />
 								</Pressable>
-							)}
-						</XStack>
-					</Animated.View>
-					<View>{carousel}</View>
-				</Dialog.Content>
-			</Dialog.Portal>
-		</Dialog>
+								{showRemoveButton && (
+									<Pressable onPress={handleRemove}>
+										<Trash size="$xl" c="$danger" />
+									</Pressable>
+								)}
+							</XStack>
+						</Animated.View>
+						<View>{carousel}</View>
+					</Dialog.Content>
+				</Dialog.Portal>
+			</Dialog>
+		</GestureHandlerRootView>
 	);
 };
 

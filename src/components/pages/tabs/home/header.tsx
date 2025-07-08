@@ -1,13 +1,12 @@
-import { Image, View } from 'tamagui';
-import { Button, PostTypeButtons } from '@ui/button';
-import { Dispatch, SetStateAction, useMemo, useState } from 'react';
-import { Platform } from 'react-native';
-import { spacing } from '@/src/constants/spacing';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ListFilter } from '@tamagui/lucide-icons';
-import Popover from '@ui/popover';
 import { Body, BodyType } from '@ui/body';
+import { Button, PostTypeButtons } from '@ui/button';
 import { Headline, HeadlineType } from '@ui/healine';
+import Popover from '@ui/popover';
+import Constants from 'expo-constants';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Image, View } from 'tamagui';
 
 type HeaderProps = {
 	setCurrentTag: Dispatch<SetStateAction<string>>;
@@ -18,9 +17,7 @@ export const HomeHeader = ({ setCurrentTag, currentTag }: HeaderProps) => {
 	const [openFilters, setOpenFilters] = useState(false);
 	const { top } = useSafeAreaInsets();
 	const topPadding = useMemo(() => {
-		const isIos = Platform.OS === 'ios';
-
-		let paddingTop = isIos ? 0 : spacing.md;
+		let paddingTop = Constants.statusBarHeight || 0;
 
 		if (paddingTop === 0) {
 			paddingTop += top;

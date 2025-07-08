@@ -21,7 +21,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.stephenzoplo.rantr",
+      "package": "com.stephen.rantr",
       "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
@@ -50,7 +50,16 @@
         {
           "photosPermission": "The app accesses your photos to allow you to select a profile photo for your account."
         }
-      ]
+      ],
+      [
+        "expo-maps",
+        {
+          "requestLocationPermission": true,
+          "locationPermission": "Allow $(PRODUCT_NAME) to use your location"
+        }
+      ],
+      "expo-font",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true

@@ -18,7 +18,7 @@ export const RantrImage = ({ src, width, height, resizeMode }: ImageProps) => {
 			...styles.image,
 			width: width || '100%',
 			height: height || '100%',
-			resizeMode,
+			backgroundColor: '$background',
 		};
 	}, [width, height, resizeMode]);
 

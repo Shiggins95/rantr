@@ -69,7 +69,17 @@ export const PostPageHeader = () => {
 	}, [currentUser, params.postId, user]);
 
 	return (
-		<View h={top + HEADER_HEIGHT} pt={top} bg="transparent" px="$md">
+		<View
+			top={0}
+			left={0}
+			right={0}
+			position="absolute"
+			h={top + HEADER_HEIGHT}
+			pt={top}
+			bg="transparent"
+			px="$md"
+			pb={0}
+		>
 			{!!user && !!createdAt && (
 				<PostCommentHeader
 					withNav

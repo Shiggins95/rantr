@@ -1,5 +1,5 @@
-import { Stack } from 'expo-router';
 import { NavigationHeader } from '@/src/components/navigation/basic-header';
+import { Stack } from 'expo-router';
 
 export default function OnboardingLayout() {
 	return (
@@ -13,13 +13,13 @@ export default function OnboardingLayout() {
 			<Stack.Screen
 				name="sign-in"
 				options={{
-					header: NavigationHeader,
+					header: () => <NavigationHeader />,
 				}}
 			/>
 			<Stack.Screen
 				name="verification-code"
 				options={{
-					header: NavigationHeader,
+					header: () => <NavigationHeader />,
 				}}
 			/>
 		</Stack>

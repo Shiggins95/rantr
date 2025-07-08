@@ -6,7 +6,7 @@ import {
 	useController,
 	UseControllerProps,
 } from 'react-hook-form';
-import { TextInputProps } from 'react-native';
+import { Platform, TextInputProps } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { XStack, YStack } from 'tamagui';
 import { Input } from './input';
@@ -114,6 +114,11 @@ const InputField = forwardRef<TextInput, InputFieldProps>(
 					h={height}
 					bg="$background"
 					borderColor="$color.borderColor"
+					verticalAlign={
+						Platform.OS === 'android' && rest.multiline
+							? 'top'
+							: rest.textAlignVertical
+					}
 				/>
 			</YStack>
 		);

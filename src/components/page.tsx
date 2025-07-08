@@ -1,17 +1,15 @@
+import { HEADER_HEIGHT, spacing } from '@/src/constants/spacing';
+import { FC, useMemo } from 'react';
 import {
 	Dimensions,
 	ImageBackground,
-	Keyboard,
 	Platform,
 	StyleSheet,
-	TouchableWithoutFeedback,
 	useColorScheme,
 	ViewProps,
 } from 'react-native';
-import { FC, useMemo } from 'react';
-import { View } from 'tamagui';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { HEADER_HEIGHT, spacing } from '@/src/constants/spacing';
+import { View } from 'tamagui';
 
 export type PagePropsBase = {
 	isSafeArea?: boolean;
@@ -85,16 +83,10 @@ export const Page: FC<PageProps> = ({
 	]);
 
 	return (
-		<TouchableWithoutFeedback
-			onPress={() => Keyboard.dismiss()}
-			style={styles.container}
-			accessible={false}
-		>
-			<>
-				<ImageBackground style={styles.imageBg} source={bgImage} />
-				<View style={containerStyles}>{children}</View>
-			</>
-		</TouchableWithoutFeedback>
+		<View f={1}>
+			<ImageBackground style={styles.imageBg} source={bgImage} />
+			<View style={containerStyles}>{children}</View>
+		</View>
 	);
 };
 

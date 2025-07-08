@@ -14,11 +14,13 @@ import { useToastController } from '@tamagui/toast';
 import { Body, BodyType } from '@ui/body';
 import { Button } from '@ui/button';
 import InputField from '@ui/input-field';
+import Constants from 'expo-constants';
 import { forwardRef, RefObject, useEffect, useMemo, useState } from 'react';
 import {
 	Dimensions,
 	FlatList,
 	Keyboard,
+	Platform,
 	StyleSheet,
 	TouchableWithoutFeedback,
 } from 'react-native';
@@ -91,7 +93,11 @@ export const AddCommentWidget = forwardRef<TextInput, AddCommentWidgetProps>(
 		}, [visible]);
 
 		const maxAllowedHeight =
-			screenHeight - keyboardHeight - insets.top - HEADER_HEIGHT;
+			screenHeight -
+			keyboardHeight -
+			insets.top -
+			HEADER_HEIGHT -
+			(Platform.OS === 'android' ? Constants.statusBarHeight : 0);
 
 		const animatedStyle = useAnimatedStyle(() => {
 			const paddingTopValue = interpolate(
@@ -374,7 +380,7 @@ const useStyles = () => {
 	return StyleSheet.create({
 		container: {
 			position: 'absolute',
-			bottom: 0,
+			bottom: Platform.OS === 'android' ? Constants.statusBarHeight + 5 : 0,
 			width: '100%',
 			backgroundColor: Colours[theme].pureBg,
 			flexDirection: 'row',

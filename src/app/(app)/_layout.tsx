@@ -1,9 +1,9 @@
-import { Redirect, Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
 import { useAuthContext } from '@/src/context/auth-context';
 import { useAndroidStatusBar } from '@hooks/use-android-status-bar';
+import { Redirect, Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import React from 'react';
+import 'react-native-reanimated';
 
 export default function AppLayout() {
 	const { session, isLoading, user, guestMode } = useAuthContext();

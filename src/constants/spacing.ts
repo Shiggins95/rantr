@@ -8,5 +8,5 @@ export const spacing = {
 	xl: 32,
 };
 
-export const HEADER_HEIGHT = 50;
+export const HEADER_HEIGHT = 40;
 export const INPUT_HEIGHT = 50;
