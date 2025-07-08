@@ -1,6 +1,6 @@
 import { useSupabaseQuery } from '@/src/api/hooks/common/use-supabase-query';
 import { getPost } from '@/src/api/methods/posts/get-post';
-import { CreatePostForm } from '@/src/components/forms/create-post/create-post-form';
+import { CreateEditPostForm } from '@/src/components/forms/create-edit-post/create-edit-post-form';
 import { Page } from '@/src/components/page';
 import { useCurrentUser } from '@/src/context/auth-context';
 import { useToastController } from '@tamagui/toast';
@@ -72,7 +72,7 @@ export default function () {
 					contentContainerStyle={{ pb: 100 }}
 				>
 					<Headline variant={HeadlineType.h3}>Create post</Headline>
-					<CreatePostForm
+					<CreateEditPostForm
 						onSuccess={onSuccess}
 						onError={onError}
 						defaultPost={post}

@@ -4,9 +4,9 @@ import { onPostEditSuccess } from '@/src/api/invalidations/post-update';
 import { createPost } from '@/src/api/methods/posts/create-post';
 import { editPost } from '@/src/api/methods/posts/edit-post';
 import {
-	createPostForm,
-	CreatePostFormValues,
-} from '@/src/components/forms/create-post/create-post-schema';
+	createEditPostForm,
+	CreateEditPostFormValues,
+} from '@/src/components/forms/create-edit-post/create-edit-post-schema';
 import { CreatingPostModal } from '@/src/components/pages/create-post/creating-post-modal';
 import { useCurrentUser } from '@/src/context/auth-context';
 import { PostImageDto } from '@/src/types/post-images.types';
@@ -24,23 +24,23 @@ import { FormProvider, useForm } from 'react-hook-form';
 import uuid from 'react-native-uuid';
 import { View } from 'tamagui';
 
-type CreatePostFormProps = {
+type CreateEditPostFormProps = {
 	onSuccess: () => void;
 	onError: () => void;
 	defaultPost?: PostDto;
 };
 
-export const CreatePostForm = ({
+export const CreateEditPostForm = ({
 	onSuccess,
 	onError,
 	defaultPost,
-}: CreatePostFormProps) => {
+}: CreateEditPostFormProps) => {
 	const supabase = getSupabaseAuthenticatedClient();
 	const currentUser = useCurrentUser();
 	const [openDialog, setOpenDialog] = useState(false);
 	const [areImagesLoading, setAreImagesLoading] = useState(false);
 
-	const defaultValues = useMemo<CreatePostFormValues>(() => {
+	const defaultValues = useMemo<CreateEditPostFormValues>(() => {
 		if (!defaultPost) {
 			return {
 				title: '',
@@ -60,8 +60,8 @@ export const CreatePostForm = ({
 		};
 	}, [defaultPost]);
 
-	const formMethods = useForm<CreatePostFormValues>({
-		resolver: zodResolver(createPostForm),
+	const formMethods = useForm<CreateEditPostFormValues>({
+		resolver: zodResolver(createEditPostForm),
 		defaultValues,
 	});
 
@@ -115,7 +115,7 @@ export const CreatePostForm = ({
 	const prepareImageDbEntries = (postId: string, paths: string[]) =>
 		paths.map((path) => ({ image_url: path, post_id: postId }));
 
-	const handleCreate = async (values: CreatePostFormValues) => {
+	const handleCreate = async (values: CreateEditPostFormValues) => {
 		const postId = uuid.v4();
 
 		const imagePaths = await uploadImages(values.photos, postId);
@@ -140,7 +140,7 @@ export const CreatePostForm = ({
 		}
 	};
 
-	const handleEdit = async (values: CreatePostFormValues) => {
+	const handleEdit = async (values: CreateEditPostFormValues) => {
 		if (!defaultPost || !isDirty) return setOpenDialog(false);
 
 		const postId = defaultPost.id;
@@ -183,7 +183,7 @@ export const CreatePostForm = ({
 		}
 	};
 
-	const handleSubmit = async (values: CreatePostFormValues) => {
+	const handleSubmit = async (values: CreateEditPostFormValues) => {
 		setOpenDialog(true);
 		if (!defaultPost) {
 			await handleCreate(values);

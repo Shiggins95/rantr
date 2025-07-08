@@ -1,4 +1,4 @@
-import { CreatePostFormValues } from '@/src/components/forms/create-post/create-post-schema';
+import { CreateEditPostFormValues } from '@/src/components/forms/create-edit-post/create-edit-post-schema';
 import { FullScreenImageCarousel } from '@/src/components/pages/shared/full-screen-image-carousel';
 import { Colours } from '@/src/constants/colours';
 import { spacing } from '@/src/constants/spacing';
@@ -63,7 +63,7 @@ export const ImageUpload = (props: ImageUploadProps) => {
 		});
 	};
 
-	const photos = useWatch<CreatePostFormValues>({
+	const photos = useWatch<CreateEditPostFormValues>({
 		name: 'photos',
 	}) as string[];
 

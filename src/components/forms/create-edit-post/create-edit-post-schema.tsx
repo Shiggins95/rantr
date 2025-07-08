@@ -1,7 +1,7 @@
 import { zStringFieldOptional, zStringFieldRequired } from '@/src/utils/form';
 import { z } from 'zod';
 
-export const createPostForm = z.object({
+export const createEditPostForm = z.object({
 	title: zStringFieldRequired('Assigned To', { maxLength: 100 }),
 	content: zStringFieldRequired('Content'),
 	tag: zStringFieldOptional('Tag'),
@@ -9,4 +9,4 @@ export const createPostForm = z.object({
 	disableComments: z.boolean(),
 });
 
-export type CreatePostFormValues = z.infer<typeof createPostForm>;
+export type CreateEditPostFormValues = z.infer<typeof createEditPostForm>;
