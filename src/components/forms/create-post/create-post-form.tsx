@@ -8,7 +8,7 @@ import {
 import { CreatingPostModal } from '@/src/components/pages/create-post/creating-post-modal';
 import { useCurrentUser } from '@/src/context/auth-context';
 import { PostImageCreate } from '@/src/types/post-images.types';
-import { supabase } from '@/src/utils/supabase';
+import { getSupabaseAuthenticatedClient } from '@/src/utils/supabase';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@ui/button';
 import { ImageUpload } from '@ui/image-upload';
@@ -16,7 +16,7 @@ import { ControlledInputField } from '@ui/input-field';
 import { ControlledSelect } from '@ui/select';
 import { decode } from 'base64-arraybuffer';
 import * as FileSystem from 'expo-file-system';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import uuid from 'react-native-uuid';
 import { View } from 'tamagui';
@@ -27,6 +27,9 @@ type CreatePostFormProps = {
 };
 
 export const CreatePostForm = ({ onSuccess, onError }: CreatePostFormProps) => {
+	const supabase = useMemo(() => {
+		return getSupabaseAuthenticatedClient();
+	}, []);
 	const currentUser = useCurrentUser();
 	const [openDialog, setOpenDialog] = useState(false);
 	const formMethods = useForm<CreatePostFormValues>({
@@ -48,57 +51,81 @@ export const CreatePostForm = ({ onSuccess, onError }: CreatePostFormProps) => {
 		imageUris: string[],
 		postId: string,
 	) => {
-		return await Promise.all(
+		let didError = false;
+
+		const results = await Promise.all(
 			imageUris.map(async (uri, index) => {
-				const base64 = await FileSystem.readAsStringAsync(uri, {
-					encoding: FileSystem.EncodingType.Base64,
-				});
-
-				const arrayBuffer = decode(base64);
-
-				const { data, error } = await supabase.storage
-					.from('post-photos')
-					.upload(`${postId}/${index}.jpg`, arrayBuffer, {
-						cacheControl: '3600',
-						upsert: true,
-						contentType: 'image/jpeg',
+				try {
+					const base64 = await FileSystem.readAsStringAsync(uri, {
+						encoding: FileSystem.EncodingType.Base64,
 					});
 
-				if (error) {
-					return { error: true, path: '', errorMessage: error };
-				}
+					const arrayBuffer = decode(base64);
 
-				return { error: false, path: data?.path, errorMessage: '' };
+					const { data, error } = await supabase.storage
+						.from('post-photos')
+						.upload(`${postId}/${index}.jpg`, arrayBuffer, {
+							cacheControl: '3600',
+							upsert: true,
+							contentType: 'image/jpeg',
+						});
+
+					if (error) {
+						didError = true;
+						return '';
+					}
+
+					return data?.path || '';
+				} catch (e) {
+					console.error(`Failed to upload image ${uri}`, e);
+					didError = true;
+					return '';
+				}
 			}),
 		);
+
+		if (didError) {
+			const imageUris = results.filter((r) => !!r);
+			await cleanupFailedImages(imageUris);
+			return { error: true, data: [] };
+		}
+
+		return { error: false, data: results };
+	};
+
+	const cleanupFailedImages = async (imagePaths: string[]) => {
+		try {
+			await supabase.storage.from('post-photos').remove(imagePaths);
+		} catch (e) {
+			console.error('error cleaning up', e);
+		}
+
+		onError();
+		setOpenDialog(false);
 	};
 
 	const handleSubmit = async (values: CreatePostFormValues) => {
 		setOpenDialog(true);
+		const postId = uuid.v4();
+
+		let imagePaths: string[] = [];
+		if (values.photos.length > 0) {
+			const { error, data } = await uploadImagesToSupabase(
+				values.photos,
+				postId,
+			);
+			imagePaths = data;
+			if (error) return;
+		}
+
+		const formattedPhotos: PostImageCreate[] = imagePaths.map((p) => {
+			return {
+				image_url: p,
+				post_id: postId,
+			};
+		});
+
 		try {
-			const postId = uuid.v4();
-			let imagePaths: {
-				error: boolean;
-				path: string;
-				errorMessage: unknown;
-			}[] = [];
-			if (values.photos.length > 0) {
-				imagePaths = await uploadImagesToSupabase(values.photos, postId);
-			}
-			const hasErrors = imagePaths.some((p) => p.error);
-			if (hasErrors) {
-				// TODO delete uploaded photos and throw error toast
-				console.error('error', imagePaths);
-				return;
-			}
-
-			const formattedPhotos: PostImageCreate[] = imagePaths.map((p) => {
-				return {
-					image_url: p.path,
-					post_id: postId,
-				};
-			});
-
 			await createPostMutation({
 				post: {
 					id: postId,
@@ -111,12 +138,9 @@ export const CreatePostForm = ({ onSuccess, onError }: CreatePostFormProps) => {
 				images: formattedPhotos,
 			});
 			onSuccess();
+			setOpenDialog(false);
 		} catch (e) {
 			console.error('error', e);
-			onError();
-			setOpenDialog(false);
-		} finally {
-			setOpenDialog(false);
 		}
 	};
 
