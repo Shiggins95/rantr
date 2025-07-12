@@ -68,7 +68,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 	const toast = useToastController();
 	const queryClient = useQueryClient();
 
-	const { checkPermissions, requestPermissions, getCurrentLocation, status } =
+	const { checkPermissions, requestPermissions, getCurrentLocation } =
 		useLocationContext();
 
 	const handleUserRetrieved = (user: UserDto, _session: Session) => {
@@ -85,11 +85,25 @@ export function AuthProvider({ children }: PropsWithChildren) {
 		}
 	};
 
+	const requestLocationOnLogin = async () => {
+		const isLocationAlreadyGranted = await checkPermissions();
+		if (!isLocationAlreadyGranted.granted) {
+			const isLocationGranted = await requestPermissions();
+			if (!isLocationGranted.granted) {
+				return false;
+			}
+		}
+		return await getCurrentLocation();
+	};
+
 	const handleCompleteLogin = async (_session: Session) => {
 		try {
 			const userId = _session.user.id;
 			const supabase = getSupabaseAuthenticatedClient();
-			const user = await getUser(userId, supabase);
+			const userRequest = getUser(userId, supabase);
+			const locationRequest = requestLocationOnLogin();
+
+			const [user] = await Promise.all([userRequest, locationRequest]);
 
 			if (!user) {
 				const data = await createUser(

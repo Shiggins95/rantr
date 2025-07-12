@@ -4,7 +4,7 @@ import { Colours } from '@/src/constants/colours';
 import { spacing } from '@/src/constants/spacing';
 import { useAuthContext } from '@/src/context/auth-context';
 import { IconProps } from '@tamagui/helpers-icon';
-import { Bell, Home, Plus, Search, User2 } from '@tamagui/lucide-icons';
+import { Bell, Home, MapPin, Plus, User2 } from '@tamagui/lucide-icons';
 import { useRouter } from 'expo-router';
 import {
 	TabList,
@@ -68,7 +68,7 @@ export default function Layout() {
 						asChild
 						style={!guestMode ? styles.mr50 : undefined}
 					>
-						<CustomTabButton Icon={Search} />
+						<CustomTabButton Icon={MapPin} />
 					</TabTrigger>
 
 					{!guestMode && <CreatePostButton />}
