@@ -3,7 +3,6 @@ import React, { JSX } from 'react';
 import { Colours } from '@/src/constants/colours';
 import { spacing } from '@/src/constants/spacing';
 import { useAuthContext } from '@/src/context/auth-context';
-import { useColorScheme } from '@hooks/useColorScheme';
 import { IconProps } from '@tamagui/helpers-icon';
 import { Bell, Home, Plus, Search, User2 } from '@tamagui/lucide-icons';
 import { useRouter } from 'expo-router';
@@ -98,7 +97,8 @@ export default function Layout() {
 const useStyles = () => {
 	const { bottom } = useSafeAreaInsets();
 	const { width } = Dimensions.get('window');
-	const theme = useColorScheme() ?? 'dark';
+	// const theme = useColorScheme() ?? 'dark';
+	const theme = 'dark';
 	return StyleSheet.create({
 		flex: { flex: 1 },
 		mr50: { marginRight: 50 },

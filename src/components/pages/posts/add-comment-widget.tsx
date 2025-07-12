@@ -8,7 +8,6 @@ import { HEADER_HEIGHT, INPUT_HEIGHT, spacing } from '@/src/constants/spacing';
 import { useCurrentUser } from '@/src/context/auth-context';
 import { CommentDto, CommentUpdate } from '@/src/types/comments.types';
 import { PostDto } from '@/src/types/posts.types';
-import { useColorScheme } from '@hooks/useColorScheme';
 import { SendHorizontal } from '@tamagui/lucide-icons';
 import { useToastController } from '@tamagui/toast';
 import { Body, BodyType } from '@ui/body';
@@ -74,7 +73,8 @@ export const AddCommentWidget = forwardRef<TextInput, AddCommentWidgetProps>(
 		const insets = useSafeAreaInsets();
 		const extraHeight = useSharedValue(0);
 		const baseExtraHeight = useSharedValue(0);
-		const theme = useColorScheme() ?? 'dark';
+		// const theme = useColorScheme() ?? 'dark';
+		const theme = 'dark';
 		const { height: keyboardHeight } = useKeyboardState();
 		const currentUser = useCurrentUser();
 		const [visible, setVisible] = useState(false);
@@ -376,7 +376,8 @@ export const AddCommentWidget = forwardRef<TextInput, AddCommentWidgetProps>(
 );
 
 const useStyles = () => {
-	const theme = useColorScheme() ?? 'dark';
+	// const theme = useColorScheme() ?? 'dark';
+	const theme = 'dark';
 	return StyleSheet.create({
 		container: {
 			position: 'absolute',

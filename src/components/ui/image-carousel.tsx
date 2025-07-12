@@ -1,7 +1,6 @@
 import { Colours } from '@/src/constants/colours';
 import { spacing } from '@/src/constants/spacing';
 import { PostImageDto } from '@/src/types/post-images.types';
-import { useColorScheme } from '@hooks/useColorScheme';
 import { RantrImage } from '@ui/image';
 import { RantrZoomableImage } from '@ui/zoomable-image';
 import { ImageContentFit } from 'expo-image';
@@ -135,7 +134,8 @@ export const ImageCarousel = forwardRef<ICarouselInstance, ImageCarouselProps>(
 );
 
 const useStyles = () => {
-	const theme = useColorScheme() ?? 'dark';
+	// const theme = useColorScheme() ?? 'dark';
+	const theme = 'dark';
 	return StyleSheet.create({
 		activeDot: {
 			backgroundColor: 'white',

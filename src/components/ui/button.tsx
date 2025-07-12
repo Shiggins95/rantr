@@ -37,13 +37,13 @@ export const Button = styled(BaseButton, {
 			outline: {
 				bg: 'transparent',
 				bw: 2,
-				borderColor: '$text',
-				color: '$text',
+				borderColor: '$primary',
+				color: '$primary',
 				pressStyle: {
 					bg: 'transparent',
 					opacity: 0.6,
 					bw: 1,
-					borderColor: '$text',
+					borderColor: '$primary',
 				},
 			},
 			ghost: {

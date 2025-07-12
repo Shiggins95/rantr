@@ -5,7 +5,6 @@ import {
 	ImageBackground,
 	Platform,
 	StyleSheet,
-	useColorScheme,
 	ViewProps,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -28,13 +27,12 @@ export const Page: FC<PageProps> = ({
 	withNavigationHeader,
 }) => {
 	const { top, bottom } = useSafeAreaInsets();
-	const theme = useColorScheme();
+	// const theme = useColorScheme();
+	const theme = 'dark';
 	const styles = useStyles();
 
 	const bgImage = useMemo(() => {
-		return theme === 'light'
-			? require('@/assets/images/bg-light.png')
-			: require('@/assets/images/bg-dark.png');
+		return require('@/assets/images/bg-dark.png');
 	}, [theme]);
 
 	const containerStyles = useMemo(() => {

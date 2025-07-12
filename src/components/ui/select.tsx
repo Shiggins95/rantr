@@ -1,6 +1,5 @@
 import { Colours } from '@/src/constants/colours';
 import { spacing } from '@/src/constants/spacing';
-import { useColorScheme } from '@hooks/useColorScheme';
 import { Body, BodyType } from '@ui/body';
 import { Button } from '@ui/button';
 import React, { useMemo, useRef, useState } from 'react';
@@ -151,7 +150,8 @@ export const Select = ({
 };
 
 const useStyles = () => {
-	const theme = useColorScheme() ?? 'dark';
+	// const theme = useColorScheme() ?? 'dark';
+	const theme = 'dark';
 	return StyleSheet.create({
 		trigger: {
 			flex: 1,

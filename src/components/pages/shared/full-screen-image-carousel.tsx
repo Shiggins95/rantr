@@ -1,7 +1,6 @@
 import { Colours } from '@/src/constants/colours';
 import { HEADER_HEIGHT, spacing } from '@/src/constants/spacing';
 import { PostImageDto } from '@/src/types/post-images.types';
-import { useColorScheme } from '@hooks/useColorScheme';
 import { Trash, X } from '@tamagui/lucide-icons';
 import { ImageCarousel } from '@ui/image-carousel';
 import { ImageContentFit } from 'expo-image';
@@ -44,7 +43,8 @@ export const FullScreenImageCarousel = ({
 	const { width, height } = Dimensions.get('window');
 	const { top } = useSafeAreaInsets();
 	const opacity = useSharedValue(1);
-	const theme = useColorScheme() ?? 'dark';
+	// const theme = useColorScheme() ?? 'dark';
+	const theme = 'dark';
 	const styles = useStyles();
 	const animatedStyle = useAnimatedStyle(() => {
 		return {

@@ -1,5 +1,4 @@
 import { Colours } from '@/src/constants/colours';
-import { useColorScheme } from '@hooks/useColorScheme';
 import { Body } from '@ui/body';
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import { Dimensions } from 'react-native';
@@ -25,8 +24,8 @@ export const CreatingPostModal = ({
 }: CreatingPostModalProps) => {
 	const { width: screenWidth } = Dimensions.get('window');
 	const translateX = useSharedValue(0);
-	const theme = useColorScheme() ?? 'dark';
-
+	// const theme = useColorScheme() ?? 'dark';
+	const theme = 'dark';
 	useEffect(() => {
 		translateX.value = withRepeat(
 			withSequence(

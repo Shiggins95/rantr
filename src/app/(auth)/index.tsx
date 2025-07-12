@@ -1,24 +1,28 @@
-import 'react-native-url-polyfill/auto';
-import { Text } from 'react-native';
-import { useAuthContext } from '@/src/context/auth-context';
-import { Redirect, useRouter } from 'expo-router';
 import { Page } from '@/src/components/page';
-import { Image, View, YStack } from 'tamagui';
-import { Button } from '@ui/button';
 import { Headline, HeadlineType } from '@/src/components/ui/healine';
+import { useAuthContext } from '@/src/context/auth-context';
+import { useLocationContext } from '@/src/context/location-context';
+import { Button } from '@ui/button';
+import { Redirect, useRouter } from 'expo-router';
+import { Text } from 'react-native';
+import 'react-native-url-polyfill/auto';
+import { Image, View, YStack } from 'tamagui';
 
 export default function LandingPage() {
 	const { session, setGuestMode } = useAuthContext();
 	const router = useRouter();
-
+	const { checkPermissions, getCurrentLocation } = useLocationContext();
 	const handleSignIn = () => {
 		router.navigate('/sign-in');
 	};
 
-	const navigateToHome = () => {
+	const navigateToHome = async () => {
 		setGuestMode(true);
+		const { granted } = await checkPermissions();
+		if (!granted) return router.navigate('/location');
+		await getCurrentLocation();
 		router.navigate('/(app)/(tabs)/(home)');
-	}
+	};
 
 	if (session) {
 		return <Redirect href="/(app)/(tabs)/(home)" />;
@@ -31,9 +35,7 @@ export default function LandingPage() {
 					<Image
 						w={150}
 						h={150}
-						source={
-							require('@/assets/images/adaptive-icon.png')
-						}
+						source={require('@/assets/images/adaptive-icon.png')}
 					/>
 					<Text>
 						<Headline textAlign="center" variant={HeadlineType.h2}>

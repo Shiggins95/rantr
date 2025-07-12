@@ -3,7 +3,6 @@ import { FullScreenImageCarousel } from '@/src/components/pages/shared/full-scre
 import { Colours } from '@/src/constants/colours';
 import { spacing } from '@/src/constants/spacing';
 import { useImagePicker } from '@hooks/use-image-picker';
-import { useColorScheme } from '@hooks/useColorScheme';
 import { FileImage, Trash } from '@tamagui/lucide-icons';
 import { Body, BodyType } from '@ui/body';
 import { RantrImage } from '@ui/image';
@@ -180,7 +179,8 @@ export const ImageUpload = (props: ImageUploadProps) => {
 };
 
 const useStyles = () => {
-	const theme = useColorScheme() ?? 'dark';
+	// const theme = useColorScheme() ?? 'dark';
+	const theme = 'dark';
 	return StyleSheet.create({
 		containerButton: {
 			width: '100%',

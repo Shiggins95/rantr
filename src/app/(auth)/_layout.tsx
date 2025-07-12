@@ -22,6 +22,13 @@ export default function OnboardingLayout() {
 					header: () => <NavigationHeader />,
 				}}
 			/>
+			<Stack.Screen
+				name="location"
+				options={{
+					gestureEnabled: false,
+					headerShown: false,
+				}}
+			/>
 		</Stack>
 	);
 }

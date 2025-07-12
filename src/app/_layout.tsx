@@ -1,8 +1,8 @@
 import { Colours } from '@/src/constants/colours';
 import { AuthProvider, useAuthContext } from '@/src/context/auth-context';
+import { LocationProvider } from '@/src/context/location-context';
 import { queryClient } from '@/src/utils/query-client';
 import tamaguiConfig from '@/tamagui.config';
-import { useColorScheme } from '@hooks/useColorScheme';
 import {
 	DarkTheme,
 	DefaultTheme,
@@ -29,7 +29,8 @@ if (__DEV__) {
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-	const colorScheme = useColorScheme();
+	// const colorScheme = useColorScheme();
+	const colorScheme = 'dark';
 	const { isLoading } = useAuthContext();
 
 	const [loaded] = useFonts({
@@ -84,26 +85,28 @@ export default function RootLayout() {
 				<QueryClientProvider client={queryClient}>
 					<PortalProvider>
 						<ToastProvider>
-							<AuthProvider>
-								<TamaguiProvider
-									config={tamaguiConfig}
-									defaultTheme={colorScheme || 'light'}
-								>
-									<ThemeProvider
-										value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+							<LocationProvider>
+								<AuthProvider>
+									<TamaguiProvider
+										config={tamaguiConfig}
+										defaultTheme={colorScheme || 'light'}
 									>
-										<Slot />
-										<ToastViewport bottom={0} left={0} right={0} />
-										<ToastViewport
-											name="top-toast"
-											top={0}
-											left={0}
-											right={0}
-										/>
-										<CurrentToast />
-									</ThemeProvider>
-								</TamaguiProvider>
-							</AuthProvider>
+										<ThemeProvider
+											value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+										>
+											<Slot />
+											<ToastViewport bottom={0} left={0} right={0} />
+											<ToastViewport
+												name="top-toast"
+												top={0}
+												left={0}
+												right={0}
+											/>
+											<CurrentToast />
+										</ThemeProvider>
+									</TamaguiProvider>
+								</AuthProvider>
+							</LocationProvider>
 						</ToastProvider>
 					</PortalProvider>
 				</QueryClientProvider>

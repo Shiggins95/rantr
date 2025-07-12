@@ -7,6 +7,8 @@ CREATE TABLE posts (
     title TEXT NOT NULL,
     content TEXT NOT NULL, -- markdown-compatible
     user_id UUID NOT NULL REFERENCES rantr_users(id) ON DELETE CASCADE,
+    lat double precision not null default 0,
+    lng double precision not null default 0,
     deleted BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );

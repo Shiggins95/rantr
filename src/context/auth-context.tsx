@@ -1,6 +1,7 @@
 import { createUser } from '@/src/api/methods/user/create-user';
 import { getUser } from '@/src/api/methods/user/get-user';
 import { updateUser } from '@/src/api/methods/user/update-user';
+import { useLocationContext } from '@/src/context/location-context';
 import { UserDto } from '@/src/types/user.types';
 import { setStorageItem, StorageKey } from '@/src/utils/storage';
 import { getSupabaseAuthenticatedClient, supabase } from '@/src/utils/supabase';
@@ -66,6 +67,9 @@ export function AuthProvider({ children }: PropsWithChildren) {
 	const router = useRouter();
 	const toast = useToastController();
 	const queryClient = useQueryClient();
+
+	const { checkPermissions, requestPermissions, getCurrentLocation, status } =
+		useLocationContext();
 
 	const handleUserRetrieved = (user: UserDto, _session: Session) => {
 		setUser(user);

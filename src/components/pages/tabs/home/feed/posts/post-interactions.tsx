@@ -93,10 +93,24 @@ export const PostInteractions = ({
 		setMyInteraction(direction);
 	};
 
+	const handleCommentButtonPress = () => {
+		if (guestMode && type === 'comment') {
+			toast.show('Please sign in.', {
+				message: 'You must be signed in to reply to comments.',
+				duration: 1500,
+				type: 'warning',
+				viewportName: 'top-toast',
+			});
+			return;
+		}
+
+		onCommentButtonPress?.();
+	};
+
 	const handleInteraction = async (direction: 'up' | 'down') => {
 		if (guestMode) {
-			toast.show('Please sign in to interact with posts', {
-				message: 'You must be signed in to interact with posts',
+			toast.show('Please sign in.', {
+				message: `You must be signed in to interact with ${type === 'post' ? 'posts' : 'comments'}.`,
 				duration: 1500,
 				type: 'warning',
 				viewportName: 'top-toast',
@@ -179,7 +193,7 @@ export const PostInteractions = ({
 					variant="ghost"
 					fd="row"
 					p="$sm"
-					onPress={onCommentButtonPress}
+					onPress={handleCommentButtonPress}
 				>
 					<MessageSquare size="$md" c="$color.textMuted" />
 					<Body c="$textMuted" variant={BodyType.smallMonospace}>

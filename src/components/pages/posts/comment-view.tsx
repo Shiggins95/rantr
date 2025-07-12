@@ -10,7 +10,6 @@ import { Colours } from '@/src/constants/colours';
 import { spacing } from '@/src/constants/spacing';
 import { useCurrentUser } from '@/src/context/auth-context';
 import { CommentDto } from '@/src/types/comments.types';
-import { useColorScheme } from '@hooks/useColorScheme';
 import { ArrowRight, Flag, Glasses, Pencil } from '@tamagui/lucide-icons';
 import { useQueryClient } from '@tanstack/react-query';
 import { Body, BodyType } from '@ui/body';
@@ -44,7 +43,8 @@ export const CommentView = ({
 	const queryClient = useQueryClient();
 	const styles = useStyles();
 	const router = useRouter();
-	const theme = useColorScheme() ?? 'dark';
+	// const theme = useColorScheme() ?? 'dark';
+	const theme = 'dark';
 	const initialAddedColour = Colours[theme].primary40;
 	const bgColour = Colours[theme].background;
 	const colourProgress = useSharedValue(0);
