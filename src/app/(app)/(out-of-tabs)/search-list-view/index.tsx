@@ -15,14 +15,12 @@ export default function SearchListViewLayout() {
 		east: eastString,
 		west: westString,
 		locationName,
-		locationDistance,
 	} = useLocalSearchParams() as {
 		north: string;
 		south: string;
 		east: string;
 		west: string;
 		locationName: string;
-		locationDistance: string;
 	};
 
 	const north = parseFloat(northString);
