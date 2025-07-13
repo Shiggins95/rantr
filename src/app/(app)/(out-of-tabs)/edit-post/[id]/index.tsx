@@ -40,17 +40,9 @@ export default function () {
 		isLoading,
 		isFetching,
 		isError,
-		error,
 	} = useSupabaseQuery(['post', postId], getPost, {
 		postId: postId as string,
 		userId: currentUser?.id || '',
-	});
-
-	console.log({
-		isLoading,
-		isError,
-		isFetching,
-		error,
 	});
 
 	if (isLoading || isFetching || isError) {

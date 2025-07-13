@@ -1,5 +1,6 @@
+import { useDebounce } from '@hooks/use-debounce';
 import { Body, BodyType } from '@ui/body';
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
 import {
 	LiteralUnion,
 	RegisterOptions,
@@ -56,6 +57,41 @@ export const ControlledInputField = (props: ControlledInputFieldProps) => {
 				props.onChangeText?.(value);
 			}}
 			value={field.value}
+		/>
+	);
+};
+
+type DebouncedInputFieldProps = Omit<InputFieldProps, 'onChange'> & {
+	onChangeText: (value: string) => void;
+	immediateOnChange?: (value: string) => void;
+	delay: number;
+};
+
+export const DebouncedInputField = (props: DebouncedInputFieldProps) => {
+	// Local state to keep track of the input value, ensuring it stays in sync with the displayed value.
+	const [value, setValue] = useState<string>(props.value as string);
+
+	// Debounce the parent's onChange callback to reduce frequent updates and improve performance.
+	useDebounce(
+		() => {
+			props.onChangeText(value);
+		},
+		props.delay,
+		[value],
+	);
+
+	// Render a regular input field.
+	// This input is not directly controlled by the parent but instead managed locally
+	// and updates to the parent only after the debounced delay. This shouldn't be used in conjunction with a form,
+	// which is why we don't render a controlled input.
+	return (
+		<InputField
+			{...props}
+			onChangeText={(newValue) => {
+				props.immediateOnChange?.(newValue);
+				setValue(newValue);
+			}}
+			value={value}
 		/>
 	);
 };

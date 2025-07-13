@@ -82,8 +82,6 @@ export const AddCommentWidget = forwardRef<TextInput, AddCommentWidgetProps>(
 		const toast = useToastController();
 		// endregion
 
-		console.log('focussedCommentToEdit', focussedCommentToEdit);
-
 		// region styles
 		const styles = useStyles();
 		const borderStyle = useMemo(() => {

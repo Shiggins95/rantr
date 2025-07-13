@@ -93,6 +93,7 @@ export type Database = {
           comment: string
           created_at: string
           deleted: boolean | null
+          deleted_at: string | null
           edited: boolean | null
           id: string
           original_comment: string | null
@@ -105,6 +106,7 @@ export type Database = {
           comment: string
           created_at?: string
           deleted?: boolean | null
+          deleted_at?: string | null
           edited?: boolean | null
           id?: string
           original_comment?: string | null
@@ -117,6 +119,7 @@ export type Database = {
           comment?: string
           created_at?: string
           deleted?: boolean | null
+          deleted_at?: string | null
           edited?: boolean | null
           id?: string
           original_comment?: string | null
@@ -165,16 +168,19 @@ export type Database = {
       }
       post_images: {
         Row: {
+          created_at: string
           id: string
           image_url: string
           post_id: string
         }
         Insert: {
+          created_at?: string
           id?: string
           image_url: string
           post_id: string
         }
         Update: {
+          created_at?: string
           id?: string
           image_url?: string
           post_id?: string
@@ -280,8 +286,13 @@ export type Database = {
           content: string
           created_at: string
           deleted: boolean | null
+          deleted_at: string | null
           disable_comments: boolean
           id: string
+          lat: number
+          lng: number
+          original_content: string | null
+          original_title: string | null
           title: string
           type: Database["public"]["Enums"]["post_type_enum"]
           user_id: string
@@ -290,8 +301,13 @@ export type Database = {
           content: string
           created_at?: string
           deleted?: boolean | null
+          deleted_at?: string | null
           disable_comments?: boolean
           id?: string
+          lat?: number
+          lng?: number
+          original_content?: string | null
+          original_title?: string | null
           title: string
           type?: Database["public"]["Enums"]["post_type_enum"]
           user_id: string
@@ -300,8 +316,13 @@ export type Database = {
           content?: string
           created_at?: string
           deleted?: boolean | null
+          deleted_at?: string | null
           disable_comments?: boolean
           id?: string
+          lat?: number
+          lng?: number
+          original_content?: string | null
+          original_title?: string | null
           title?: string
           type?: Database["public"]["Enums"]["post_type_enum"]
           user_id?: string

@@ -69,6 +69,8 @@ export class PostDto {
 	myInteraction?: PostInteractionDto;
 	commentCount?: number;
 	disableComments?: boolean;
+	lat: number;
+	lng: number;
 
 	constructor(entity: PostDb) {
 		this.id = entity.id;
@@ -81,6 +83,8 @@ export class PostDto {
 		this.createdAt = new Date(entity.created_at);
 		this.type = entity.type;
 		this.disableComments = entity.disable_comments;
+		this.lat = entity.lat;
+		this.lng = entity.lng;
 
 		if (entity.interactions) {
 			this.interactions = entity.interactions.map(

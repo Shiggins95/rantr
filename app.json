@@ -52,10 +52,9 @@
         }
       ],
       [
-        "expo-maps",
+        "expo-location",
         {
-          "requestLocationPermission": true,
-          "locationPermission": "Allow $(PRODUCT_NAME) to use your location"
+          "locationWhenInUsePermission": "Allow RantR to use your location to show you the posts relevant to your region."
         }
       ],
       "expo-font",

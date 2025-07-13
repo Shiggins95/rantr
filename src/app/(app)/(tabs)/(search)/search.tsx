@@ -1,20 +1,16 @@
-import { MapView } from '@/src/components/pages/search/map-view';
-import { AppleMapOnMoveEvent } from '@/src/components/pages/search/search.types';
+import { MapViewComponent } from '@/src/components/pages/search/map-view';
 import {
 	LocationResponse,
 	useLocationContext,
 } from '@/src/context/location-context';
 import { Navigation } from '@tamagui/lucide-icons';
 import { Button } from '@ui/button';
-import { CameraPosition } from 'expo-maps';
-import { AppleMapsViewType } from 'expo-maps/build/apple/AppleMaps.types';
-import { GoogleMapsViewType } from 'expo-maps/build/google/GoogleMaps.types';
 import { useEffect, useRef, useState } from 'react';
-import { Platform } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import MapView from 'react-native-maps';
 import { View } from 'tamagui';
 
 export default function TabTwoScreen() {
+	const mapRef = useRef<MapView | null>(null);
 	const {
 		location,
 		checkPermissions,
@@ -23,45 +19,18 @@ export default function TabTwoScreen() {
 		status,
 	} = useLocationContext();
 
-	const { top: topInset } = useSafeAreaInsets();
-
 	const [locationPosition, setLocationPosition] =
 		useState<LocationResponse>(location);
-	const mapRef = useRef<AppleMapsViewType | GoogleMapsViewType | null>(null);
-	const defaultCamera: CameraPosition = {
-		coordinates: {
-			latitude: locationPosition?.lat,
-			longitude: locationPosition?.lng,
-		},
-		zoom: 10,
-	};
 
-	const onAppleCameraMove = (event: AppleMapOnMoveEvent) => {
-		if (event.zoom > 10) {
-			console.log('event.coor', event);
-			mapRef.current?.setCameraPosition({
-				coordinates: event.coordinates,
-				zoom: 10,
-			});
-		}
-	};
-	const onAndroidCameraMove = (event: AppleMapOnMoveEvent) => {
-		if (event.zoom > 10) {
-			mapRef.current?.setCameraPosition({
-				coordinates: event.coordinates,
-				zoom: 10,
-			});
-		}
+	const initialRegion = {
+		latitude: locationPosition?.lat,
+		longitude: locationPosition?.lng,
+		latitudeDelta: 0.75,
+		longitudeDelta: 0.75,
 	};
 
 	const recenterLocation = () => {
-		mapRef.current?.setCameraPosition({
-			coordinates: {
-				latitude: locationPosition?.lat,
-				longitude: locationPosition?.lng,
-			},
-			zoom: 10,
-		});
+		mapRef.current?.animateToRegion(initialRegion);
 	};
 
 	useEffect(() => {
@@ -95,10 +64,11 @@ export default function TabTwoScreen() {
 
 	return (
 		<View f={1}>
+			<MapViewComponent ref={mapRef} initialRegion={initialRegion} />
 			<View
 				bg="$background"
 				position="absolute"
-				top={topInset + 50}
+				bottom={25}
 				right="$md"
 				zIndex={1000}
 				w={50}
@@ -111,13 +81,6 @@ export default function TabTwoScreen() {
 					<Navigation size="$size.lg" c="$primary" />
 				</Button>
 			</View>
-			<MapView
-				ref={mapRef}
-				cameraPosition={defaultCamera}
-				onCameraMove={
-					Platform.OS === 'ios' ? onAppleCameraMove : onAndroidCameraMove
-				}
-			/>
 		</View>
 	);
 }
