@@ -9,6 +9,7 @@ import {
 } from '@/src/components/forms/create-edit-post/create-edit-post-schema';
 import { CreatingPostModal } from '@/src/components/pages/create-post/creating-post-modal';
 import { useCurrentUser } from '@/src/context/auth-context';
+import { useLocationContext } from '@/src/context/location-context';
 import { PostImageDto } from '@/src/types/post-images.types';
 import { PostDto } from '@/src/types/posts.types';
 import { getSupabaseAuthenticatedClient } from '@/src/utils/supabase';
@@ -35,6 +36,7 @@ export const CreateEditPostForm = ({
 	onError,
 	defaultPost,
 }: CreateEditPostFormProps) => {
+	const { location } = useLocationContext();
 	const supabase = getSupabaseAuthenticatedClient();
 	const currentUser = useCurrentUser();
 	const [openDialog, setOpenDialog] = useState(false);
@@ -130,6 +132,8 @@ export const CreateEditPostForm = ({
 					disable_comments: values.disableComments,
 					user_id: currentUser?.id as string,
 					type: (values.tag || 'OTHER') as 'RANT' | 'ADVICE' | 'OTHER',
+					lat: location.lat,
+					lng: location.lng,
 				},
 				images: prepareImageDbEntries(postId, imagePaths),
 			});
