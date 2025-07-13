@@ -42,6 +42,14 @@ export default function OuterTabsStack() {
 					header: () => <NavigationHeader />,
 				}}
 			/>
+			<Stack.Screen
+				name="search-list-view/index"
+				options={{
+					headerShown: true,
+					gestureEnabled: true,
+					header: () => <NavigationHeader />,
+				}}
+			/>
 		</Stack>
 	);
 }

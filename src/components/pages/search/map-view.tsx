@@ -5,10 +5,14 @@ import { CameraEdges } from '@/src/components/pages/search/search.types';
 import { Colours } from '@/src/constants/colours';
 import { spacing } from '@/src/constants/spacing';
 import { useAuthContext } from '@/src/context/auth-context';
+import { useLocationContext } from '@/src/context/location-context';
 import { calculateEdges } from '@/src/utils/distance';
 import { useDebouncedValue } from '@hooks/use-debounced-value';
+import { List, Navigation } from '@tamagui/lucide-icons';
+import { Body, BodyType } from '@ui/body';
+import { Button } from '@ui/button';
 import { DebouncedInputField } from '@ui/input-field';
-import { geocodeAsync } from 'expo-location';
+import { geocodeAsync, reverseGeocodeAsync } from 'expo-location';
 import { useRouter } from 'expo-router';
 import { forwardRef, RefObject, useEffect, useState } from 'react';
 import { Dimensions, Keyboard, TouchableWithoutFeedback } from 'react-native';
@@ -20,7 +24,7 @@ import Animated, {
 	withTiming,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { View } from 'tamagui';
+import { View, YStack } from 'tamagui';
 
 type MapViewComponentProps = {
 	initialRegion: Region;
@@ -28,17 +32,18 @@ type MapViewComponentProps = {
 
 export const MapViewComponent = forwardRef<MapView, MapViewComponentProps>(
 	({ initialRegion }, ref) => {
+		const { user: currentUser, guestMode } = useAuthContext();
 		const { top: topInset } = useSafeAreaInsets();
 		const { width: windowWidth } = Dimensions.get('window');
+		const { location } = useLocationContext();
 		const router = useRouter();
-		const { user: currentUser, guestMode } = useAuthContext();
 		const [mapChanged, setMapChanged] = useState(false);
 		const loadingTranslate = useSharedValue(-(windowWidth / 2));
-		const theme = 'dark';
-
 		const [cameraEdges, setCameraEdges] = useState<CameraEdges>(
 			calculateEdges(initialRegion),
 		);
+		const [locationLabel, setLocationLabel] = useState(location.label);
+		const theme = 'dark';
 
 		const onMarkerPress = (postId: string) => {
 			router.navigate(`/(app)/(out-of-tabs)/post/${postId}/post`);
@@ -54,22 +59,55 @@ export const MapViewComponent = forwardRef<MapView, MapViewComponentProps>(
 			);
 			setMapChanged(true);
 		};
-		const handleRegionChange = (region: Region) => {
-			setCameraEdges(calculateEdges(region));
+		const handleRegionChange = async (region: Region) => {
+			const newEdges = calculateEdges(region);
+			setCameraEdges(newEdges);
 			setMapChanged(true);
+
+			const reverseGeocode = await reverseGeocodeAsync({
+				latitude: region.latitude,
+				longitude: region.longitude,
+			});
+
+			const currentLocation = reverseGeocode[0];
+
+			const label =
+				currentLocation.subregion ||
+				currentLocation.city ||
+				currentLocation.district ||
+				currentLocation.region ||
+				currentLocation.country ||
+				'none';
+
+			setLocationLabel(label);
+		};
+
+		const recenterLocation = () => {
+			setSearchTerm('');
+			(ref as RefObject<MapView>).current?.animateToRegion(initialRegion);
+		};
+
+		const navigateToListView = async () => {
+			router.push({
+				pathname: '/search-list-view',
+				params: {
+					...cameraEdges,
+					locationName: locationLabel,
+				},
+			});
 		};
 
 		const [searchTerm, setSearchTerm] = useState('');
 
 		const { data } = useSupabaseQuery(
 			[
-				'map-posts',
+				'map-view-posts',
 				debouncedEdges.north,
 				debouncedEdges.south,
 				debouncedEdges.east,
 				debouncedEdges.west,
 			],
-			guestMode || !currentUser ? getAnonPosts : getPosts,
+			!currentUser || guestMode ? getAnonPosts : getPosts,
 			{ locationBox: debouncedEdges, userId: currentUser?.id, limit: 1000 },
 		);
 
@@ -102,9 +140,9 @@ export const MapViewComponent = forwardRef<MapView, MapViewComponentProps>(
 		});
 
 		useEffect(() => {
+			if (!searchTerm) return;
 			const getSuggestion = async () => {
 				const results = await geocodeAsync(searchTerm);
-				console.log('results', results);
 				(ref as RefObject<MapView>).current.animateToRegion({
 					...initialRegion,
 					longitude: results[0].longitude,
@@ -145,6 +183,55 @@ export const MapViewComponent = forwardRef<MapView, MapViewComponentProps>(
 							onChangeText={setSearchTerm}
 						/>
 					</View>
+					<YStack
+						gap="$md"
+						position="absolute"
+						bottom={25}
+						right="$md"
+						zIndex={1000}
+					>
+						{markers.length > 0 && (
+							<View
+								bg="$background"
+								w={50}
+								h={50}
+								borderRadius="$radius.l"
+								jc="center"
+								alignItems="center"
+							>
+								<Button variant="ghost" onPress={navigateToListView}>
+									<View
+										bg="$primary"
+										w={25}
+										h={25}
+										position="absolute"
+										top={-7}
+										right={-7}
+										jc="center"
+										alignItems="center"
+										borderRadius={25}
+									>
+										<Body c="$background" variant={BodyType.extraSmall}>
+											{markers.length}
+										</Body>
+									</View>
+									<List size="$size.lg" c="$primary" />
+								</Button>
+							</View>
+						)}
+						<View
+							bg="$background"
+							w={50}
+							h={50}
+							borderRadius="$radius.l"
+							jc="center"
+							alignItems="center"
+						>
+							<Button variant="ghost" onPress={recenterLocation}>
+								<Navigation size="$size.lg" c="$primary" />
+							</Button>
+						</View>
+					</YStack>
 					<MapView
 						ref={ref}
 						style={{ flex: 1 }}
@@ -153,6 +240,7 @@ export const MapViewComponent = forwardRef<MapView, MapViewComponentProps>(
 						showsCompass={false}
 						showsIndoors={false}
 						maxZoomLevel={12}
+						minZoomLevel={9}
 						onRegionChangeComplete={handleRegionChange}
 						onRegionChangeStart={handleRegionChangeStart}
 						showsUserLocation

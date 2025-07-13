@@ -143,6 +143,7 @@ const InputField = forwardRef<TextInput, InputFieldProps>(
 				<Input
 					{...rest}
 					ref={ref}
+					px="$md"
 					variant={variant}
 					onChangeText={rest.onChangeText}
 					borderRadius="$radius.l"

@@ -1,22 +1,14 @@
 import { useSupabaseInfiniteQuery } from '@/src/api/hooks/common/use-supabase-infinite-query';
 import { getAnonPosts, getPosts } from '@/src/api/methods/posts/get-posts';
 import { Page } from '@/src/components/page';
-import { Post } from '@/src/components/pages/tabs/home/feed/posts/post';
+import { Feed } from '@/src/components/pages/tabs/home/feed/feed';
 import { HomeHeader } from '@/src/components/pages/tabs/home/header';
-import { POSTS_PER_PAGE } from '@/src/constants/query';
-import { spacing } from '@/src/constants/spacing';
 import { useCurrentUser } from '@/src/context/auth-context';
 import { useLocationContext } from '@/src/context/location-context';
-import { PostDto } from '@/src/types/posts.types';
 import { RefreshCcw } from '@tamagui/lucide-icons';
 import { Body, BodyType } from '@ui/body';
-import { useCallback, useMemo, useState } from 'react';
-import {
-	FlatList,
-	ListRenderItemInfo,
-	Pressable,
-	StyleSheet,
-} from 'react-native';
+import { useMemo, useState } from 'react';
+import { Pressable } from 'react-native';
 import Animated, {
 	useAnimatedStyle,
 	useSharedValue,
@@ -68,34 +60,10 @@ export default function HomeScreen() {
 		void refetch();
 	};
 
-	const renderItem = useCallback(({ item }: ListRenderItemInfo<PostDto>) => {
-		return <Post post={item} />;
-	}, []);
-
 	const filteredData = useMemo(() => {
 		if (!currentTag || !data) return data || [];
 		return data.filter((p) => p.type === currentTag);
 	}, [currentTag, data]);
-
-	const flatList = useMemo(() => {
-		return (
-			<FlatList<PostDto>
-				showsVerticalScrollIndicator={false}
-				data={filteredData}
-				keyExtractor={(i) => i.id}
-				renderItem={renderItem}
-				style={styles.contentContainer}
-				contentContainerStyle={styles.sectionListContent}
-				onEndReached={handleFetchNextPage}
-				onEndReachedThreshold={0.2}
-				initialNumToRender={10}
-				refreshing={isFetching}
-				onRefresh={handleRefresh}
-				maxToRenderPerBatch={POSTS_PER_PAGE}
-				windowSize={10}
-			/>
-		);
-	}, [filteredData, data]);
 
 	const animatedStyle = useAnimatedStyle(() => {
 		return {
@@ -121,17 +89,14 @@ export default function HomeScreen() {
 					</Animated.View>
 				</Pressable>
 			</View>
-			<View f={1}>{flatList}</View>
+			<View f={1}>
+				<Feed
+					data={filteredData}
+					isFetching={isFetching}
+					onRefresh={handleRefresh}
+					handleGetNextPage={handleFetchNextPage}
+				/>
+			</View>
 		</Page>
 	);
 }
-
-const styles = StyleSheet.create({
-	contentContainer: {
-		flex: 1,
-	},
-	sectionListContent: {
-		paddingBottom: 100,
-		gap: spacing.md,
-	},
-});
