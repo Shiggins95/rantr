@@ -1,12 +1,12 @@
-import { Database } from '@/src/types/supabase';
 import { CommentDb, CommentDto } from '@/src/types/comments.types';
-import { PostDb, PostDto } from '@/src/types/posts.types';
 import {
 	CommentInteractionDb,
 	CommentInteractionDto,
 	PostInteractionDb,
 	PostInteractionDto,
 } from '@/src/types/interactions.types';
+import { PostDb, PostDto } from '@/src/types/posts.types';
+import { Database } from '@/src/types/supabase';
 
 export type UserDbBase = Database['public']['Tables']['rantr_users']['Row'];
 export type UserDb = UserDbBase & {
@@ -33,6 +33,8 @@ export class UserDto {
 	posts?: PostDto[];
 	commentInteractions?: CommentInteractionDto[];
 	postInteractions?: PostInteractionDto[];
+	followerCount?: number;
+	followingCount?: number;
 
 	constructor(entity: UserDb) {
 		this.id = entity.id;
@@ -71,6 +73,13 @@ export class UserDto {
 			this.postInteractions = entity.post_interactions.map(
 				(i) => new PostInteractionDto(i),
 			);
+		}
+
+		if (entity.following_count) {
+			this.followingCount = entity.following_count;
+		}
+		if (entity.follower_count) {
+			this.followerCount = entity.follower_count;
 		}
 	}
 

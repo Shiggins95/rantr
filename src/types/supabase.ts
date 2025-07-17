@@ -349,6 +349,8 @@ export type Database = {
           created_at: string
           email: string
           first_name: string | null
+          follower_count: number | null
+          following_count: number | null
           id: string
           last_name: string | null
           last_sign_in: string | null
@@ -361,6 +363,8 @@ export type Database = {
           created_at?: string
           email: string
           first_name?: string | null
+          follower_count?: number | null
+          following_count?: number | null
           id: string
           last_name?: string | null
           last_sign_in?: string | null
@@ -373,6 +377,8 @@ export type Database = {
           created_at?: string
           email?: string
           first_name?: string | null
+          follower_count?: number | null
+          following_count?: number | null
           id?: string
           last_name?: string | null
           last_sign_in?: string | null
@@ -411,6 +417,42 @@ export type Database = {
           {
             foreignKeyName: "terms_user_id_fkey"
             columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "rantr_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_follows: {
+        Row: {
+          created_at: string
+          id: string
+          person_followed: string | null
+          person_following: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          person_followed?: string | null
+          person_following?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          person_followed?: string | null
+          person_following?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_follows_person_followed_fkey"
+            columns: ["person_followed"]
+            isOneToOne: false
+            referencedRelation: "rantr_users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_follows_person_following_fkey"
+            columns: ["person_following"]
             isOneToOne: false
             referencedRelation: "rantr_users"
             referencedColumns: ["id"]
