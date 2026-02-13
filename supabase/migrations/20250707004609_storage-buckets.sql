@@ -1,6 +1,3 @@
--- Enable RLS if not already
-alter table storage.objects enable row level security;
-
 -- Profile Photos
 
 create policy "Authenticated users can insert into profile-photos"
